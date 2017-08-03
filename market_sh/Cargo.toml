@@ -1,0 +1,7 @@
+[package]
+name = "market_sh"
+version = "0.1.0"
+authors = ["kan"]
+
+[dependencies]
+encoding="*"
