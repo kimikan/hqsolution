@@ -100,21 +100,45 @@ impl Uri {
   }
 }
 
-fn add_line_no(db:&mut Database, mkt:u32, code:&String)->u32 {
+impl Key for Uri {
+  fn from_u8(key: &[u8]) -> Self {
+    Uri::from_u8()
+  }
+
+  fn as_slice<T, F: Fn(&[u8]) -> T>(&self, f: F) -> T {
+    let mut s = self.as_bytes();
+    f(&mut s)
+  }
+}
+
+fn add_line_no(db:&mut Database<Uri>, mkt:u32, code:&String)->u32 {
   let mut uri:Uri = Default::default();
   uri._code = code.clone();
   uri._market = mkt;
   uri._line_no = 0;
 
   let read_opts = ReadOptions::new();
-  let res = database.get(read_opts, uri.as_bytes());
+  let res = db.get(read_opts, uri);
 
   let index = match res {
     Ok(data) => {
-      
+      if let Some(d/*Vec<u8>*/) = data {
+        if d.len() == 4 {
+          (key[0] as u32) << 24 |
+          (key[1] as u32) << 16 |
+          (key[2] as u32) << 8 |
+          (key[3] as u32)
+        } else {
+          0
+        }
+      } else {
+        0
+      }
     }
-    Err(e) => { panic!("failed reading data: {:?}", e) }
-  }
+    Err(e) => { 0 }
+  };
+
+  1
 }
 
 fn main() {
@@ -127,6 +151,7 @@ fn main() {
   };
 
 
+  /*
   let line:KLine = Default::default();
 
   let write_opts = WriteOptions::new();
@@ -152,5 +177,5 @@ fn main() {
   assert_eq!(
     entry,
     Some((1, vec![1]))
-  );
+  );*/
 }
