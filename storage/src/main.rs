@@ -49,6 +49,7 @@ impl KLine {
   }
 }
 
+#[derive(Clone, Debug)]
 struct Uri {
   _market:u32,
   _code:String,
@@ -67,7 +68,8 @@ impl Default for Uri {
 
 impl<'a> From<&'a [u8]> for Uri {
   fn from(buf:&[u8])->Uri {
-    Uri::default()
+    panic!("xxxx")
+    //Uri::default()
   }
 }
 
@@ -100,18 +102,45 @@ impl Uri {
   }
 }
 
+extern crate db_key;
+use db_key::*;
+
 impl Key for Uri {
   fn from_u8(key: &[u8]) -> Self {
-    Uri::from_u8()
+    Uri::from_u8(key)
   }
 
   fn as_slice<T, F: Fn(&[u8]) -> T>(&self, f: F) -> T {
     let mut s = self.as_bytes();
+    //println!("bytes: {:?}", s);
     f(&mut s)
   }
 }
 
-fn add_line_no(db:&mut Database<Uri>, mkt:u32, code:&String)->u32 {
+fn bytes_to_u32(d:&[u8])->u32 {
+  if d.len() == 4 {
+    let value = (d[0] as u32) << 24 |
+    (d[1] as u32) << 16 |
+    (d[2] as u32) << 8 |
+    (d[3] as u32);
+    //println!("value:{:?}", value);
+    return value;
+  } else {
+    0
+  }
+}
+
+fn u32_to_bytes(v:u32)->[u8;4] {
+  let mut bytes = [0;4];
+  bytes[0] = (v>>24) as u8;
+  bytes[1] = (v>>16) as u8;
+  bytes[2] = (v>>8) as u8;
+  bytes[3] = (v) as u8;
+  
+  bytes
+}
+
+fn get_line_no(db:&mut Database<Uri>, mkt:u32, code:&String)->u32 {
   let mut uri:Uri = Default::default();
   uri._code = code.clone();
   uri._market = mkt;
@@ -123,14 +152,8 @@ fn add_line_no(db:&mut Database<Uri>, mkt:u32, code:&String)->u32 {
   let index = match res {
     Ok(data) => {
       if let Some(d/*Vec<u8>*/) = data {
-        if d.len() == 4 {
-          (key[0] as u32) << 24 |
-          (key[1] as u32) << 16 |
-          (key[2] as u32) << 8 |
-          (key[3] as u32)
-        } else {
-          0
-        }
+        println!("Ok, got it: {:?}", d);
+        bytes_to_u32(&d)
       } else {
         0
       }
@@ -138,44 +161,87 @@ fn add_line_no(db:&mut Database<Uri>, mkt:u32, code:&String)->u32 {
     Err(e) => { 0 }
   };
 
-  1
+  index
+}
+
+use std::io;
+fn set_line_no(db:&mut Database<Uri>, mkt:u32, code:&String, line:u32)->io::Result<()> {
+  let mut uri:Uri = Default::default();
+  uri._code = code.clone();
+  uri._market = mkt;
+  uri._line_no = 0;
+
+  let write_opts = WriteOptions::new();
+  if let Err(e) = db.put(write_opts, uri.clone(), &u32_to_bytes(line)) {
+    panic!("failed to write db: {:?}", e)
+  }
+  println!("Success to write lineno: {:?}, {}", uri, line);
+  Ok(())
+}
+
+fn main2() {
+  let mut options = Options::new();
+  options.create_if_missing = true;
+  let mut database:Database<Uri> = match Database::open(Path::new("db"), options) {
+      Ok(db) => { db },
+      Err(e) => { panic!("failed to open database: {:?}", e) }
+  };
+
+  let mkt = 2u32;
+  let stock_code = "000333".to_owned();
+  set_line_no(&mut database, mkt, &stock_code, 1).unwrap();
+  let mut line_no = get_line_no(&mut database, mkt, &stock_code);
+  println!("get line_no: {}", line_no);
 }
 
 fn main() {
 
   let mut options = Options::new();
   options.create_if_missing = true;
-  let mut database = match Database::open(Path::new("db"), options) {
+  let mut database:Database<Uri> = match Database::open(Path::new("db"), options) {
       Ok(db) => { db },
       Err(e) => { panic!("failed to open database: {:?}", e) }
   };
 
+  for _ in 0..5 {
+    let mkt = 2u32;
+    let stock_code = "000333".to_owned();
+    let mut line_no = get_line_no(&mut database, mkt, &stock_code);
+    println!("get line_no: {}", line_no);
 
-  /*
-  let line:KLine = Default::default();
+    line_no += 1;
+    
+    let mut line:KLine = Default::default();
+    line._close_price = line_no;
+    let mut uri:Uri = Default::default();
+    uri._code = stock_code.clone();
+    uri._market = mkt;
+    uri._line_no = line_no;
 
-  let write_opts = WriteOptions::new();
-  match database.put(write_opts, uri.as_bytes(), to_bytes(&1)) {
-      Ok(_) => { () },
-      Err(e) => { panic!("failed to write to database: {:?}", e) }
-  };
+    let write_opts = WriteOptions::new();
+    if let Err(e) = database.put(write_opts, uri.clone(), line.as_bytes()) {
+      panic!("failed to write to database: {:?}", e)
+    };
+    println!("write kline:{:?}", uri);
 
-  let read_opts = ReadOptions::new();
-  let res = database.get(read_opts, 1);
+    set_line_no(&mut database, mkt, &stock_code, line_no).unwrap();
 
-  match res {
-    Ok(data) => {
-      assert!(data.is_some());
-      assert_eq!(data, Some(vec![1]));
+    for i in 1..line_no+1 {
+      println!("read {}", i);
+      let mut uri2 = uri.clone();
+      uri2._line_no = i;
+      let read_opts = ReadOptions::new();
+      let res = database.get(read_opts, uri2);
+
+      match res {
+        Ok(data) => {
+          if let Some(d) = data {
+            println!("Get lineno:{}, value:{:?}", i, d)
+          }
+        }
+        Err(e) => { panic!("failed reading data: {:?}", e) }
+      }
     }
-    Err(e) => { panic!("failed reading data: {:?}", e) }
   }
-
-  let read_opts = ReadOptions::new();
-  let mut iter = database.iter(read_opts);
-  let entry = iter.next();
-  assert_eq!(
-    entry,
-    Some((1, vec![1]))
-  );*/
+  
 }
