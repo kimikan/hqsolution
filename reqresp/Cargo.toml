@@ -1,0 +1,9 @@
+[package]
+name = "reqresp"
+version = "0.1.0"
+authors = ["kan"]
+
+[dependencies]
+byteorder="*"
+nanomsg = "*"
+lazy_static="*"
