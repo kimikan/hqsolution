@@ -287,12 +287,123 @@ func handleStockReport(conn net.Conn, messageBody []byte) {
 	fmt.Println("Stock report: ", msg)
 }
 
+func handleMarketStatus(conn net.Conn, messageBody []byte) {
+	//hongkong market status update?
+}
+
+//SnapShot defines the common fields
+type SnapShot struct {
+	origTime         int64
+	channelNo        uint16
+	mdStreamID       [3]byte
+	securityID       [8]byte
+	securityIDSource [4]byte //102 shenzhen, 103 hongkong
+	tradingPhaseCode [8]byte
+	prevClosePx      int64
+	numTrades        int64
+	totalVolumeTrade int64
+	totalValueTrade  int64
+}
+
 func handleStockSnapshot(conn net.Conn, messageBody []byte) {
-	fmt.Println("Stocksnapshot: ", messageBody)
+
+	type mdEntry struct {
+		mdEntryType  [2]byte
+		mdEntryPx    int64
+		mdEntrySize  int64
+		mdPriceLevel uint16
+		numOfOrders  int64
+		noOrders     uint32
+		orderQtys    []int64
+	}
+
+	type snapShot300111 struct {
+		snapshot SnapShot
+		//30011
+		noMDEntries uint32
+		entries     []mdEntry
+	}
+	msg := &snapShot300111{}
+	msg.snapshot.origTime = int64(binary.BigEndian.Uint64(messageBody))
+	msg.snapshot.channelNo = binary.BigEndian.Uint16(messageBody[8:])
+
+	copy(msg.snapshot.mdStreamID[:], messageBody[10:13])
+	copy(msg.snapshot.securityID[:], messageBody[13:21])
+	copy(msg.snapshot.securityIDSource[:], messageBody[21:25])
+	copy(msg.snapshot.tradingPhaseCode[:], messageBody[25:33])
+
+	msg.snapshot.prevClosePx = int64(binary.BigEndian.Uint64(messageBody[33:41]))
+	msg.snapshot.numTrades = int64(binary.BigEndian.Uint64(messageBody[41:49]))
+	msg.snapshot.totalVolumeTrade = int64(binary.BigEndian.Uint64(messageBody[49:57]))
+	msg.snapshot.totalValueTrade = int64(binary.BigEndian.Uint64(messageBody[57:65]))
+
+	msg.noMDEntries = binary.BigEndian.Uint32(messageBody[65:69])
+
+	msg.entries = make([]mdEntry, msg.noMDEntries)
+
+	start := 69
+	for i := 0; i < int(msg.noMDEntries); i++ {
+		entry := msg.entries[i]
+
+		copy(entry.mdEntryType[:], messageBody[start:start+2])
+		entry.mdEntryPx = int64(binary.BigEndian.Uint64(messageBody[start+2 : start+10]))
+		entry.mdEntrySize = int64(binary.BigEndian.Uint64(messageBody[start+10 : start+18]))
+		entry.mdPriceLevel = binary.BigEndian.Uint16(messageBody[start+18 : start+20])
+		entry.numOfOrders = int64(binary.BigEndian.Uint64(messageBody[start+20 : start+28]))
+		entry.noOrders = binary.BigEndian.Uint32(messageBody[start+28 : start+32])
+
+		entry.orderQtys = make([]int64, entry.noOrders)
+		pos := start + 32
+		for j := 0; j < int(entry.noOrders); j++ {
+			entry.orderQtys[j] = int64(binary.BigEndian.Uint64(messageBody[pos : pos+8]))
+			pos += 8
+		}
+		start = pos
+	}
+
+	fmt.Println("Stocksnapshot: ", msg)
 }
 
 func handleIndexSnapshot(conn net.Conn, messageBody []byte) {
+	type mdEntry struct {
+		mdEntryType [2]byte
+		mdEntryPx   int64
+	}
 
+	type snapShot309011 struct {
+		snapshot SnapShot
+		//309011
+		noMDEntries uint32
+		entries     []mdEntry
+	}
+	msg := &snapShot309011{}
+	msg.snapshot.origTime = int64(binary.BigEndian.Uint64(messageBody))
+	msg.snapshot.channelNo = binary.BigEndian.Uint16(messageBody[8:])
+
+	copy(msg.snapshot.mdStreamID[:], messageBody[10:13])
+	copy(msg.snapshot.securityID[:], messageBody[13:21])
+	copy(msg.snapshot.securityIDSource[:], messageBody[21:25])
+	copy(msg.snapshot.tradingPhaseCode[:], messageBody[25:33])
+
+	msg.snapshot.prevClosePx = int64(binary.BigEndian.Uint64(messageBody[33:41]))
+	msg.snapshot.numTrades = int64(binary.BigEndian.Uint64(messageBody[41:49]))
+	msg.snapshot.totalVolumeTrade = int64(binary.BigEndian.Uint64(messageBody[49:57]))
+	msg.snapshot.totalValueTrade = int64(binary.BigEndian.Uint64(messageBody[57:65]))
+
+	msg.noMDEntries = binary.BigEndian.Uint32(messageBody[65:69])
+
+	msg.entries = make([]mdEntry, msg.noMDEntries)
+
+	start := 69
+	for i := 0; i < int(msg.noMDEntries); i++ {
+		entry := msg.entries[i]
+
+		copy(entry.mdEntryType[:], messageBody[start:start+2])
+		entry.mdEntryPx = int64(binary.BigEndian.Uint64(messageBody[start+2 : start+10]))
+		start += 10
+	}
+
+	fmt.Println("IndexSnapshot: ", msg)
 }
 
 func handleIndexVolumeStatistic(conn net.Conn, messageBody []byte) {
@@ -314,6 +425,8 @@ func handleMessage(conn net.Conn, msgType uint32, messageBody []byte) {
 		handleUserReport(conn, messageBody)
 	case 390090:
 		handleChannelStatistic(conn, messageBody)
+	case 390019:
+		handleMarketStatus(conn, messageBody)
 	case 390013:
 		handleRealtimeStatus(conn, messageBody)
 	case 390012:
