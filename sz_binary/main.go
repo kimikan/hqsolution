@@ -164,17 +164,24 @@ func getMessage(conn net.Conn) (uint32, uint32, []byte, error) {
 
 	var buf []byte
 	if bodyLen > 0 {
-		buf := make([]byte, bodyLen)
+		buf = make([]byte, bodyLen)
 
-		n, err2 := conn.Read(buf)
-		if err2 != nil {
-			return 0, 0, nil, err2
+		for {
+			got := 0
+			n, err2 := conn.Read(buf[got:])
+			if err2 != nil || n < 0 {
+				return 0, 0, nil, err2
+			}
+
+			got += n
+
+			if got < int(bodyLen) {
+				continue
+			}
+
+			break
 		}
 
-		if n != int(bodyLen) {
-			fmt.Println(n, bodyLen)
-			return msgType, 0, nil, errors.New("Wrong size expect")
-		}
 	}
 
 	var checksum uint32
@@ -183,6 +190,7 @@ func getMessage(conn net.Conn) (uint32, uint32, []byte, error) {
 		return 0, 0, nil, err2
 	}
 
+	//fmt.Println(msgType, bodyLen, buf)
 	return msgType, checksum, buf, nil
 }
 
@@ -217,6 +225,7 @@ func handleChannelStatistic(conn net.Conn, messageBody []byte) {
 }
 
 func handleRealtimeStatus(conn net.Conn, messageBody []byte) {
+	//uint32
 	type Switch struct {
 		switchType   uint16
 		switchStatus uint16
@@ -230,11 +239,73 @@ func handleRealtimeStatus(conn net.Conn, messageBody []byte) {
 		financialStatus  [8]byte
 		switchers        []Switch
 	}
+
+	msg := &realState{}
+
+	msg.origTime = int64(binary.BigEndian.Uint64(messageBody))
+	msg.channelNo = binary.BigEndian.Uint16(messageBody[8:])
+
+	copy(msg.securityID[:], messageBody[10:18])
+	copy(msg.securityIDSource[:], messageBody[18:22])
+	copy(msg.financialStatus[:], messageBody[22:30])
+
+	num := binary.BigEndian.Uint32(messageBody[30:])
+
+	if num > 0 {
+		msg.switchers = make([]Switch, num)
+		for i := 0; i < int(num); i++ {
+			msg.switchers[i].switchType = binary.BigEndian.Uint16(messageBody[30+i*4:])
+			msg.switchers[i].switchStatus = binary.BigEndian.Uint16(messageBody[30+i*4+2:])
+		}
+	}
+
+	fmt.Println("Realtime status: ", msg)
+}
+
+func handleStockReport(conn net.Conn, messageBody []byte) {
+	type stockReport struct {
+		origTime      int64
+		channelNO     uint16
+		newsID        [8]byte
+		headLine      [128]byte
+		rawDataFormat [8]byte //TXT, PDF, DOC
+		rawDataLength uint32
+		rawData       []byte
+	}
+
+	msg := &stockReport{}
+
+	msg.origTime = int64(binary.BigEndian.Uint64(messageBody))
+	msg.channelNO = binary.BigEndian.Uint16(messageBody[8:])
+
+	copy(msg.newsID[:], messageBody[10:18])
+	copy(msg.headLine[:], messageBody[18:146])
+	copy(msg.rawDataFormat[:], messageBody[146:154])
+	msg.rawDataLength = binary.BigEndian.Uint32(messageBody[154:])
+	msg.rawData = messageBody[158 : 158+msg.rawDataLength]
+
+	fmt.Println("Stock report: ", msg)
+}
+
+func handleStockSnapshot(conn net.Conn, messageBody []byte) {
+	fmt.Println("Stocksnapshot: ", messageBody)
+}
+
+func handleIndexSnapshot(conn net.Conn, messageBody []byte) {
+
+}
+
+func handleIndexVolumeStatistic(conn net.Conn, messageBody []byte) {
+
 }
 
 func handleMessage(conn net.Conn, msgType uint32, messageBody []byte) {
 
 	switch msgType {
+	case 3:
+		if heartbeat(conn) != nil {
+			fmt.Println("heartbeat failed")
+		}
 	case 390095:
 		handleChannelHeartBeat(conn, messageBody)
 	case 390094:
@@ -245,6 +316,18 @@ func handleMessage(conn net.Conn, msgType uint32, messageBody []byte) {
 		handleChannelStatistic(conn, messageBody)
 	case 390013:
 		handleRealtimeStatus(conn, messageBody)
+	case 390012:
+		handleStockReport(conn, messageBody)
+	case 300111:
+		handleStockSnapshot(conn, messageBody)
+	case 300611:
+		//060, 061, after trading snapshot
+	case 306311:
+		//hongkong stocks
+	case 309011:
+		handleIndexSnapshot(conn, messageBody)
+	case 309111:
+		handleIndexVolumeStatistic(conn, messageBody)
 	default:
 		fmt.Println(msgType, messageBody)
 	}
@@ -317,14 +400,7 @@ func main() {
 			break
 		}
 
-		if messageBody == nil {
-			fmt.Println("heartbeat message")
-			if heartbeat(conn) != nil {
-				fmt.Println("heartbeat failed")
-			}
-		} else {
-			handleMessage(conn, msgType, messageBody)
-		}
+		handleMessage(conn, msgType, messageBody)
 	}
 }
 
