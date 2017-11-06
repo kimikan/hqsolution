@@ -41,15 +41,48 @@ struct Snapshot {
     _total_value_trade : i64,
 }
 
+impl Default for Snapshot {
+
+    fn default()->Snapshot {
+        Snapshot {
+            _orig_time : 0i64,
+            _channel_no : 0u16,
+            _md_stream_id : [0; 3],
+            _security_id : [0; 8],
+            _security_id_source : [0; 4],
+            _trading_phase_code : [0; 8],
+            _prev_close_px : 0i64,
+            _num_trades : 0i64,
+            _total_vol_trade : 0i64,
+            _total_value_trade : 0i64,
+        }
+    }
+}
+
 #[derive(Debug, Clone)]
 struct StockEntry {
     _entry_type : [u8; 2],
     _entry_px : i64,
     _entry_size : i64,
-    _price_level : u64,
+    _price_level : u16,
     _num_of_orders : i64,
     //_no_orders : u32,
     _orders : Vec<i64>,
+}
+
+impl Default for StockEntry {
+    
+    fn default()->StockEntry {
+        StockEntry {
+            _entry_type : [0; 2],
+            _entry_px : 0i64,
+            _entry_size : 0i64,
+            _price_level : 0u16,
+            _num_of_orders : 0i64,
+
+            _orders : vec![],
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -59,16 +92,45 @@ struct Stock {
     _entries : Vec<StockEntry>,
 }
 
+impl Default for Stock {
+    fn default()->Stock {
+        Stock {
+            _snap_shot : Default::default(),
+            _entries : vec![],
+        }
+    }
+}
+
 #[derive(Debug, Clone)]
 struct IndexEntry {
     _entry_type : [u8; 2],
     _entry_px : i64,
 }
 
+impl Default for IndexEntry {
+
+    fn default() -> IndexEntry {
+        IndexEntry {
+            _entry_type : [0; 2],
+            _entry_px : 0i64,
+        }
+    }
+}
+
 #[derive(Debug, Clone)]
 struct Index {
     _snap_shot : Snapshot,
     _entries : Vec<IndexEntry>,
+}
+
+impl Default for Index {
+
+    fn default()->Index {
+        Index {
+            _snap_shot : Default::default(),
+            _entries : vec![],
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -282,8 +344,7 @@ impl Context {
             _financial_status : [0; 8],
             _switchers : vec![],
         };
-        let mut buf:[u8; 34] = [0; 34];
-        stream.read_exact(&mut buf[..])?;
+        
         msg._time = byteorder::BigEndian::read_i64(&buf[..]);
         msg._channel_no = byteorder::BigEndian::read_u16(&buf[8..]);
         (&mut msg._security_id[..]).copy_from_slice(&buf[10..18]);
@@ -297,10 +358,9 @@ impl Context {
                 _switch_type : 0u16,
                 _switch_status : 0u16,
             };
-            let mut buf2 : [u8;4] = [0;4];
-            stream.read_exact(&mut buf2[..])?;
-            s._switch_type = byteorder::BigEndian::read_u16(&buf2[..]);
-            s._switch_status = byteorder::BigEndian::read_u16(&buf2[2..]);
+            
+            s._switch_type = byteorder::BigEndian::read_u16(&buf[(34 + i * 4) as usize ..]);
+            s._switch_status = byteorder::BigEndian::read_u16(&buf[(34 + i * 4  + 2)as usize..]);
 
             msg._switchers.push(s);
         }
@@ -310,18 +370,120 @@ impl Context {
     }
 
     fn handle_stock_report(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+        #[derive(Debug)]
+        struct stock_report {
+            _time : i64,
+            _channel_no:u16,
+            _news_id : [u8; 8],
+            _head_line : String,//[u8; 128],
+            _raw_data_format : [u8; 8],//txt, pdf, doc
+            _raw_data_length : u32,
+            _raw_data : Vec<u8>,
+        }
+        let mut msg = stock_report {
+            _time : 0i64,
+            _channel_no : 0u16,
+            _news_id : [0; 8],
+            _head_line : "".to_owned(),//[0; 128],
+            _raw_data_format : [0; 8],
+            _raw_data_length : 0u32,
+            _raw_data : vec![],
+        };
+        msg._time = byteorder::BigEndian::read_i64(&buf[..]);
+        msg._channel_no = byteorder::BigEndian::read_u16(&buf[8..]);
+        (&mut msg._news_id[..]).copy_from_slice(&buf[10..18]);
+        //(&mut msg._head_line[..]).copy_from_slice(&buf[18..146]);
+        let utfstr = std::str::from_utf8(&buf[18..146]);
+        if let Ok(str) = utfstr {
+            msg._head_line = str.to_owned();
+        } else {
+            println!("utftostring failed");
+        }
+        
+        (&mut msg._raw_data_format[..]).copy_from_slice(&buf[146..154]);
+        msg._raw_data_length = byteorder::BigEndian::read_u32(&buf[154..]);
 
+        if msg._raw_data_length > 0 {
+            msg._raw_data.reserve_exact(msg._raw_data_length as usize );
+            unsafe {
+                msg._raw_data.set_len(msg._raw_data_length as usize);
+            }
+            (&mut msg._raw_data[..]).copy_from_slice(&buf[158..]);
+        }
+
+        println!("Stockreport: {:?}", msg);
         Ok(())
     }
 
 
     fn handle_stock_snapshot(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+        
+        let mut msg: Stock = Default::default();
+        //msg._snap_shot._orig_time = byteorder::BigEndian::readi64()
+        msg._snap_shot._orig_time = byteorder::BigEndian::read_i64(&buf[..]);
+        msg._snap_shot._channel_no = byteorder::BigEndian::read_u16(&buf[8..]);
+        (&mut msg._snap_shot._md_stream_id[..]).copy_from_slice(&buf[10..13]);
+        (&mut msg._snap_shot._security_id[..]).copy_from_slice(&buf[13..21]);
+        (&mut msg._snap_shot._security_id_source[..]).copy_from_slice(&buf[21..25]);
+        (&mut msg._snap_shot._trading_phase_code[..]).copy_from_slice(&buf[25..33]);
+        msg._snap_shot._prev_close_px = byteorder::BigEndian::read_i64(&buf[33..41]);
+        msg._snap_shot._num_trades = byteorder::BigEndian::read_i64(&buf[41..49]);
+        msg._snap_shot._total_vol_trade = byteorder::BigEndian::read_i64(&buf[49..57]);
+        msg._snap_shot._total_value_trade = byteorder::BigEndian::read_i64(&buf[57..65]);
 
+        let entry_count = byteorder::BigEndian::read_u32(&buf[65..69]);
+        let mut start : usize = 69;
+        for i in 0..entry_count {
+            let mut entry : StockEntry = Default::default();
+            (&mut entry._entry_type[..]).copy_from_slice(&buf[start .. start + 2]);
+            entry._entry_px = byteorder::BigEndian::read_i64(&buf[start+ 2 .. start + 10]);
+            entry._entry_size = byteorder::BigEndian::read_i64(&buf[start+ 10 .. start + 18]);
+            entry._price_level = byteorder::BigEndian::read_u16(&buf[start+ 18 .. start + 20]);
+            entry._num_of_orders = byteorder::BigEndian::read_i64(&buf[start + 20 .. start + 28]);
+
+            let mut qty_count = byteorder::BigEndian::read_u32(&buf[start + 28 .. start + 32]);
+
+            let mut start2 = start + 32;
+            for j in 0..qty_count {
+
+                let qty = byteorder::BigEndian::read_i64(&buf[start2 .. start2 + 8]);
+                entry._orders.push(qty);
+                start2 += 8;
+            }
+
+            start = start2;
+        }
+
+        println!("Stocksnapshot: {:?}", msg);
         Ok(())
     }
 
-    fn handle_inidex_snapshot(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+    fn handle_index_snapshot(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
 
+        let mut msg: Index = Default::default();
+        //msg._snap_shot._orig_time = byteorder::BigEndian::readi64()
+        msg._snap_shot._orig_time = byteorder::BigEndian::read_i64(&buf[..]);
+        msg._snap_shot._channel_no = byteorder::BigEndian::read_u16(&buf[8..]);
+        (&mut msg._snap_shot._md_stream_id[..]).copy_from_slice(&buf[10..13]);
+        (&mut msg._snap_shot._security_id[..]).copy_from_slice(&buf[13..21]);
+        (&mut msg._snap_shot._security_id_source[..]).copy_from_slice(&buf[21..25]);
+        (&mut msg._snap_shot._trading_phase_code[..]).copy_from_slice(&buf[25..33]);
+        msg._snap_shot._prev_close_px = byteorder::BigEndian::read_i64(&buf[33..41]);
+        msg._snap_shot._num_trades = byteorder::BigEndian::read_i64(&buf[41..49]);
+        msg._snap_shot._total_vol_trade = byteorder::BigEndian::read_i64(&buf[49..57]);
+        msg._snap_shot._total_value_trade = byteorder::BigEndian::read_i64(&buf[57..65]);
+
+        let entry_count = byteorder::BigEndian::read_u32(&buf[65..69]);
+        let mut start : usize = 69;
+        for i in 0..entry_count {
+            let mut entry : IndexEntry = Default::default();
+            (&mut entry._entry_type[..]).copy_from_slice(&buf[start .. start + 2]);
+            entry._entry_px = byteorder::BigEndian::read_i64(&buf[start+ 2 .. start + 10]);
+            
+            start += 10;
+        }
+
+        println!("Indexsnapshot: {:?}", msg);
         Ok(())
     }
 
@@ -368,7 +530,7 @@ impl Context {
                 //hongkong stocks
             },
             309011=>{
-                self.handle_inidex_snapshot(stream, buf)?;
+                self.handle_index_snapshot(stream, buf)?;
             },
             309111=>{
                 self.handle_volume_statistic(stream, buf)?;
