@@ -1,6 +1,6 @@
 // This project is written by kimikan
 //@2017
-//it's about a full feature shanghai stock market parser
+//it's about a full feature shenzhen stock market parser
 //mit licensed, 
 
 //attention:
@@ -8,6 +8,7 @@
 //just implement the todo: information
 //integrated with messaging system. or something
 extern crate encoding;
+extern crate byteorder;
 
 mod utils;
 
@@ -16,792 +17,410 @@ use std::fs::{OpenOptions, File};
 use std::io::{BufReader, BufRead, Read};
 use std::collections::HashMap;
 use std::time::SystemTime;
+use std::net::TcpStream;
+
+use byteorder::ByteOrder;
+
+const SENDER : &str = "F000648Q0011";
+const TARGET : &str = "VDE";
+const HEARTBEAT_INTERVAL : u32 = 20;
+const PASSWORD : &str = "F000648Q0011";
+const APPVER : &str = "1.00";
 
 #[derive(Debug, Clone)]
-struct BasicInfo {
-    //stock code
-    _code: String,
-
-    //GBK translated to utf-8 stored
-    _name: String,
-    //100 per hand, or something
-    _trade_volume: u64,
-    //related deal money,
-    _total_value_traded: f64,
-
-    _pre_close_px: f32,
-    _open_px: f32,
-    _high_px: f32,
-    _low_px: f32,
-    _last_px: f32,
-    _close_px: f32,
-
-    //E111, T101 etc
-    _trade_phase_code: [u8; 8],
-    //HHMMSS
-    _time: u32,
+struct Snapshot {
+    _orig_time : i64,
+    _channel_no :u16,
+    _md_stream_id : [u8; 3],
+    _security_id : [u8;8],
+    _security_id_source : [u8; 4], //102 shenzhen, 103 hongkong
+    _trading_phase_code : [u8; 8],
+    _prev_close_px : i64,
+    _num_trades : i64,
+    _total_vol_trade : i64,
+    _total_value_trade : i64,
 }
 
-impl Default for BasicInfo {
-    
-    fn default() -> BasicInfo {
-        BasicInfo {
-            _code: String::new(),
-            _name: String::new(),
-            _trade_volume: 0u64,
-            _total_value_traded: 0f64,
-            _pre_close_px: 0f32,
-            _open_px: 0f32,
-            _high_px: 0f32,
-            _low_px: 0f32,
-            _last_px: 0f32,
-            _close_px: 0f32,
-
-            _trade_phase_code: [0; 8],
-            _time: 0,
-        }
-    }
-}
-
-impl BasicInfo {
-    //out function should never invoke this
-    //this parse the common field of several different types
-    fn internal_from(line: &[u8]) -> Option<BasicInfo> {
-        //avoid crash, index outbounded
-        if line.len() < 128 {
-            return None;
-        }
-
-        let mut basicinfo: BasicInfo = Default::default();
-
-        let security_id = &line[6..12];
-        let name = &line[13..21];
-        if let Ok(id) = String::from_utf8(security_id.to_vec()) {
-            basicinfo._code = id;
-        } else {
-            return None;
-        }
-
-        let refs = encoding::all::encodings();
-        //ref a codec lib, to decode the gbk2312 strings
-        use encoding::DecoderTrap;
-        let (name_result, _) = encoding::decode(name, DecoderTrap::Strict, refs[37]);
-        if let Ok(n) = name_result {
-            basicinfo._name = n;
-        //println!("xxxx: {:?} {:?}",basicinfo._code, basicinfo._name);
-        } else {
-            return None;
-        }
-
-        let trade_vol = &line[22..38];
-        
-        //the trade volume
-        if let Ok(value) = String::from_utf8(trade_vol.to_vec()) {
-            //println!("*{:?}*", value);
-            if let Ok(v) = value.trim().parse::<u64>() {
-                basicinfo._trade_volume = v;
-            } else {
-                return None;
-            }
-        } else {
-            return None;
-        }
-
-        //total value traded
-        let total_traded = &line[39..55];
-        if let Ok(value) = String::from_utf8(total_traded.to_vec()) {
-            if let Ok(v) = value.trim().parse::<f64>() {
-                basicinfo._total_value_traded = v;
-            } else {
-                return None;
-            }
-        } else {
-            return None;
-        }
-
-        //prev close px
-        let prev_px = &line[56..67];
-        if let Ok(value) = String::from_utf8(prev_px.to_vec()) {
-            if let Ok(v) = value.trim().parse::<f32>() {
-                basicinfo._pre_close_px = v;
-            } else {
-                return None;
-            }
-        } else {
-            return None;
-        }
-
-        //open px
-        let open_px = &line[68..79];
-        if let Ok(value) = String::from_utf8(open_px.to_vec()) {
-            if let Ok(v) = value.trim().parse::<f32>() {
-                basicinfo._open_px = v;
-            } else {
-                return None;
-            }
-        } else {
-            return None;
-        }
-
-        //high px
-        let high_px = &line[80..91];
-        if let Ok(value) = String::from_utf8(high_px.to_vec()) {
-            if let Ok(v) = value.trim().parse::<f32>() {
-                basicinfo._high_px = v;
-            } else {
-                return None;
-            }
-        } else {
-            return None;
-        }
-        //low px
-        let low_px = &line[92..103];
-        if let Ok(value) = String::from_utf8(low_px.to_vec()) {
-            if let Ok(v) = value.trim().parse::<f32>() {
-                basicinfo._low_px = v;
-            } else {
-                return None;
-            }
-        } else {
-            return None;
-        }
-
-        //last px
-        let last_px = &line[104..115];
-        println!("last_px: {:?}", last_px);
-        if let Ok(value) = String::from_utf8(last_px.to_vec()) {
-            if let Ok(v) = value.trim().parse::<f32>() {
-                basicinfo._last_px = v;
-            } else {
-                return None;
-            }
-        } else {
-            return None;
-        }
-
-        //close px
-        let close_px = &line[116..127];
-        if let Ok(value) = String::from_utf8(close_px.to_vec()) {
-            if let Ok(v) = value.trim().parse::<f32>() {
-                basicinfo._close_px = v;
-            } else {
-                return None;
-            }
-        } else {
-            return None;
-        }
-
-        Some(basicinfo)
-    }
-
-    //for fund:offset is 378+24, sum is 424
-    //for others offset is 378, sum is 400
-    fn from2(line: &[u8], offset: usize, sum: usize) -> Option<BasicInfo> {
-        if line.len() < sum {
-            return None;
-        }
-        let mut basicinfo = BasicInfo::internal_from(line);
-
-        if let Some(mut info) = basicinfo {
-            //phase code
-            //store 8 bytes,  but only used 4 btyes
-            info._trade_phase_code.copy_from_slice(
-                &line[offset..offset + 8],
-            );
-            //time stamp
-            let hour = &line[offset + 9..offset + 11];
-            if let Ok(value) = String::from_utf8(hour.to_vec()) {
-                if let Ok(v) = value.trim().parse::<u32>() {
-                    info._time = v * 10000;
-                } else {
-                    return None;
-                }
-            } else {
-                return None;
-            }
-            let mins = &line[offset + 12..offset + 14];
-            if let Ok(value) = String::from_utf8(mins.to_vec()) {
-                if let Ok(v) = value.parse::<u32>() {
-                    info._time += v * 100;
-                } else {
-                    return None;
-                }
-            } else {
-                return None;
-            }
-
-            let secs = &line[offset + 15..offset + 17];
-            if let Ok(value) = String::from_utf8(secs.to_vec()) {
-                if let Ok(v) = value.parse::<u32>() {
-                    info._time += v;
-                } else {
-                    return None;
-                }
-            } else {
-                return None;
-            } //end let?
-
-            return Some(info);
-        }
-
-        None
-    }
-
-    //other format
-    fn from(line: &[u8]) -> Option<BasicInfo> {
-        if line.len() < 146 {
-            return None;
-        }
-        let mut basicinfo = BasicInfo::internal_from(line);
-        if let Some(mut info) = basicinfo {
-            //phase code
-            info._trade_phase_code.copy_from_slice(&line[128..136]);
-            //time stamp
-            let hour = &line[137..139];
-            if let Ok(value) = String::from_utf8(hour.to_vec()) {
-                if let Ok(v) = value.trim().parse::<u32>() {
-                    info._time = v * 10000;
-                } else {
-                    return None;
-                }
-            } else {
-                return None;
-            }
-
-            let mins = &line[140..142];
-            if let Ok(value) = String::from_utf8(mins.to_vec()) {
-                if let Ok(v) = value.parse::<u32>() {
-                    info._time += v * 100;
-                } else {
-                    return None;
-                }
-            } else {
-                return None;
-            }
-
-            let secs = &line[143..145];
-            if let Ok(value) = String::from_utf8(secs.to_vec()) {
-                if let Ok(v) = value.parse::<u32>() {
-                    info._time += v;
-                } else {
-                    return None;
-                }
-            } else {
-                return None;
-            } //end let?
-
-            return Some(info);
-        }
-
-        None
-    }
-}
-
-//https://ic.sseinfo.com/doc/devel_1_interface_file.pdf
 #[derive(Debug, Clone)]
-struct Index {
-    _info: BasicInfo,
+struct StockEntry {
+    _entry_type : [u8; 2],
+    _entry_px : i64,
+    _entry_size : i64,
+    _price_level : u64,
+    _num_of_orders : i64,
+    //_no_orders : u32,
+    _orders : Vec<i64>,
 }
 
-impl Index {
-    fn from(buf: &[u8]) -> Option<Index> {
-        let info = BasicInfo::from(buf);
-
-        if let Some(information) = info {
-            return Some(Index { _info: information });
-        }
-
-        None
-    } //end new()
-}
-
-//stock & debt & fund 
-//have same format internal
 #[derive(Debug, Clone)]
 struct Stock {
-    _info: BasicInfo,
+    _snap_shot : Snapshot,
 
-    _buy_pxs: [f32; 5],
-    _buy_volumes: [u32; 5],
-
-    _sell_pxs: [f32; 5],
-    _sell_volumes: [u32; 5],
+    _entries : Vec<StockEntry>,
 }
 
-impl Default for Stock {
-    fn default() -> Stock {
-        Stock {
-            _info: Default::default(),
-            _buy_pxs: [0f32; 5],
-            _buy_volumes: [0; 5],
-            _sell_pxs: [0f32; 5],
-            _sell_volumes: [0; 5],
-        }
-    } //default impl
-}
-
-impl Stock {
-    fn from(buf: &[u8]) -> Option<Stock> {
-        Stock::from2(buf, 378, 400)
-    }
-
-    fn from2(buf: &[u8], offset: usize, sum: usize) -> Option<Stock> {
-        let mut stock: Stock = Default::default();
-        let info_op = BasicInfo::from2(buf, offset, sum);
-
-        if let Some(info) = info_op {
-            stock._info = info;
-        }
-
-        let mut start_offset = 128;
-        for i in 0..5 {
-            let buy_px1 = &buf[start_offset..start_offset + 11];
-            if let Ok(value) = String::from_utf8(buy_px1.to_vec()) {
-                if let Ok(v) = value.trim().parse::<f32>() {
-                    stock._buy_pxs[i] = v;
-                } else {
-                    return None;
-                }
-            } else {
-                return None;
-            }
-
-            let buy_vol1 = &buf[start_offset + 12..start_offset + 24];
-            if let Ok(value) = String::from_utf8(buy_vol1.to_vec()) {
-                if let Ok(v) = value.trim().parse::<u32>() {
-                    stock._buy_volumes[i] = v;
-                } else {
-                    return None;
-                }
-            } else {
-                return None;
-            }
-
-            let sell_px1 = &buf[start_offset + 25..start_offset + 36];
-            if let Ok(value) = String::from_utf8(sell_px1.to_vec()) {
-                if let Ok(v) = value.trim().parse::<f32>() {
-                    stock._sell_pxs[i] = v;
-                } else {
-                    return None;
-                }
-            } else {
-                return None;
-            }
-
-            let sell_vol1 = &buf[start_offset + 37..start_offset + 49];
-            if let Ok(value) = String::from_utf8(sell_vol1.to_vec()) {
-                if let Ok(v) = value.trim().parse::<u32>() {
-                    stock._sell_volumes[i] = v;
-                } else {
-                    return None;
-                }
-            } else {
-                return None;
-            }
-            start_offset += 50;
-        }
-
-        Some(stock)
-    }
-}
-
-use std::ops::{Deref, DerefMut};
 #[derive(Debug, Clone)]
-struct Debt {
-    _item: Stock,
-}
-
-impl Debt {
-    fn from(buf: &[u8]) -> Option<Debt> {
-        let stock = Stock::from(buf);
-
-        if let Some(s) = stock {
-            return Some(Debt { _item: s });
-        }
-
-        None
-    } //end from?
-}
-
-impl Deref for Debt {
-    type Target = Stock;
-
-    fn deref<'a>(&'a self) -> &'a Stock {
-        &self._item
-    }
-}
-
-impl DerefMut for Debt {
-    fn deref_mut<'a>(&'a mut self) -> &'a mut Stock {
-        &mut self._item
-    }
+struct IndexEntry {
+    _entry_type : [u8; 2],
+    _entry_px : i64,
 }
 
 #[derive(Debug, Clone)]
-struct Fund {
-    _item: Stock,
-}
-
-impl Fund {
-    fn from(buf: &[u8]) -> Option<Fund> {
-        let stock = Stock::from2(buf, 402, 424);
-        println!("------ {} {:?}", buf.len(), stock);
-
-        if let Some(s) = stock {
-            return Some(Fund { _item: s });
-        }
-
-        None
-    } //end from?
-}
-
-impl Deref for Fund {
-    type Target = Stock;
-
-    fn deref<'a>(&'a self) -> &'a Stock {
-        &self._item
-    }
-}
-
-impl DerefMut for Fund {
-    fn deref_mut<'a>(&'a mut self) -> &'a mut Stock {
-        &mut self._item
-    }
+struct Index {
+    _snap_shot : Snapshot,
+    _entries : Vec<IndexEntry>,
 }
 
 #[derive(Debug, Clone)]
-enum DataItem {
-    IndexType(Index),
-    FundType(Fund),
-    DebtType(Debt),
-    StockType(Stock),
-
-    None,
+struct MsgHead {
+    _msg_type : u32,
+    _body_length : u32,
 }
 
-impl DataItem {
-    //provide a seperate value for each item
-    //within the enumration
-    fn get_value(&self) -> u32 {
-        match *self {
-            DataItem::IndexType(_) => 1,
-            DataItem::FundType(_) => 2,
-            DataItem::DebtType(_) => 3,
-            DataItem::StockType(_) => 4,
-            DataItem::None => 0,
-        }
+use std::io::ErrorKind;
+fn generate_checksum(bs : &[u8])->u32 {
+    let mut sum : u32 = 0;
+    for i in 0..bs.len() {
+        sum += bs[i] as u32;
     }
 
-    fn get_volume(&self) -> Option<u64> {
-
-        match *self {
-            DataItem::IndexType(ref s) => Some((*s)._info._trade_volume),
-            DataItem::FundType(ref s) => Some((*s)._info._trade_volume),
-            DataItem::DebtType(ref s) => Some((*s)._info._trade_volume),
-            DataItem::StockType(ref s) => Some(s._info._trade_volume),
-            DataItem::None => None,
-        }
-    }
-}
-
-impl PartialEq<DataItem> for DataItem {
-    fn eq(&self, other: &DataItem) -> bool {
-        let left = self.get_value();
-        let right = other.get_value();
-
-        left == right
-    }
-}
-
-use std::cmp::*;
-#[derive(Debug, Copy, Clone, Eq, PartialEq)]
-enum MarketStatus {
-    BeforeOpen,
-    Auction,
-    AuctionToOpen,
-    //9:30-11:30 & 1:30-3:00
-    Trading,
-    //2:55-3:00, it's only in shanghai
-    Stopping, 
-
-    //before 900, & after 1500
-    Closed,
-}
-
-fn on_market_status_changed(old_status: MarketStatus, new_status: MarketStatus) {
-    if old_status != new_status {}
-    //todo:
+    sum
 }
 
 #[derive(Debug, Clone)]
 struct Context {
-    //last modified timestamp,  it indicates
-    //if needs to update time changed events
-    _time_stamp: String,
 
-    //the file_len,  indicate data changed
-    _prev_len: usize,
-
-    //marketstates example: E111
-    //S: before market open,  T:market Trading,  E: market closed,
-    //2nd: 1 jihejingjia ending flag
-    //3rd: 1 market hq ending flag
-    //4th: 1 shanghai market hq ending flag
-    _flags: [u8; 8],
-
-    _stocks: HashMap<String, DataItem>,
+    _stocks : HashMap<String, Stock>,
+    _indexs : HashMap<String, Index>,
 }
 
-impl Context {
-    fn new() -> Context {
-        Context {
-            _time_stamp: String::new(),
-            _prev_len: 0,
-            _flags: [0; 8],
-            _stocks: Default::default(),
-        }
+use std::marker::Sized;
+use std::slice;
+use std::mem;
+
+fn heartbeat(stream:&mut TcpStream)->io::Result<()>{
+    let mut msg : [u8;12] = [0;12];
+
+    byteorder::BigEndian::write_u32(&mut msg[..], 3);
+    let checksum = generate_checksum(&msg[0..8]);
+    byteorder::BigEndian::write_u32(&mut msg[8..12], checksum);
+
+    let size = stream.write(&msg[..])?;
+    if size != 12 {
+        return Err(Error::from(ErrorKind::WriteZero));
     }
-
-    //translate the status from
-    fn get_market_status(&self, value: &[u8]) -> MarketStatus {
-
-        let mut status = MarketStatus::BeforeOpen;
-        if value == b"S000" {
-            status = MarketStatus::Auction;
-        } else if value == b"T000" {
-            status = MarketStatus::AuctionToOpen;
-        } else if value == b"T100" {
-            status = MarketStatus::Trading;
-        } else if value == b"T101" {
-            status = MarketStatus::Stopping;
-        } else if value == b"E111" {
-            status = MarketStatus::Closed;
-        }
-
-        status
-    }
-
-    //update & compare
-    //do notification if needed
-    fn set_flags<'a>(&mut self, buf: &'a [u8]) {
-        if &self._flags[0..4] == buf {
-            return;
-        }
-        let old_status = self.get_market_status(&self._flags[0..4]);
-        let new_status = self.get_market_status(buf);
-        
-        //this is the main purpose why extract a seperate function
-        if old_status != new_status {
-            on_market_status_changed(old_status, new_status);
-        }
-
-        self._flags.copy_from_slice(buf);
-    }
-
-    fn is_trading(&self) -> bool {
-        self._flags[0] == b'T'
-    }
-}
-
-trait LineReader<R: Read> {
-    fn get_line(&mut self, buf: &mut [u8]) -> io::Result<usize>;
-    //fn get_line(&mut self) -> io::Result<usize>;
-}
-
-impl<R: Read> LineReader<R> for BufReader<R> {
-    /*fn get_line(&mut self) -> Result<usize> {
-        Ok(())
-     } */
-
-    //can not use default read_line,
-    //due to the unexpected format, gbk
-    fn get_line(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        let mut index = 0usize;
-        loop {
-            let size = self.read(&mut buf[index..index + 1])?;
-            if size > 0 {
-                if b'\n' == buf[index] {
-                    return Ok(index + 1);
-                }
-                index += 1;
-            } else {
-                return Ok(index);
-            }
-        }
-
-        use std::io::{Error, ErrorKind};
-        Err(Error::from(ErrorKind::Interrupted))
-    }
-}
-
-fn on_stock_changed(item: &DataItem) {
-    //todo: try to update the notification
-    println!("Notified: {:?}", item);
-}
-
-//process record ......
-fn process_record(ctx: &mut Context, line: &[u8]) -> io::Result<()> {
-    let stream_id = &line[..5];
-    let id = String::from_utf8_lossy(stream_id);
-
-    let mut item = DataItem::None;
-    let mut code = String::new();
-    let mut volume = 0u64;
-
-    if id == "MD001" {
-        let index = Index::from(line);
-        if let Some(i) = index {
-            code = i._info._code.clone();
-            volume = i._info._trade_volume;
-            item = DataItem::IndexType(i);
-
-        }
-    } else if id == "MD002" {
-        let stock = Stock::from(line);
-        if let Some(i) = stock {
-            /*if i._info._last_px > 0f32 {
-                 panic!("{:?}", i);
-            } */
-            volume = i._info._trade_volume;
-            code = i._info._code.clone();
-            item = DataItem::StockType(i);
-        }
-    } else if id == "MD003" {
-        let debt = Debt::from(line);
-        if let Some(i) = debt {
-            code = i._info._code.clone();
-            volume = i._info._trade_volume;
-            item = DataItem::DebtType(i);
-        }
-    } else if id == "MD004" {
-        let fund = Fund::from(line);
-        if let Some(i) = fund {
-            code = i._info._code.clone();
-            volume = i._info._trade_volume;
-            item = DataItem::FundType(i);
-        }
-
-    }
-
-    //if item
-    if item != DataItem::None {
-        //println!("ok found");
-        if let Some(v) = ctx._stocks.get(&code) {
-
-            if let Some(vol) = v.get_volume() {
-                if vol != volume {
-                    //start to handle the value mismatch
-                    on_stock_changed(&item);
-                }
-            }
-        } else {
-            on_stock_changed(&item);
-        }
-
-        ctx._stocks.insert(code, item);
-    }
-
-    //println!("{:?}, {:?}", String::from_utf8(stream_id).unwrap()
+    println!("Heartbeat");
     Ok(())
 }
 
-fn on_time_changed(time: &String) {
-    //todo:
-}
-
-//parse header indicates that, if any needs to be updated
-fn process_header(ctx: &mut Context, reader: &mut BufReader<File>) -> io::Result<bool> {
-    let mut str: String = String::new();
-    let size = reader.read_line(&mut str)?;
-    println!("{:?}, {:?}", size, str);
-
-    if size > 0 && str.len() > 80 {
-        let file_len = &str[16..26];
-        let time = &str[49..70];
-        //let flags = &str[73..81];
-        let flags = str.as_bytes();
-        //println!("flags: {:?}", flags);
-        let new_time = time.to_owned();
-        if ctx._time_stamp != new_time {
-            on_time_changed(&new_time);
-            ctx._time_stamp = new_time;
-        } else {
-            return Ok(false);
-        }
-
-        ctx.set_flags(&flags[73..81]);
-
-        if !ctx.is_trading() {
-            //no need to check further
-            return Ok(false);
-        }
-
-        //println!("{:?}", ctx);
-        let len = file_len.trim().parse::<usize>();
-        if let Ok(l) = len {
-            if l != ctx._prev_len {
-                println!("file len: {}", l);
-                ctx._prev_len = l;
-                return Ok(true);
-            }
-        } else {
-            println!("{:?}", len);
-        } //end let
-
-    }
-
-    Ok(false)
-}
-
-//handle the shenzhen txt file line by line
-//bool, true = successfully handled & has changed stocks
-//false means,   no changes, no errors
-fn process_file(mut ctx: Context, file: &str) -> io::Result<bool> {
-    let file = OpenOptions::new().read(true).open(file)?;
-
-    let mut reader: BufReader<File> = BufReader::new(file);
-    {
-        let handle_more = process_header(&mut ctx, &mut reader)?;
-
-        //the bool value means if has any changes
-        //in the records
-        if !handle_more {
-            return Ok(false);
-        }
-    }
-
-    let mut vec: Vec<u8> = Vec::with_capacity(1024);
+fn struct_to_bytes<T:Sized>(p : &mut T)->&mut[u8] {
     unsafe {
-        vec.set_len(1024);
+        slice::from_raw_parts_mut((p as *mut T) as *mut u8, mem::size_of::<T>())
     }
-    loop {
-        let size = reader.get_line(&mut vec)?;
-
-        if size == 0 {
-            println!("size: {:?}", size);
-            break;
-        }
-
-        //there are lots of too short records
-        //so filter them all
-        if size < 100 {
-            continue;
-        }
-
-        //try to parse record on by one
-        //any error stop
-        if let Err(e) = process_record(&mut ctx, &vec[..size]) {
-            return Err(e);
-        }
-    }
-
-    Ok(true)
 }
 
-//the main function entry point
+use std::io::Write;
+use std::io::Error;
+
+impl Context {
+    fn new()->Context {
+        Context {
+            _stocks : Default::default(),
+            _indexs : Default::default(),
+        }
+    }
+
+    fn login(&self, stream : &mut TcpStream)->io::Result<()> {
+        /*
+        #[repr(C, packed)]
+        struct Msg {
+            _msg_header : MsgHead,
+            _sender : [u8;20],
+            _target : [u8;20],
+            _heart_beat : u32,
+            _password : [u8;16],
+            _version : [u8;32],
+            _checksum : u32,
+        }
+        let mut msg  = Msg {
+            _msg_header : MsgHead{
+                _msg_type : 1,
+                _body_length : 0,
+            },
+            _sender : [0; 20],
+            _target : [0;20],
+            _heart_beat : 30,
+            _password : [0;16],
+            _version : [0; 32],
+            _checksum : 0,
+        };*/
+        let mut msg : [u8;104] = [0;104];
+        
+        byteorder::BigEndian::write_u32(&mut msg[..], 1);
+        byteorder::BigEndian::write_u32(&mut msg[4..], 92);//len
+        
+        use std::cmp;
+        &(msg[8..( 8 + cmp::min(20, SENDER.len()))]).copy_from_slice(SENDER.as_bytes());
+        &(msg[28..( 28 + cmp::min(20, TARGET.len()))]).copy_from_slice(TARGET.as_bytes());
+        byteorder::BigEndian::write_u32(&mut msg[48..], HEARTBEAT_INTERVAL);//heartbeat
+        &(msg[52..( 52 + cmp::min(20, PASSWORD.len()))]).copy_from_slice(PASSWORD.as_bytes());
+        &(msg[68..( 68 + cmp::min(20, APPVER.len()))]).copy_from_slice(APPVER.as_bytes());
+        let checksum = generate_checksum(&msg[0..100]);
+        byteorder::BigEndian::write_u32(&mut msg[100..], checksum);
+
+        let size = stream.write(&msg[0..104])?;
+
+        if size == 104 {
+            return Ok(());
+        }
+
+        //byteorder::BigEndian::
+        return Err(Error::from(ErrorKind::InvalidData));
+    }
+
+    fn get_message(&self, stream : &mut TcpStream) -> (io::Result<u32>, Option<Vec<u8>>) {
+        let mut header : [u8;8] = [0u8;8];
+        match stream.read_exact(&mut header[0..8]) {
+            Ok(_)=>{
+                let msg_type = byteorder::BigEndian::read_u32(&header[..]);
+                let body_len = byteorder::BigEndian::read_u32(&header[4..]) as usize;
+                
+                if body_len > 0 {
+                    let mut vec : Vec<u8> = Vec::with_capacity(body_len);
+                    unsafe {
+                        vec.set_len(body_len);
+                    }
+
+                    match stream.read_exact(&mut vec) {
+                        Ok(_)=>{
+                            let mut checksum:[u8;4] = [0;4];
+                            let checksum_res = stream.read_exact(&mut checksum[..]);
+                            if let Err(e) = checksum_res {
+                                return (Err(e), None);
+                            }
+
+                            return (Ok(msg_type), Some(vec));    
+                        },
+                        Err(e)=>{
+                            return (Err(e), None);
+                        }
+                    };
+                } else {
+                    return (Ok(msg_type), None); 
+                }
+            },
+            Err(e)=>{
+                return (Err(e), None);
+            }
+        };
+
+    }
+
+    fn handle_resent_message(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+
+        Ok(())
+    }
+
+    fn handle_user_report_message(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+        #[derive(Debug)]
+        struct report_msg {
+            _time : i64,
+            _version_code : [u8; 16],
+            _user_num : u16,
+        }
+        let mut msg = report_msg {
+            _time : 0i64,
+            _version_code : [0; 16],
+            _user_num : 0u16,
+        };
+        
+        let mut time : i64;
+        let mut user_num : u16;
+        { //local variables
+            let mut buf = struct_to_bytes(&mut msg);
+            time = byteorder::BigEndian::read_i64(&buf[..]);
+            user_num = byteorder::BigEndian::read_u16(&buf[24..]);
+        }
+        msg._time = time;
+        msg._user_num = user_num;
+
+        println!("UserReport: {:?}", msg);
+        Ok(())
+    }
+
+    fn handle_channel_statistic(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+
+        Ok(())
+    }
+
+    fn handle_market_status_message(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+
+        Ok(())
+    }
+
+    fn handle_realtime_status(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+        #[derive(Debug)]
+        struct switcher {
+            _switch_type : u16,
+            _switch_status : u16,
+        }
+
+        #[derive(Debug)]
+        struct realtime_status {
+            _time : i64,
+            _channel_no : u16,
+            _security_id : [u8; 8],
+            _security_id_source : [u8;4],//102 shenzhen, 103 hongkong
+            _financial_status : [u8; 8],
+            _switchers : Vec<switcher>,
+        }
+        let mut msg = realtime_status {
+            _time : 0i64,
+            _channel_no : 0u16,
+            _security_id : [0; 8],
+            _security_id_source : [0; 4],
+            _financial_status : [0; 8],
+            _switchers : vec![],
+        };
+        let mut buf:[u8; 34] = [0; 34];
+        stream.read_exact(&mut buf[..])?;
+        msg._time = byteorder::BigEndian::read_i64(&buf[..]);
+        msg._channel_no = byteorder::BigEndian::read_u16(&buf[8..]);
+        (&mut msg._security_id[..]).copy_from_slice(&buf[10..18]);
+        (&mut msg._security_id_source[..]).copy_from_slice(&buf[18..22]);
+        (&mut msg._financial_status[..]).copy_from_slice(&buf[22..30]);
+
+        let count = byteorder::BigEndian::read_u32(&buf[30..34]);
+
+        for i in 0..count {
+            let mut s = switcher {
+                _switch_type : 0u16,
+                _switch_status : 0u16,
+            };
+            let mut buf2 : [u8;4] = [0;4];
+            stream.read_exact(&mut buf2[..])?;
+            s._switch_type = byteorder::BigEndian::read_u16(&buf2[..]);
+            s._switch_status = byteorder::BigEndian::read_u16(&buf2[2..]);
+
+            msg._switchers.push(s);
+        }
+
+        println!("Realtime: {:?}", msg);
+        Ok(())
+    }
+
+    fn handle_stock_report(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+
+        Ok(())
+    }
+
+
+    fn handle_stock_snapshot(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+
+        Ok(())
+    }
+
+    fn handle_inidex_snapshot(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+
+        Ok(())
+    }
+
+    fn handle_volume_statistic(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+
+        Ok(())
+    }
+
+    fn handle_message(&self, stream :&mut TcpStream,  msg_type:u32, buf:&Vec<u8>)->io::Result<()> {
+
+        match msg_type {
+            //heartbeat
+            3=>{
+                heartbeat(stream)?;
+            },
+            //channel heartbeat
+            390095=>{
+                //channel heartbeat
+            },
+            390094=>{
+                self.handle_resent_message(stream, buf)?;
+            },
+            390093=>{
+                self.handle_user_report_message(stream, buf)?;                
+            },
+            390090=>{
+                self.handle_channel_statistic(stream, buf)?;
+            },
+            //market status
+            390019=>{
+                self.handle_market_status_message(stream, buf)?;
+            },
+            //realtime status
+            390013=>{
+                self.handle_realtime_status(stream, buf)?;
+            },
+            390012=>{
+                self.handle_stock_report(stream, buf)?;
+            },
+            300111=>{
+                self.handle_stock_snapshot(stream, buf)?;
+            },
+            300611=>{
+                //hongkong stocks
+            },
+            309011=>{
+                self.handle_inidex_snapshot(stream, buf)?;
+            },
+            309111=>{
+                self.handle_volume_statistic(stream, buf)?;
+            },
+            _=>{
+                println!("{:?}:  {:?}", msg_type, buf);
+            }
+        };
+
+        Ok(())
+    }
+
+    fn run(&mut self) -> io::Result<()> {
+        let mut stream = TcpStream::connect("139.196.94.8:9999")?;
+        
+        self.login(&mut stream)?;
+        println!("login success {:?}", stream);
+
+        let mut stream2 = stream.try_clone().unwrap();
+        use std::thread;
+        thread::Builder::new().name("Heart beat thread".into()).spawn(move || {
+            loop {
+                use std::time;
+                thread::sleep(time::Duration::from_secs(15));
+                if let Err(e) = heartbeat(&mut stream2) {
+                    println!("heartbeat failed {:?}", e);
+                }
+            }
+            
+        }).unwrap();
+
+        loop {
+            let (res, op) = self.get_message(&mut stream);
+            let msg_type  = match res {
+                Ok(expr)=>expr,
+                Err(e)=>{
+                    return Err(e);
+                }
+            };
+
+            if let Some(buf) = op {
+                let _ = self.handle_message(&mut stream, msg_type, &buf)?;
+            }
+        }
+        //Ok(())
+    }
+}
+
 fn main() {
-    let ctx = Context::new();
-    if let Err(result) = process_file(ctx, "MKTDT00.TXT") {
-        println!("{}", result);
+    let mut ctx = Context::new();
+
+    if let Err(e) = ctx.run() {
+        println!("{:?}", e);
     }
 }
