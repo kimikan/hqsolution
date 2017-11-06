@@ -5,3 +5,4 @@ authors = ["kan"]
 
 [dependencies]
 encoding="*"
+byteorder="*"
