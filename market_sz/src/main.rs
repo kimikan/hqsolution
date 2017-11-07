@@ -13,10 +13,8 @@ extern crate byteorder;
 mod utils;
 
 use std::io;
-use std::fs::{OpenOptions, File};
-use std::io::{BufReader, BufRead, Read};
+use std::io::{Read};
 use std::collections::HashMap;
-use std::time::SystemTime;
 use std::net::TcpStream;
 
 use byteorder::ByteOrder;
@@ -203,19 +201,7 @@ impl Context {
             _password : [u8;16],
             _version : [u8;32],
             _checksum : u32,
-        }
-        let mut msg  = Msg {
-            _msg_header : MsgHead{
-                _msg_type : 1,
-                _body_length : 0,
-            },
-            _sender : [0; 20],
-            _target : [0;20],
-            _heart_beat : 30,
-            _password : [0;16],
-            _version : [0; 32],
-            _checksum : 0,
-        };*/
+        }*/
         let mut msg : [u8;104] = [0;104];
         
         byteorder::BigEndian::write_u32(&mut msg[..], 1);
@@ -224,9 +210,12 @@ impl Context {
         use std::cmp;
         &(msg[8..( 8 + cmp::min(20, SENDER.len()))]).copy_from_slice(SENDER.as_bytes());
         &(msg[28..( 28 + cmp::min(20, TARGET.len()))]).copy_from_slice(TARGET.as_bytes());
+        
         byteorder::BigEndian::write_u32(&mut msg[48..], HEARTBEAT_INTERVAL);//heartbeat
+        
         &(msg[52..( 52 + cmp::min(20, PASSWORD.len()))]).copy_from_slice(PASSWORD.as_bytes());
         &(msg[68..( 68 + cmp::min(20, APPVER.len()))]).copy_from_slice(APPVER.as_bytes());
+        
         let checksum = generate_checksum(&msg[0..100]);
         byteorder::BigEndian::write_u32(&mut msg[100..], checksum);
 
@@ -242,64 +231,63 @@ impl Context {
 
     fn get_message(&self, stream : &mut TcpStream) -> (io::Result<u32>, Option<Vec<u8>>) {
         let mut header : [u8;8] = [0u8;8];
-        match stream.read_exact(&mut header[0..8]) {
+
+        let res = stream.read_exact(&mut header[0..8]);
+        if let Err(e) = res {
+            return (Err(e), None);
+        }
+        
+        let msg_type = byteorder::BigEndian::read_u32(&header[..]);
+        let body_len = byteorder::BigEndian::read_u32(&header[4..]) as usize;
+        
+        if body_len <= 0 {
+            return (Ok(msg_type), None);
+        }
+
+        let mut vec : Vec<u8> = Vec::with_capacity(body_len);
+        unsafe {
+            vec.set_len(body_len);
+        }
+
+        match stream.read_exact(&mut vec) {
             Ok(_)=>{
-                let msg_type = byteorder::BigEndian::read_u32(&header[..]);
-                let body_len = byteorder::BigEndian::read_u32(&header[4..]) as usize;
-                
-                if body_len > 0 {
-                    let mut vec : Vec<u8> = Vec::with_capacity(body_len);
-                    unsafe {
-                        vec.set_len(body_len);
-                    }
-
-                    match stream.read_exact(&mut vec) {
-                        Ok(_)=>{
-                            let mut checksum:[u8;4] = [0;4];
-                            let checksum_res = stream.read_exact(&mut checksum[..]);
-                            if let Err(e) = checksum_res {
-                                return (Err(e), None);
-                            }
-
-                            return (Ok(msg_type), Some(vec));    
-                        },
-                        Err(e)=>{
-                            return (Err(e), None);
-                        }
-                    };
-                } else {
-                    return (Ok(msg_type), None); 
+                let mut checksum:[u8;4] = [0;4];
+                let checksum_res = stream.read_exact(&mut checksum[..]);
+                if let Err(e) = checksum_res {
+                    return (Err(e), None);
                 }
+
+                return (Ok(msg_type), Some(vec));    
             },
             Err(e)=>{
                 return (Err(e), None);
             }
         };
-
     }
 
-    fn handle_resent_message(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+    fn handle_resent_message(&self, _:&mut TcpStream, _ : &Vec<u8>)->io::Result<()>{
 
         Ok(())
     }
 
-    fn handle_user_report_message(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+    fn handle_user_report_message(&self, _:&mut TcpStream, _ : &Vec<u8>)->io::Result<()>{
+        
         #[derive(Debug)]
-        struct report_msg {
+        struct ReportMsg {
             _time : i64,
             _version_code : [u8; 16],
             _user_num : u16,
         }
-        let mut msg = report_msg {
+        let mut msg = ReportMsg {
             _time : 0i64,
             _version_code : [0; 16],
             _user_num : 0u16,
         };
         
-        let mut time : i64;
-        let mut user_num : u16;
+        let time : i64;
+        let user_num : u16;
         { //local variables
-            let mut buf = struct_to_bytes(&mut msg);
+            let buf = struct_to_bytes(&mut msg);
             time = byteorder::BigEndian::read_i64(&buf[..]);
             user_num = byteorder::BigEndian::read_u16(&buf[24..]);
         }
@@ -310,33 +298,34 @@ impl Context {
         Ok(())
     }
 
-    fn handle_channel_statistic(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+    fn handle_channel_statistic(&self, _ : &mut TcpStream, _ : &Vec<u8>)->io::Result<()>{
 
         Ok(())
     }
 
-    fn handle_market_status_message(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+    fn handle_market_status_message(&self, _ : &mut TcpStream, _ : &Vec<u8>)->io::Result<()>{
 
         Ok(())
     }
 
-    fn handle_realtime_status(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+    fn handle_realtime_status(&self, _:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+        
         #[derive(Debug)]
-        struct switcher {
+        struct Switcher {
             _switch_type : u16,
             _switch_status : u16,
         }
 
         #[derive(Debug)]
-        struct realtime_status {
+        struct RealtimeStatus {
             _time : i64,
             _channel_no : u16,
             _security_id : [u8; 8],
             _security_id_source : [u8;4],//102 shenzhen, 103 hongkong
             _financial_status : [u8; 8],
-            _switchers : Vec<switcher>,
+            _switchers : Vec<Switcher>,
         }
-        let mut msg = realtime_status {
+        let mut msg = RealtimeStatus {
             _time : 0i64,
             _channel_no : 0u16,
             _security_id : [0; 8],
@@ -347,6 +336,7 @@ impl Context {
         
         msg._time = byteorder::BigEndian::read_i64(&buf[..]);
         msg._channel_no = byteorder::BigEndian::read_u16(&buf[8..]);
+        
         (&mut msg._security_id[..]).copy_from_slice(&buf[10..18]);
         (&mut msg._security_id_source[..]).copy_from_slice(&buf[18..22]);
         (&mut msg._financial_status[..]).copy_from_slice(&buf[22..30]);
@@ -354,7 +344,7 @@ impl Context {
         let count = byteorder::BigEndian::read_u32(&buf[30..34]);
 
         for i in 0..count {
-            let mut s = switcher {
+            let mut s = Switcher {
                 _switch_type : 0u16,
                 _switch_status : 0u16,
             };
@@ -369,9 +359,9 @@ impl Context {
         Ok(())
     }
 
-    fn handle_stock_report(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+    fn handle_stock_report(&self, _:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
         #[derive(Debug)]
-        struct stock_report {
+        struct StockReport {
             _time : i64,
             _channel_no:u16,
             _news_id : [u8; 8],
@@ -380,7 +370,7 @@ impl Context {
             _raw_data_length : u32,
             _raw_data : Vec<u8>,
         }
-        let mut msg = stock_report {
+        let mut msg = StockReport {
             _time : 0i64,
             _channel_no : 0u16,
             _news_id : [0; 8],
@@ -389,8 +379,10 @@ impl Context {
             _raw_data_length : 0u32,
             _raw_data : vec![],
         };
+
         msg._time = byteorder::BigEndian::read_i64(&buf[..]);
         msg._channel_no = byteorder::BigEndian::read_u16(&buf[8..]);
+        
         (&mut msg._news_id[..]).copy_from_slice(&buf[10..18]);
         //(&mut msg._head_line[..]).copy_from_slice(&buf[18..146]);
         let utfstr = std::str::from_utf8(&buf[18..146]);
@@ -416,7 +408,7 @@ impl Context {
     }
 
 
-    fn handle_stock_snapshot(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+    fn handle_stock_snapshot(&self, _ : &mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
         
         let mut msg: Stock = Default::default();
         //msg._snap_shot._orig_time = byteorder::BigEndian::readi64()
@@ -433,18 +425,20 @@ impl Context {
 
         let entry_count = byteorder::BigEndian::read_u32(&buf[65..69]);
         let mut start : usize = 69;
-        for i in 0..entry_count {
+        for _ in 0..entry_count {
             let mut entry : StockEntry = Default::default();
+            
             (&mut entry._entry_type[..]).copy_from_slice(&buf[start .. start + 2]);
+            
             entry._entry_px = byteorder::BigEndian::read_i64(&buf[start+ 2 .. start + 10]);
             entry._entry_size = byteorder::BigEndian::read_i64(&buf[start+ 10 .. start + 18]);
             entry._price_level = byteorder::BigEndian::read_u16(&buf[start+ 18 .. start + 20]);
             entry._num_of_orders = byteorder::BigEndian::read_i64(&buf[start + 20 .. start + 28]);
 
-            let mut qty_count = byteorder::BigEndian::read_u32(&buf[start + 28 .. start + 32]);
+            let qty_count = byteorder::BigEndian::read_u32(&buf[start + 28 .. start + 32]);
 
             let mut start2 = start + 32;
-            for j in 0..qty_count {
+            for _ in 0..qty_count {
 
                 let qty = byteorder::BigEndian::read_i64(&buf[start2 .. start2 + 8]);
                 entry._orders.push(qty);
@@ -458,16 +452,18 @@ impl Context {
         Ok(())
     }
 
-    fn handle_index_snapshot(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+    fn handle_index_snapshot(&self, _:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
 
         let mut msg: Index = Default::default();
         //msg._snap_shot._orig_time = byteorder::BigEndian::readi64()
         msg._snap_shot._orig_time = byteorder::BigEndian::read_i64(&buf[..]);
         msg._snap_shot._channel_no = byteorder::BigEndian::read_u16(&buf[8..]);
+        
         (&mut msg._snap_shot._md_stream_id[..]).copy_from_slice(&buf[10..13]);
         (&mut msg._snap_shot._security_id[..]).copy_from_slice(&buf[13..21]);
         (&mut msg._snap_shot._security_id_source[..]).copy_from_slice(&buf[21..25]);
         (&mut msg._snap_shot._trading_phase_code[..]).copy_from_slice(&buf[25..33]);
+        
         msg._snap_shot._prev_close_px = byteorder::BigEndian::read_i64(&buf[33..41]);
         msg._snap_shot._num_trades = byteorder::BigEndian::read_i64(&buf[41..49]);
         msg._snap_shot._total_vol_trade = byteorder::BigEndian::read_i64(&buf[49..57]);
@@ -475,7 +471,7 @@ impl Context {
 
         let entry_count = byteorder::BigEndian::read_u32(&buf[65..69]);
         let mut start : usize = 69;
-        for i in 0..entry_count {
+        for _ in 0..entry_count {
             let mut entry : IndexEntry = Default::default();
             (&mut entry._entry_type[..]).copy_from_slice(&buf[start .. start + 2]);
             entry._entry_px = byteorder::BigEndian::read_i64(&buf[start+ 2 .. start + 10]);
@@ -487,7 +483,7 @@ impl Context {
         Ok(())
     }
 
-    fn handle_volume_statistic(&self, stream:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+    fn handle_volume_statistic(&self, _:&mut TcpStream, _ : &Vec<u8>)->io::Result<()>{
 
         Ok(())
     }
