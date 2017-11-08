@@ -158,6 +158,7 @@ use std::marker::Sized;
 use std::slice;
 use std::mem;
 
+//msgtype 3, with a 0 len body
 fn heartbeat(stream:&mut TcpStream)->io::Result<()>{
     let mut msg : [u8;12] = [0;12];
 
@@ -229,6 +230,7 @@ impl Context {
         return Err(Error::from(ErrorKind::InvalidData));
     }
 
+    //message header + message body + checksum
     fn get_message(&self, stream : &mut TcpStream) -> (io::Result<u32>, Option<Vec<u8>>) {
         let mut header : [u8;8] = [0u8;8];
 
@@ -407,7 +409,7 @@ impl Context {
         Ok(())
     }
 
-
+    //the main function is this one
     fn handle_stock_snapshot(&self, _ : &mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
         
         let mut msg: Stock = Default::default();
@@ -488,6 +490,7 @@ impl Context {
         Ok(())
     }
 
+    //event dispatcher
     fn handle_message(&self, stream :&mut TcpStream,  msg_type:u32, buf:&Vec<u8>)->io::Result<()> {
 
         match msg_type {
@@ -539,6 +542,7 @@ impl Context {
         Ok(())
     }
 
+    //main run function
     fn run(&mut self) -> io::Result<()> {
         let mut stream = TcpStream::connect("139.196.94.8:9999")?;
         
