@@ -6,3 +6,4 @@ authors = ["kan"]
 [dependencies]
 encoding="*"
 byteorder="*"
+log="*"

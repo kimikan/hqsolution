@@ -7,10 +7,17 @@
 //if want to use it in live env
 //just implement the todo: information
 //integrated with messaging system. or something
+
+#![allow(unused_imports)]
+
+#[macro_use()]
+extern crate log;
+
 extern crate encoding;
 extern crate byteorder;
 
 mod utils;
+use log::*;
 
 use std::io;
 use std::io::{Read};
@@ -169,7 +176,7 @@ fn heartbeat(stream:&mut TcpStream)->io::Result<()>{
     if size != 12 {
         return Err(Error::from(ErrorKind::WriteZero));
     }
-    println!("Heartbeat");
+    info!("Heartbeat");
     Ok(())
 }
 
@@ -294,7 +301,7 @@ impl Context {
         msg._time = time;
         msg._user_num = user_num;
 
-        println!("UserReport: {:?}", msg);
+        info!("UserReport: {:?}", msg);
         Ok(())
     }
 
@@ -355,7 +362,7 @@ impl Context {
             msg._switchers.push(s);
         }
 
-        println!("Realtime: {:?}", msg);
+        info!("Realtime: {:?}", msg);
         Ok(())
     }
 
@@ -389,7 +396,7 @@ impl Context {
         if let Ok(str) = utfstr {
             msg._head_line = str.to_owned();
         } else {
-            println!("utftostring failed");
+            info!("utftostring failed");
         }
         
         (&mut msg._raw_data_format[..]).copy_from_slice(&buf[146..154]);
@@ -403,7 +410,7 @@ impl Context {
             (&mut msg._raw_data[..]).copy_from_slice(&buf[158..]);
         }
 
-        println!("Stockreport: {:?}", msg);
+        info!("Stockreport: {:?}", msg);
         Ok(())
     }
 
@@ -448,7 +455,7 @@ impl Context {
             start = start2;
         }
 
-        println!("Stocksnapshot: {:?}", msg);
+        info!("Stocksnapshot: {:?}", msg);
         Ok(())
     }
 
@@ -479,7 +486,7 @@ impl Context {
             start += 10;
         }
 
-        println!("Indexsnapshot: {:?}", msg);
+        info!("Indexsnapshot: {:?}", msg);
         Ok(())
     }
 
@@ -532,7 +539,7 @@ impl Context {
                 self.handle_volume_statistic(stream, buf)?;
             },
             _=>{
-                println!("{:?}:  {:?}", msg_type, buf);
+                info!("{:?}:  {:?}", msg_type, buf);
             }
         };
 
@@ -543,7 +550,7 @@ impl Context {
         let mut stream = TcpStream::connect("139.196.94.8:9999")?;
         
         self.login(&mut stream)?;
-        println!("login success {:?}", stream);
+        error!("login success {:?}", stream);
 
         let mut stream2 = stream.try_clone().unwrap();
         use std::thread;
@@ -552,7 +559,7 @@ impl Context {
                 use std::time;
                 thread::sleep(time::Duration::from_secs(15));
                 if let Err(e) = heartbeat(&mut stream2) {
-                    println!("heartbeat failed {:?}", e);
+                    error!("heartbeat failed {:?}", e);
                 }
             }
             
@@ -576,9 +583,10 @@ impl Context {
 }
 
 fn main() {
+    utils::SimpleLog::init();
     let mut ctx = Context::new();
 
     if let Err(e) = ctx.run() {
-        println!("{:?}", e);
+        error!("{:?}", e);
     }
 }
