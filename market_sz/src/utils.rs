@@ -1,6 +1,5 @@
 
 //use std::fs::OpenOptions;
-<<<<<<< HEAD
 
 use log;
 use log::{LogRecord, LogLevel, LogMetadata, LogLevelFilter};
@@ -40,6 +39,4 @@ impl SimpleLog {
         }).unwrap();
     }
 }
-=======
->>>>>>> f57edc8fb2f4e8ab2acdb3ab4c97f086d872d37b
 
