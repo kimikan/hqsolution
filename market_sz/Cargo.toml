@@ -7,3 +7,7 @@ authors = ["kan"]
 encoding="*"
 byteorder="*"
 log="*"
+serde_json="*"
+serde_derive="*"
+serde="*"
+tera="*"
