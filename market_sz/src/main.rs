@@ -13,6 +13,14 @@
 #[macro_use()]
 extern crate log;
 
+#[macro_use]
+extern crate tera;
+
+#[macro_use]
+extern crate serde_derive;
+extern crate serde;
+extern crate serde_json;
+
 extern crate encoding;
 extern crate byteorder;
 
@@ -551,7 +559,9 @@ impl Context {
 
     //main run function
     fn run(&mut self) -> io::Result<()> {
-        let mut stream = TcpStream::connect("139.196.94.8:9999")?;
+        let config = utils::Configuration::load()?;
+
+        let mut stream = TcpStream::connect(&config._addr)?;
         
         self.login(&mut stream)?;
         error!("login success {:?}", stream);
