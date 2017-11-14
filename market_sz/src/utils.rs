@@ -16,13 +16,14 @@ impl log::Log for SimpleLog {
             use std::fs::OpenOptions;
             let path = "default.log";
             let file_op = OpenOptions::new()
-                .create(true).write(true).truncate(true)
+                .create(true).write(true).append(true)
                 .open(path);
             
             if let Ok(mut f) = file_op {
                 use std::io::Write;
                 
-                if let Err(e) = writeln!(f, "{:?}", r) {
+				println!("{:?}", r.args());
+                if let Err(e) = writeln!(f, "{:?}", r.args()) {
                     println!("{:?}", e);
                 }
             }
