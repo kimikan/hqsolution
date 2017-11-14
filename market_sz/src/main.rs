@@ -463,6 +463,7 @@ impl Context {
             }
 
             start = start2;
+            msg._entries.push(entry);
         }
 
         info!("Stocksnapshot: {:?}", msg);
@@ -494,6 +495,7 @@ impl Context {
             entry._entry_px = byteorder::BigEndian::read_i64(&buf[start+ 2 .. start + 10]);
             
             start += 10;
+            msg._entries.push(entry);
         }
 
         info!("Indexsnapshot: {:?}", msg);
