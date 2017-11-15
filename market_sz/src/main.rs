@@ -599,11 +599,20 @@ impl Context {
     }
 }
 
-fn main() {
-    utils::SimpleLog::init();
+fn main2() {
+    
     let mut ctx = Context::new();
 
     if let Err(e) = ctx.run() {
         error!("{:?}", e);
+    }
+}
+
+fn main() {
+    utils::SimpleLog::init();
+    loop {
+
+        main2();
+        std::thread::sleep_ms(1000 * 300);
     }
 }
