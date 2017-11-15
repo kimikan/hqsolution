@@ -576,6 +576,7 @@ impl Context {
                 thread::sleep(time::Duration::from_secs(15));
                 if let Err(e) = heartbeat(&mut stream2) {
                     error!("heartbeat failed {:?}", e);
+                    break;
                 }
             }
             
