@@ -3,9 +3,11 @@ package main
 import (
 	"bytes"
 	"encoding/binary"
+	"encoding/xml"
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net"
 	"os"
 	"sync"
@@ -343,7 +345,7 @@ func handleStockSnapshot(conn net.Conn, messageBody []byte) {
 
 	start := 69
 	for i := 0; i < int(msg.noMDEntries); i++ {
-		entry := msg.entries[i]
+		entry := &msg.entries[i]
 
 		copy(entry.mdEntryType[:], messageBody[start:start+2])
 		entry.mdEntryPx = int64(binary.BigEndian.Uint64(messageBody[start+2 : start+10]))
@@ -396,7 +398,7 @@ func handleIndexSnapshot(conn net.Conn, messageBody []byte) {
 
 	start := 69
 	for i := 0; i < int(msg.noMDEntries); i++ {
-		entry := msg.entries[i]
+		entry := &msg.entries[i]
 
 		copy(entry.mdEntryType[:], messageBody[start:start+2])
 		entry.mdEntryPx = int64(binary.BigEndian.Uint64(messageBody[start+2 : start+10]))
@@ -479,8 +481,33 @@ func heartbeat(conn net.Conn) error {
 	return nil
 }
 
+type config struct {
+	TargetAddr string `xml:"target_addr"`
+}
+
+func loadConfig() *config {
+	content, err := ioutil.ReadFile("app.def")
+	if err != nil {
+		return nil
+	}
+
+	c := new(config)
+	err = xml.Unmarshal(content, c)
+	if err != nil {
+		return nil
+	}
+
+	return c
+}
+
 func main() {
-	conn, err := net.Dial("tcp", "127.0.0.1:6666")
+	config := loadConfig()
+	if config == nil {
+		fmt.Println("config error")
+		return
+	}
+
+	conn, err := net.Dial("tcp", config.TargetAddr)
 	//conn, err := net.Dial("tcp", "10.139.2.234:9016")
 	if err != nil {
 		fmt.Println("1:", err)
