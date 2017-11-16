@@ -1,0 +1,3 @@
+<configuration>
+        <target_addr>127.0.0.1:6666</target_addr>
+</configuration>
