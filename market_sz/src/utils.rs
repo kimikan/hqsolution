@@ -8,6 +8,8 @@ use serde_json;
 use serde::{ Deserialize};
 use std::io;
 use std::fs::OpenOptions;
+use chrono;
+use chrono::{Timelike, Datelike};
 
 #[derive(Deserialize, Debug)]
 pub struct Configuration {
@@ -50,14 +52,15 @@ impl log::Log for SimpleLog {
     fn log(&self, r: &LogRecord) {
         if self.enabled(r.metadata()) {
             
-            let path = "default.log";
+            let path = self.get_file();
             let file_op = OpenOptions::new()
                 .create(true).write(true).append(true)
-                .open(path);
+                .open(&path);
             
             if let Ok(mut f) = file_op {
                 use std::io::Write;
-                //println!("{:?}", r.args());
+                
+				//println!("{:?}", r.args());
                 if let Err(e) = writeln!(f, "{:?}", r.args()) {
                     println!("{:?}", e);
                 }
@@ -73,6 +76,11 @@ impl SimpleLog {
 
             Box::new(SimpleLog)
         }).unwrap();
+    }
+
+    fn get_file(&self)->String {
+        let now = chrono::Local::now();
+        format!("{}{}{}{}", now.year(), now.month(), now.day(), now.hour())
     }
 }
 
