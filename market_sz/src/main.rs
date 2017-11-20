@@ -23,8 +23,10 @@ extern crate serde_json;
 
 extern crate encoding;
 extern crate byteorder;
+extern crate chrono;
 
 mod utils;
+mod dbf;
 use log::*;
 
 use std::io;
@@ -600,6 +602,7 @@ impl Context {
             loop {
                 use std::time;
                 thread::sleep(time::Duration::from_secs(15));
+                println!("Heart beat");
                 if let Err(e) = heartbeat(&mut stream2) {
                     error!("heartbeat failed {:?}", e);
                     break;
