@@ -637,11 +637,16 @@ fn main2() {
     }
 }
 
-fn main() {
+fn main3() {
     utils::SimpleLog::init();
     loop {
 
         main2();
         std::thread::sleep_ms(1000 * 300);
     }
+}
+
+fn main() {
+    let mut d = dbf::Dbf::new("sjshq.dbf").unwrap();
+    d.read_head();
 }

@@ -10,6 +10,12 @@ use std::io;
 use std::fs::OpenOptions;
 use chrono;
 use chrono::{Timelike, Datelike};
+use std::mem;
+use std::slice;
+
+pub fn any_to_u8_slice<T: Sized>(p: &mut T) -> &mut [u8] {
+    unsafe { slice::from_raw_parts_mut((p as *mut T) as *mut u8, mem::size_of::<T>()) }
+}
 
 #[derive(Deserialize, Debug)]
 pub struct Configuration {

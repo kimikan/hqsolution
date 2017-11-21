@@ -1,7 +1,10 @@
 
 use std::collections::HashMap;
 
-struct Record {
+use utils;
+use std::mem;
+
+pub struct Record {
     //offset from the begin of the file
     _offset : u32,
 
@@ -76,8 +79,104 @@ impl Record {
             _first_px : 0u32,
         }
     }
+
+    fn sync_to_file(file : &String) {
+
+    }
 }
 
-struct Dbf {
-    _records  : HashMap<String, Record>,
+
+use std::fs::File;
+use std::io::Read;
+
+#[repr(C, packed)]
+#[derive(Debug)]
+struct DbfHead {
+    _flag : u8,
+    _year: u8,
+    _month:u8,
+    _day : u8,
+    _record_count : i32, //little endian
+
+    _offset : u16,//offset of the first record
+    _record_len : u16,
+    _reserved : [u8; 20],
+}
+
+impl DbfHead {
+
+    fn new()->DbfHead {
+        DbfHead {
+            _flag : 3,
+            _year : 0,
+            _month : 0,
+            _day : 0,
+            _record_count : 0i32,
+            _offset : 1153u16,
+
+            _record_len : 352u16,
+            _reserved : Default::default(),
+        }
+    }
+
+    fn get_field_number(&self)->usize {
+        (self._offset as usize - mem::size_of::<DbfHead>()) / mem::size_of::<DbfColumn>()
+    }
+
+    fn from(f : &mut File)->Option<DbfHead> {
+        
+        let mut buf :[u8;32] = [0; 32];
+        let result = f.read_exact(&mut buf[..]);
+
+        let head : DbfHead = unsafe {mem::transmute_copy(&buf)};
+        match result {
+            Ok(_)=>{
+                Some(head)
+            },
+            Err(_)=> {
+                None
+            }
+        }
+    }
+}
+
+#[repr(C, packed)]
+#[derive(Debug)]
+struct DbfColumn {
+    _col_name : [u8; 11],
+    _col_type : u8,
+    _offset : u32,//offset field in record
+    _col_len : u8,
+    _precision: u8,
+    _reserved : [u8; 14],
+}
+
+pub struct Dbf {
+    pub _records  : HashMap<String, Record>,
+    pub _file : File,
+    
+}
+
+impl Dbf {
+
+    pub fn new(f : &str)->Option<Dbf> {
+        
+        let file = File::open(f);
+        if let Ok(f) = file {
+            return Some(Dbf {
+                _records : Default::default(),
+                _file : f,
+            });
+        }
+
+        None
+    }
+
+    pub fn read_head(&mut self) {
+        let f_o = DbfHead::from(&mut self._file);
+        if let Some(f) = f_o {
+            println!("{:?}, field_number: {:?}", f, f.get_field_number());
+            
+        }
+    }
 }
