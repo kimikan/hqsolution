@@ -17,6 +17,17 @@ pub fn any_to_u8_slice<T: Sized>(p: &mut T) -> &mut [u8] {
     unsafe { slice::from_raw_parts_mut((p as *mut T) as *mut u8, mem::size_of::<T>()) }
 }
 
+use encoding;
+pub fn gb2312_to_string(buf : &[u8])->Option<String> {
+    let refs = encoding::all::encodings();
+    let (x, _) = encoding::decode(buf, encoding::DecoderTrap::Strict, refs[37]);
+    
+    if let Ok(s) = x {
+        return Some(s);
+    }
+
+    None
+}
 #[derive(Deserialize, Debug)]
 pub struct Configuration {
     pub _addr : String,

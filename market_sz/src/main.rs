@@ -637,7 +637,7 @@ fn main2() {
     }
 }
 
-fn main3() {
+fn main() {
     utils::SimpleLog::init();
     loop {
 
@@ -646,7 +646,11 @@ fn main3() {
     }
 }
 
-fn main() {
+fn test_hq_parser() {
     let mut d = dbf::Dbf::new("sjshq.dbf").unwrap();
-    d.read_head();
+    let res = d.parse();
+
+    if let Err(e) = res {
+        println!("{:?}", e);
+    }
 }
