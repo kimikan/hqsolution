@@ -261,3 +261,14 @@ impl Dbf {
         Ok(())
     }
 }
+
+
+
+pub fn test_hq_parser() {
+    let mut d = dbf::Dbf::new("sjshq.dbf").unwrap();
+    let res = d.parse();
+
+    if let Err(e) = res {
+        println!("{:?}", e);
+    }
+}

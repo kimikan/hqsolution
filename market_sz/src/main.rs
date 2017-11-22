@@ -645,12 +645,3 @@ fn main() {
         std::thread::sleep_ms(1000 * 300);
     }
 }
-
-fn test_hq_parser() {
-    let mut d = dbf::Dbf::new("sjshq.dbf").unwrap();
-    let res = d.parse();
-
-    if let Err(e) = res {
-        println!("{:?}", e);
-    }
-}
