@@ -25,8 +25,15 @@ extern crate encoding;
 extern crate byteorder;
 extern crate chrono;
 
+extern crate tokio_core;
+extern crate futures;
+extern crate tiberius;
+
 mod utils;
 mod dbf;
+mod t2sdk;
+mod db;
+
 use log::*;
 
 use std::io;
@@ -167,8 +174,7 @@ fn generate_checksum(bs : &[u8])->u32 {
 #[derive(Debug, Clone)]
 struct Context {
 
-    _stocks : HashMap<String, Stock>,
-    _indexs : HashMap<String, Index>,
+    _stocks : HashMap<String, t2sdk::StockRecord>,
 }
 
 use std::marker::Sized;
@@ -204,7 +210,6 @@ impl Context {
     fn new()->Context {
         Context {
             _stocks : Default::default(),
-            _indexs : Default::default(),
         }
     }
 
@@ -338,7 +343,7 @@ impl Context {
         }
         msg._time = time;
         msg._user_num = user_num;
-
+        t2sdk::push_market_datetime(time)?;
         info!("UserReport: {:?}", msg);
         Ok(())
     }
@@ -400,6 +405,7 @@ impl Context {
             msg._switchers.push(s);
         }
 
+        t2sdk::push_market_datetime(msg._time)?;
         info!("Realtime: {:?}", msg);
         Ok(())
     }
@@ -448,25 +454,112 @@ impl Context {
             (&mut msg._raw_data[..]).copy_from_slice(&buf[158..]);
         }
 
+        t2sdk::push_market_datetime(msg._time)?;
         info!("Stockreport: {:?}", msg);
         Ok(())
     }
 
+    fn parse_entry( stock : &mut t2sdk::StockRecord, entry : &StockEntry) {
+        match entry._entry_type[0] {
+            b'0'=> { //buying
+                let index = (entry._price_level - 1) as usize;
+                if index < 5 {
+                    stock._buy_amounts[index] = utils::div_accurate(entry._entry_size, 100);
+                    stock._buy_pxs[index] = utils::div_accurate(entry._entry_px, 1000);
+                }
+            }
+            b'1'=> {//selling
+                let index = (entry._price_level - 1) as usize;
+                if index < 5 {
+                    stock._sale_amounts[index] = utils::div_accurate(entry._entry_size, 100);
+                    stock._sale_pxs[index] = utils::div_accurate(entry._entry_px, 1000);
+                }
+            }
+            b'2' | b'3'=>{
+                stock._last_px = utils::div_accurate(entry._entry_px, 1000);
+            }
+            b'4'=>{
+                stock._open_px = utils::div_accurate(entry._entry_px, 1000);
+            }
+            b'7'=>{
+                stock._high_px = utils::div_accurate(entry._entry_px, 1000);
+            }
+            b'8'=>{
+                stock._low_px = utils::div_accurate(entry._entry_px, 1000);
+            }
+            b'x'=>{
+                match entry._entry_type[1] {
+                    /*b'5'=>{
+                        stock._pe_rate = entry._entry_px as u32;
+                    }
+                    b'6'=>{
+                        stock._dynamic_pe = entry._entry_px as u32;
+                    } */
+                    b'7'=>{
+                        if entry._entry_px > 0 {
+                            stock._market_value = entry._entry_px as u64;
+                        }
+                    }
+                    b'a'=>{
+                        stock._pre_close_px = utils::div_accurate(entry._entry_px, 1000);
+                    }
+                    b'b'=>{
+                        stock._open_px = utils::div_accurate(entry._entry_px, 1000);
+                    }
+                    b'c'=>{
+                        stock._high_px = utils::div_accurate(entry._entry_px, 1000);
+                    }
+                    b'd'=>{
+                        stock._low_px = utils::div_accurate(entry._entry_px, 1000);
+                    }
+                    b'e'=>{
+                        //stock._up_limit
+                    }
+                    b'f'=>{
+                        //down limit
+                    }
+                    _=>{} //end second byte
+                }
+            }
+            _=>{}//end first byte
+        };
+    }
+
     //the main function is this one
-    fn handle_stock_snapshot(&self, _ : &mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+    fn handle_stock_snapshot(&mut self, _ : &mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
         
         let mut msg: Stock = Default::default();
         //msg._snap_shot._orig_time = byteorder::BigEndian::readi64()
         msg._snap_shot._orig_time = byteorder::BigEndian::read_i64(&buf[..]);
+        
+        t2sdk::push_market_datetime(msg._snap_shot._orig_time)?;
+
         msg._snap_shot._channel_no = byteorder::BigEndian::read_u16(&buf[8..]);
         (&mut msg._snap_shot._md_stream_id[..]).copy_from_slice(&buf[10..13]);
         (&mut msg._snap_shot._security_id[..]).copy_from_slice(&buf[13..21]);
+        let security_id = utils::utf8_to_string(& msg._snap_shot._security_id[0..6]);
+
+        let stock = self._stocks.entry(security_id.clone()).or_insert(t2sdk::StockRecord::default());
+
+        stock._date = (msg._snap_shot._orig_time / 1000000000) as u32;
+        stock._time = ((msg._snap_shot._orig_time / 1000) % 1000000) as u32;
+        stock._stock_code = security_id.clone();
+
         (&mut msg._snap_shot._security_id_source[..]).copy_from_slice(&buf[21..25]);
         (&mut msg._snap_shot._trading_phase_code[..]).copy_from_slice(&buf[25..33]);
+        stock._trade_status = utils::trading_phase_to_u32(&msg._snap_shot._trading_phase_code[..]);
+        stock._line_no = utils::get_line_number(stock._time);
+
         msg._snap_shot._prev_close_px = byteorder::BigEndian::read_i64(&buf[33..41]);
+        stock._pre_close_px = msg._snap_shot._prev_close_px as u32;
+
         msg._snap_shot._num_trades = byteorder::BigEndian::read_i64(&buf[41..49]);
+        
         msg._snap_shot._total_vol_trade = byteorder::BigEndian::read_i64(&buf[49..57]);
+        stock._trade_amount = msg._snap_shot._total_vol_trade;
+
         msg._snap_shot._total_value_trade = byteorder::BigEndian::read_i64(&buf[57..65]);
+        stock._trade_balance = msg._snap_shot._total_value_trade;
 
         let entry_count = byteorder::BigEndian::read_u32(&buf[65..69]);
         let mut start : usize = 69;
@@ -482,6 +575,8 @@ impl Context {
 
             let qty_count = byteorder::BigEndian::read_u32(&buf[start + 28 .. start + 32]);
 
+            Context::parse_entry(stock, &entry);
+
             let mut start2 = start + 32;
             for _ in 0..qty_count {
 
@@ -494,26 +589,49 @@ impl Context {
             msg._entries.push(entry);
         }
 
+        if utils::is_dept(&security_id) {
+            t2sdk::push_debt(stock)?;
+        } else if utils::is_fund(&security_id) {
+            t2sdk::push_fund(stock)?;
+        } else {
+            t2sdk::push_stock(stock)?;
+        }
+
         info!("Stocksnapshot: {:?}", msg);
         Ok(())
     }
 
-    fn handle_index_snapshot(&self, _:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+    fn handle_index_snapshot(&mut self, _:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
 
         let mut msg: Index = Default::default();
         //msg._snap_shot._orig_time = byteorder::BigEndian::readi64()
         msg._snap_shot._orig_time = byteorder::BigEndian::read_i64(&buf[..]);
         msg._snap_shot._channel_no = byteorder::BigEndian::read_u16(&buf[8..]);
-        
+         t2sdk::push_market_datetime(msg._snap_shot._orig_time)?;
+
         (&mut msg._snap_shot._md_stream_id[..]).copy_from_slice(&buf[10..13]);
         (&mut msg._snap_shot._security_id[..]).copy_from_slice(&buf[13..21]);
         (&mut msg._snap_shot._security_id_source[..]).copy_from_slice(&buf[21..25]);
         (&mut msg._snap_shot._trading_phase_code[..]).copy_from_slice(&buf[25..33]);
         
+        let security_id = utils::utf8_to_string(& msg._snap_shot._security_id[0..6]);
+        
+        let stock = self._stocks.entry(security_id.clone()).or_insert(t2sdk::StockRecord::default());
+
+        stock._date = (msg._snap_shot._orig_time / 1000000000) as u32;
+        stock._time = ((msg._snap_shot._orig_time / 1000) % 1000000) as u32;
+        stock._stock_code = security_id;
+
         msg._snap_shot._prev_close_px = byteorder::BigEndian::read_i64(&buf[33..41]);
         msg._snap_shot._num_trades = byteorder::BigEndian::read_i64(&buf[41..49]);
         msg._snap_shot._total_vol_trade = byteorder::BigEndian::read_i64(&buf[49..57]);
         msg._snap_shot._total_value_trade = byteorder::BigEndian::read_i64(&buf[57..65]);
+
+        stock._trade_status = utils::trading_phase_to_u32(&msg._snap_shot._trading_phase_code[..]);
+        stock._line_no = utils::get_line_number(stock._time);
+        stock._pre_close_px = msg._snap_shot._prev_close_px as u32;
+        stock._trade_amount = msg._snap_shot._total_vol_trade;
+        stock._trade_balance = msg._snap_shot._total_value_trade;
 
         let entry_count = byteorder::BigEndian::read_u32(&buf[65..69]);
         let mut start : usize = 69;
@@ -521,11 +639,17 @@ impl Context {
             let mut entry : IndexEntry = Default::default();
             (&mut entry._entry_type[..]).copy_from_slice(&buf[start .. start + 2]);
             entry._entry_px = byteorder::BigEndian::read_i64(&buf[start+ 2 .. start + 10]);
-            
+
+            let mut stock_entry = StockEntry::default();
+            stock_entry._entry_type = entry._entry_type;
+            stock_entry._entry_px = entry._entry_px;
+
+            Context::parse_entry(stock, &stock_entry);
             start += 10;
             msg._entries.push(entry);
         }
 
+        t2sdk::push_index(stock)?;
         info!("Indexsnapshot: {:?}", msg);
         Ok(())
     }
@@ -536,7 +660,7 @@ impl Context {
     }
 
     //event dispatcher
-    fn handle_message(&self, stream :&mut TcpStream,  msg_type:u32, buf:&Vec<u8>)->io::Result<()> {
+    fn handle_message(&mut self, stream :&mut TcpStream,  msg_type:u32, buf:&Vec<u8>)->io::Result<()> {
 
         match msg_type {
             //heartbeat
@@ -626,12 +750,31 @@ impl Context {
         }
         //Ok(())
     }
+
+    fn init(&mut self)->io::Result<()>{
+
+        let mut server_o = db::Sqlserver::new();
+        if let Some(mut s) = server_o {
+            s.update(&mut self._stocks)?;
+            s.update2(&mut self._stocks)?;
+
+            return Ok(());
+        }
+
+        return Err(io::Error::from(io::ErrorKind::InvalidData));
+    }
 }
 
 fn main2() {
     
     let mut ctx = Context::new();
+    if let Err(e) = ctx.init() {
+        error!("{:?}", e);
+        return;
+    }
 
+    println!("{:?}", ctx._stocks);
+    
     if let Err(e) = ctx.run() {
         error!("{:?}", e);
     }
