@@ -1,0 +1,2755 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Securities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<Security>
+<SecurityID>399001  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证成指                                    </Symbol>
+<EnglishName>SZSE COMPONENT INDEX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>11175.47020</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399002  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深成指R                                    </Symbol>
+<EnglishName>SZSE COMPONENT TRN                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>13349.47350</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399003  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>成份Ｂ指                                    </Symbol>
+<EnglishName>SZSE COMPONENT B                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6563.92930</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399004  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证100R                                  </Symbol>
+<EnglishName>SZSE 100 INDEX                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5790.55810</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399005  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中小板指                                    </Symbol>
+<EnglishName>SZSE SME PRICE INDEX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7748.83400</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399006  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>创业板指                                    </Symbol>
+<EnglishName>CHINEXT PRICE INDEX                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1794.78080</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399007  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证300                                   </Symbol>
+<EnglishName>SZSE 300 PRICE INDEX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4681.93100</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399008  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中小300                                   </Symbol>
+<EnglishName>SZSE SME 300 PRICE                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1521.24950</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399009  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证200                                   </Symbol>
+<EnglishName>SZSE 200 INDEX                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4592.39750</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399010  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证700                                   </Symbol>
+<EnglishName>SZSE 700 INDEX                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7183.97280</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399011  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证1000                                  </Symbol>
+<EnglishName>SZSE 1000 INDEX                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5398.08020</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399012  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>创业300                                   </Symbol>
+<EnglishName>SZSE CHINEXT 300                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2740.80010</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399013  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深市精选                                    </Symbol>
+<EnglishName>SZSE SELECT INDEX                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5107.94680</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399015  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中小创新                                    </Symbol>
+<EnglishName>SZSE SMID CAP INNO                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2364.07540</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399016  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证创新                                    </Symbol>
+<EnglishName>SZSE INNOVATION                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3190.19990</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399017  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>SME创新                                   </Symbol>
+<EnglishName>SZSE SME INNOVATION                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2832.93760</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399018  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>创业创新                                    </Symbol>
+<EnglishName>SZSE CHINEXT INNO.                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3498.85450</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399100  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>新 指 数                                   </Symbol>
+<EnglishName>SZSE NEW INDEX                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>8650.14490</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399101  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中小板综                                    </Symbol>
+<EnglishName>SZSE SME COMPOSITE                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>11484.53710</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399102  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>创业板综                                    </Symbol>
+<EnglishName>CHINEXT COMPOSITE                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2250.23040</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399103  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>乐富指数                                    </Symbol>
+<EnglishName>SZSE LEFU FUND INDEX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6234.98860</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399106  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证综指                                    </Symbol>
+<EnglishName>SZSE COMPOSITE INDEX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1924.44850</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399107  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证Ａ指                                    </Symbol>
+<EnglishName>SZSE A SHARE INDEX                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2012.71240</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399108  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证Ｂ指                                    </Symbol>
+<EnglishName>SZSE B SHARE INDEX                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1172.84520</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399231  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>农林指数                                    </Symbol>
+<EnglishName>AGRICULTURE INDEX                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1270.64440</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399232  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>采矿指数                                    </Symbol>
+<EnglishName>MINING INDEX                            </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2141.70690</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399233  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>制造指数                                    </Symbol>
+<EnglishName>MANUFACTURING INDEX                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2141.29900</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399234  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>水电指数                                    </Symbol>
+<EnglishName>UTILITIES INDEX                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>914.23430</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399235  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>建筑指数                                    </Symbol>
+<EnglishName>CONSTRUCTION INDEX                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1936.90400</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399236  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>批零指数                                    </Symbol>
+<EnglishName>WHOLESALE RETAIL IDX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1784.10410</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399237  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>运输指数                                    </Symbol>
+<EnglishName>TRANSPORTATION INDEX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1399.27080</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399238  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>餐饮指数                                    </Symbol>
+<EnglishName>HOTEL &amp; CATERING IDX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1572.35100</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399239  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>IT指数                                    </Symbol>
+<EnglishName>IT INDEX                                </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1907.04310</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399240  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>金融指数                                    </Symbol>
+<EnglishName>FINANCE INDEX                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1193.44190</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399241  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>地产指数                                    </Symbol>
+<EnglishName>REAL ESTATE INDEX                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2986.70800</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399242  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>商务指数                                    </Symbol>
+<EnglishName>BUSINESS SERVICE IDX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1709.61490</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399243  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>科研指数                                    </Symbol>
+<EnglishName>R&amp;D INDEX                               </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2271.55790</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399244  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>公共指数                                    </Symbol>
+<EnglishName>EP INDEX                                </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1576.94330</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399248  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>文化指数                                    </Symbol>
+<EnglishName>MEDIA INDEX                             </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1433.03960</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399249  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>综企指数                                    </Symbol>
+<EnglishName>CONGLOMERATES INDEX                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>820.13650</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399298  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深信中高                                    </Symbol>
+<EnglishName>SZSE M-H CREDIT BOND                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>154.23130</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399299  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深信中低                                    </Symbol>
+<EnglishName>SZSE M-L CREDIT BOND                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>170.41750</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399300  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>沪深300                                   </Symbol>
+<EnglishName>CSI 300 INDEX                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4102.39660</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399301  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深信用债                                    </Symbol>
+<EnglishName>SZSE CREDIT BOND                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>157.82680</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399302  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深公司债                                    </Symbol>
+<EnglishName>SZSE CORPORATE BOND                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>160.97100</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399303  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证2000                                  </Symbol>
+<EnglishName>CNI 2000 INDEX                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7601.06630</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399306  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证ETF                                   </Symbol>
+<EnglishName>SZSE ETF INDEX                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1220.20260</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399307  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证转债                                    </Symbol>
+<EnglishName>SZSE CONV BOND INDEX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>187.77410</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399310  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证50                                    </Symbol>
+<EnglishName>CNI 50 INDEX                            </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6027.27640</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399311  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证1000                                  </Symbol>
+<EnglishName>CNI 1000 INDEX                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4192.49630</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399312  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证300                                   </Symbol>
+<EnglishName>CNI 300 INDEX                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4592.24960</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399313  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>巨潮100                                   </Symbol>
+<EnglishName>CNI 100 INDEX                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4687.87720</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399314  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>巨潮大盘                                    </Symbol>
+<EnglishName>CNI LARGE CAP. INDEX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4268.95270</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399315  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>巨潮中盘                                    </Symbol>
+<EnglishName>CNI MID-CAP. INDEX                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4256.79510</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399316  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>巨潮小盘                                    </Symbol>
+<EnglishName>CNI SMALL CAP. INDEX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4937.49590</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399317  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证Ａ指                                    </Symbol>
+<EnglishName>CNI A SHARE INDEX                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4847.08230</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399318  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证Ｂ指                                    </Symbol>
+<EnglishName>CNI B SHARE INDEX                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4934.40030</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399319  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>资源优势                                    </Symbol>
+<EnglishName>CNI RESOURCE INDEX                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2039.96780</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399320  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证服务                                    </Symbol>
+<EnglishName>CNI SERVICE INDEX                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2318.76130</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399321  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证红利                                    </Symbol>
+<EnglishName>CNI DIVIDEND INDEX                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6373.22240</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399322  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证治理                                    </Symbol>
+<EnglishName>CNI GOVERNANCE                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>8069.08640</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399324  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证红利                                    </Symbol>
+<EnglishName>SZSE DIVIDEND PRICE                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>8942.76590</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399326  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>成长40                                    </Symbol>
+<EnglishName>SZSE GROWTH 40 PRICE                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5185.73970</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399328  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证治理                                    </Symbol>
+<EnglishName>SZSE CORP GOVERNANCE                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>9319.85860</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399330  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证100                                   </Symbol>
+<EnglishName>SZSE 100 PRICE INDEX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4655.55000</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399333  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中小板R                                    </Symbol>
+<EnglishName>SZSE SME RETURN                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>8534.01250</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399335  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证央企                                    </Symbol>
+<EnglishName>SZSE CENTRAL SOE                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4689.89080</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399337  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证民营                                    </Symbol>
+<EnglishName>SZSE NON-SOE PRICE                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4767.36710</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399339  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证科技                                    </Symbol>
+<EnglishName>SZSE TECH PRICE                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6063.25270</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399341  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证责任                                    </Symbol>
+<EnglishName>SZSE CSR PRICE INDEX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1692.21350</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399344  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证300R                                  </Symbol>
+<EnglishName>SZSE 300 INDEX                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5471.20260</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399346  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证成长                                    </Symbol>
+<EnglishName>SZSE300 GROWTH PRICE                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4235.49490</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399348  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证价值                                    </Symbol>
+<EnglishName>SZSE 300 VALUE PRICE                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6183.84390</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399350  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>皖江30                                    </Symbol>
+<EnglishName>GUOYUAN WANJIANG 30                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1853.53720</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399351  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深报指数                                    </Symbol>
+<EnglishName>SHENZHEN PRESS INDEX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7664.99400</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399352  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深报综指                                    </Symbol>
+<EnglishName>SHENZHEN PRESS COMP.                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7671.60650</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399353  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证物流                                    </Symbol>
+<EnglishName>CNI LOGISTICS INDEX                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2953.82550</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399354  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>分析师指数                                   </Symbol>
+<EnglishName>CNI ANALYST INDEX                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6748.30450</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399355  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>长三角                                     </Symbol>
+<EnglishName>CNI YANGTZE INDEX                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3973.99430</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399356  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>珠三角                                     </Symbol>
+<EnglishName>CNI ZHUJIANG INDEX                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>9316.97970</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399357  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>环渤海                                     </Symbol>
+<EnglishName>CNI BOHAI INDEX                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3381.10010</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399358  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>泰达指数                                    </Symbol>
+<EnglishName>CNI TEDA EP INDEX                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3869.25520</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399359  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证基建                                    </Symbol>
+<EnglishName>CNI INFRASTRUCTURE                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2920.33170</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399360  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>新硬件                                     </Symbol>
+<EnglishName>CNI NG HARDWARE                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4568.28880</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399361  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证商业                                    </Symbol>
+<EnglishName>CNI COMMERCIAL CHAIN                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6620.05200</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399362  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证民营                                    </Symbol>
+<EnglishName>CNI NON-SOE INDEX                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6300.56770</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399363  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>计算机指                                    </Symbol>
+<EnglishName>CNI COMPUTER INDEX                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4430.02030</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399364  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中金消费                                    </Symbol>
+<EnglishName>CNI CICC CONSUMER                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7455.20980</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399365  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证农业                                    </Symbol>
+<EnglishName>CNI AGRICULTURE                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>8425.52670</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399366  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证大宗                                    </Symbol>
+<EnglishName>CNI COMMODITY                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2303.38590</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399367  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>巨潮地产                                    </Symbol>
+<EnglishName>CNI REAL ESTATE 50                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6601.57020</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399368  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证军工                                    </Symbol>
+<EnglishName>CNI DEFENSE INDEX                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6528.31450</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399369  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>CBN-兴全                                  </Symbol>
+<EnglishName>CNI CSR TRN INDEX                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1623.85960</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399370  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证成长                                    </Symbol>
+<EnglishName>CNI GROWTH INDEX                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4370.60160</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399371  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证价值                                    </Symbol>
+<EnglishName>CNI VALUE INDEX                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6580.96860</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399372  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>大盘成长                                    </Symbol>
+<EnglishName>CNI LARGE CAP.GROWTH                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4253.17870</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399373  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>大盘价值                                    </Symbol>
+<EnglishName>CNI LARGE CAP.VALUE                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7792.87950</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399374  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中盘成长                                    </Symbol>
+<EnglishName>CNI MID-CAP. GROWTH                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4630.04070</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399375  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中盘价值                                    </Symbol>
+<EnglishName>CNI MID-CAP. VALUE                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5936.49910</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399376  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>小盘成长                                    </Symbol>
+<EnglishName>CNI SMALL CAP.GROWTH                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5795.03700</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399377  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>小盘价值                                    </Symbol>
+<EnglishName>CNI SMALL CAP.VALUE                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6382.28670</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399378  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>南方低碳                                    </Symbol>
+<EnglishName>CNI NANFANG LC 50                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2465.44700</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399379  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证基金                                    </Symbol>
+<EnglishName>CNI FUND INDEX                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7010.30440</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399380  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证ETF                                   </Symbol>
+<EnglishName>CNI ETF INDEX                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1401.21830</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399381  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>1000能源                                  </Symbol>
+<EnglishName>CNI 1000 ENERGY                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2596.04960</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399382  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>1000材料                                  </Symbol>
+<EnglishName>CNI 1000 MATERIALS                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2659.66280</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399383  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>1000工业                                  </Symbol>
+<EnglishName>CNI 1000 INDUSTRIALS                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2718.14610</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399384  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>1000可选                                  </Symbol>
+<EnglishName>CNI 1000 CONS DISC                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4018.11630</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399385  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>1000消费                                  </Symbol>
+<EnglishName>CNI 1000 CONS STAPLE                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7691.88090</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399386  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>1000医药                                  </Symbol>
+<EnglishName>CNI 1000 HEALTH CARE                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6430.26390</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399387  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>1000金融                                  </Symbol>
+<EnglishName>CNI 1000 FINANCIALS                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5270.65950</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399388  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>1000信息                                  </Symbol>
+<EnglishName>CNI 1000 IT                             </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3987.09800</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399389  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证通信                                    </Symbol>
+<EnglishName>CNI COMMUNICATIONS                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4685.50080</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399390  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>1000公用                                  </Symbol>
+<EnglishName>CNI 1000 UTILITIES                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2467.01580</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399391  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>投资时钟                                    </Symbol>
+<EnglishName>CNI INVESTMENT CLOCK                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2504.93620</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399392  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证新兴                                    </Symbol>
+<EnglishName>CNI EMERGING INDEX                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2588.22780</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399393  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证地产                                    </Symbol>
+<EnglishName>CNI REAL ESTATE                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7102.06920</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399394  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证医药                                    </Symbol>
+<EnglishName>CNI HEALTH CARE                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>9563.19380</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399395  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证有色                                    </Symbol>
+<EnglishName>CNI NON-FERROUS                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4851.81660</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399396  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证食品                                    </Symbol>
+<EnglishName>CNI FOOD &amp; BEVERAGE                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>13001.95810</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399397  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>OCT文化                                   </Symbol>
+<EnglishName>CNI OCT CULTURE                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2284.44550</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399398  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>绩效指数                                    </Symbol>
+<EnglishName>CNI PERFORMANCE                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7884.89190</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399399  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中经GDP                                   </Symbol>
+<EnglishName>CNI-CEI GDP INDEX                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7132.07950</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399400  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>大中盘                                     </Symbol>
+<EnglishName>CNI LARGE-MID CAP.                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3560.39010</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399401  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中小盘                                     </Symbol>
+<EnglishName>CNI MID-SMALL CAP.                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4153.07340</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399402  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>周期100                                   </Symbol>
+<EnglishName>CNI CYCLICAL 100                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3387.17520</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399403  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>防御100                                   </Symbol>
+<EnglishName>CNI DEFENSIVE 100                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6865.95930</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399404  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>大盘低波                                    </Symbol>
+<EnglishName>CNI LARGE CAP. LV                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6264.05400</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399405  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>大盘高贝                                    </Symbol>
+<EnglishName>CNI LARGE CAP. HB                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2243.23310</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399406  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中盘低波                                    </Symbol>
+<EnglishName>CNI MID-CAP. LV                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>11829.73650</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399407  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中盘高贝                                    </Symbol>
+<EnglishName>CNI MID-CAP. HB                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2733.61530</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399408  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>小盘低波                                    </Symbol>
+<EnglishName>CNI SMALL CAP. LV                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>12644.72250</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399409  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>小盘高贝                                    </Symbol>
+<EnglishName>CNI SMALL CAP. HB                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4639.53820</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399410  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>苏州率先                                    </Symbol>
+<EnglishName>SUZHOU LEADING INDEX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2469.05830</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399411  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>红利100                                   </Symbol>
+<EnglishName>CNI DIV. YIELD 100                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3146.73710</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399412  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证新能                                    </Symbol>
+<EnglishName>CNI NEW ENERGY INDEX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2203.56660</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399413  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证转债                                    </Symbol>
+<EnglishName>CNI CONV BOND INDEX                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>108.90380</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399415  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>I100                                    </Symbol>
+<EnglishName>CNI BIG DATA 100                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6079.89790</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399416  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>I300                                    </Symbol>
+<EnglishName>CNI BIG DATA 300                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3906.46240</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399417  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>新能源车                                    </Symbol>
+<EnglishName>CNI NEW ENERGY VEH.                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2535.59570</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399418  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证国安                                    </Symbol>
+<EnglishName>CNI NATL SECURITY                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3164.46830</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399419  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证高铁                                    </Symbol>
+<EnglishName>CNI HSR INDEX                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2132.08230</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399420  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证保证                                    </Symbol>
+<EnglishName>CNI INS. &amp; SE. INDEX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1495.90280</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399422  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中关村A                                    </Symbol>
+<EnglishName>CNI Z A-SHARE INDEX                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3274.91870</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399423  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中关村50                                   </Symbol>
+<EnglishName>CNI Z 50 INDEX                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2993.21460</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399427  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>专利领先                                    </Symbol>
+<EnglishName>PATENT INDEX                            </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2901.59650</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399428  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证定增                                    </Symbol>
+<EnglishName>CNI NP OFFERING                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2886.01210</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399429  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>新丝路                                     </Symbol>
+<EnglishName>NEW SILK ROAD INDEX                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1411.61390</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399431  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证银行                                    </Symbol>
+<EnglishName>CNI BANKS INDEX                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6687.01800</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399432  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证汽车                                    </Symbol>
+<EnglishName>CNI AUTO&amp;COMPONENTS                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4104.06030</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399433  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证交运                                    </Symbol>
+<EnglishName>CNI TRANSPORTATION                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2142.91840</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399434  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证传媒                                    </Symbol>
+<EnglishName>CNI MEDIA INDEX                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3153.45640</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399435  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证农牧                                    </Symbol>
+<EnglishName>CNI AGRI&amp;FISHERY                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3391.48120</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399436  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证煤炭                                    </Symbol>
+<EnglishName>CNI COAL INDEX                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3228.99660</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399437  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证证券                                    </Symbol>
+<EnglishName>CNI SECURITIES INDEX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6094.32520</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399438  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证电力                                    </Symbol>
+<EnglishName>CNI ELEC-UTILITIES                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2047.34610</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399439  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证油气                                    </Symbol>
+<EnglishName>CNI OIL&amp;GAS INDEX                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1922.10290</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399440  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国证钢铁                                    </Symbol>
+<EnglishName>CNI FERROUS METALS                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1768.87560</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399441  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>生物医药                                    </Symbol>
+<EnglishName>CNI BIOMEDICINE IDX                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2667.99620</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399481  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>企债指数                                    </Symbol>
+<EnglishName>CNI CORPORATE BOND                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>127.71380</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399550  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>央视50                                    </Symbol>
+<EnglishName>CCTV 50 INDEX                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7260.36460</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399551  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>央视创新                                    </Symbol>
+<EnglishName>CCTV 50 INNOVATION                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7141.98820</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399552  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>央视成长                                    </Symbol>
+<EnglishName>CCTV 50 GROWTH                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7472.62760</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399553  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>央视回报                                    </Symbol>
+<EnglishName>CCTV 50 RETURN                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6292.44570</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399554  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>央视治理                                    </Symbol>
+<EnglishName>CCTV 50 GOVERNANCE                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7087.71030</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399555  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>央视责任                                    </Symbol>
+<EnglishName>CCTV 50 CSR                             </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4729.71700</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399556  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>央视生态                                    </Symbol>
+<EnglishName>CCTV ECOLOGY                            </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2120.35260</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399557  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>央视文化                                    </Symbol>
+<EnglishName>CCTV CULTURE                            </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1829.05330</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399602  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中小成长                                    </Symbol>
+<EnglishName>SME300 GROWTH PRICE                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1435.93720</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399604  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中小价值                                    </Symbol>
+<EnglishName>SME300 VALUE PRICE                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1479.17780</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399606  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>创业板R                                    </Symbol>
+<EnglishName>CHINEXT TRN INDEX                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1869.46410</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399608  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>科技100                                   </Symbol>
+<EnglishName>SME-CHINEXT TEC 100P                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2651.46260</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399610  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>TMT50                                   </Symbol>
+<EnglishName>SZSE TMT50 PRICE IDX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5987.04190</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399611  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中创100R                                  </Symbol>
+<EnglishName>SME-CHINEXT 100 TRN                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2186.03080</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399612  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中创100                                   </Symbol>
+<EnglishName>SME-CHINEXT 100                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2021.71730</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399613  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证能源                                    </Symbol>
+<EnglishName>SZSE ENERGY INDEX                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3852.14830</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399614  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证材料                                    </Symbol>
+<EnglishName>SZSE MATERIALS INDEX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3180.44350</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399615  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证工业                                    </Symbol>
+<EnglishName>SZSE INDUSTRIALS                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3190.87720</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399616  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证可选                                    </Symbol>
+<EnglishName>SZSE CONS DISC                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6605.55130</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399617  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证消费                                    </Symbol>
+<EnglishName>SZSE CONS STAPLES                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>8283.62520</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399618  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证医药                                    </Symbol>
+<EnglishName>SZSE HEALTH CARE                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>9777.89130</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399619  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证金融                                    </Symbol>
+<EnglishName>SZSE FINANCIALS                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5744.24310</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399620  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证信息                                    </Symbol>
+<EnglishName>SZSE IT INDEX                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3997.51410</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399621  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证电信                                    </Symbol>
+<EnglishName>SZSE TELECOM INDEX                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4177.65900</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399622  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证公用                                    </Symbol>
+<EnglishName>SZSE UTILITIES INDEX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2213.73680</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399623  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中小基础                                    </Symbol>
+<EnglishName>SME PRIME MKT INDEX                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>8470.78140</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399624  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中创400                                   </Symbol>
+<EnglishName>SME-CHINEXT 400                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2057.52930</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399625  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中创500                                   </Symbol>
+<EnglishName>SME-CHINEXT 500                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1871.82080</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399626  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中创成长                                    </Symbol>
+<EnglishName>SME-CHINEXT GROWTH                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1662.87890</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399627  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中创价值                                    </Symbol>
+<EnglishName>SME-CHINEXT VALUE                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1905.08500</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399628  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>700成长                                   </Symbol>
+<EnglishName>SZSE 700 GROWTH                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2255.41760</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399629  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>700价值                                   </Symbol>
+<EnglishName>SZSE 700 VALUE                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2280.81300</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399630  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>1000成长                                  </Symbol>
+<EnglishName>SZSE 1000 GROWTH                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1625.24400</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399631  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>1000价值                                  </Symbol>
+<EnglishName>SZSE 1000 VALUE                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1975.43350</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399632  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深100EW                                  </Symbol>
+<EnglishName>SZSE 100 EW INDEX                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4714.03670</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399633  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深300EW                                  </Symbol>
+<EnglishName>SZSE 300 EW INDEX                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5634.26270</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399634  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中小板EW                                   </Symbol>
+<EnglishName>SZSE SME EW INDEX                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4018.84330</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399635  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>创业板EW                                   </Symbol>
+<EnglishName>CHINEXT EW INDEX                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1870.35600</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399636  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证装备                                    </Symbol>
+<EnglishName>SZSE EQUIPMENT INDEX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3851.93380</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399637  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证地产                                    </Symbol>
+<EnglishName>SZSE REAL ESTATE                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5717.72670</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399638  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证环保                                    </Symbol>
+<EnglishName>SZSE EP INDEX                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4714.84620</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399639  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证大宗                                    </Symbol>
+<EnglishName>SZSE COMMODITY PROD                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2512.00170</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399640  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>创业基础                                    </Symbol>
+<EnglishName>CHINEXT PRIME MARKET                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1808.23520</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399641  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证新兴                                    </Symbol>
+<EnglishName>SZSE EMERGING                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2031.46350</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399642  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中小新兴                                    </Symbol>
+<EnglishName>SME EMERGING                            </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1919.85020</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399643  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>创业新兴                                    </Symbol>
+<EnglishName>CHINEXT EMERGING                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2100.20370</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399644  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证时钟                                    </Symbol>
+<EnglishName>SZSE INVESTMENT CLK                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3313.88990</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399645  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>100低波                                   </Symbol>
+<EnglishName>SZ100 LOW VOLATILITY                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>9091.50910</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399646  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深消费50                                   </Symbol>
+<EnglishName>SZSE CONSUMER 50                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7542.64230</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399647  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深医药50                                   </Symbol>
+<EnglishName>SZSE HEALTH CARE 50                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>10025.01000</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399648  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证GDP                                   </Symbol>
+<EnglishName>SZSE GDP 100 INDEX                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>9513.37500</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399649  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中小红利                                    </Symbol>
+<EnglishName>SME DIVIDEND INDEX                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2744.73220</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399650  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中小治理                                    </Symbol>
+<EnglishName>SME CORP GOVERNANCE                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2366.71990</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399651  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中小责任                                    </Symbol>
+<EnglishName>SME CSR INDEX                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1910.36740</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399652  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中创高新                                    </Symbol>
+<EnglishName>SME-CHINEXT HNTE                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2256.44320</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399653  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证龙头                                    </Symbol>
+<EnglishName>SZSE INDUSTRY TOP                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2180.41060</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399654  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证文化                                    </Symbol>
+<EnglishName>SZSE CULTURE INDEX                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3364.36720</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399655  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证绩效                                    </Symbol>
+<EnglishName>SZSE PERFORMANCE                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7651.59740</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399656  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>100绩效                                   </Symbol>
+<EnglishName>100 PERFORMANCE WT                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5629.84050</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399657  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>300绩效                                   </Symbol>
+<EnglishName>300 PERFORMANCE WT                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6221.71890</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399658  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中小绩效                                    </Symbol>
+<EnglishName>SME PERFORMANCE WT                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4543.56010</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399659  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深成指EW                                   </Symbol>
+<EnglishName>SZSE COMPONENT EW                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4130.13250</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399660  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中创EW                                    </Symbol>
+<EnglishName>SME-CHINEXT 100 EW                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2458.54830</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399661  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证低波                                    </Symbol>
+<EnglishName>SZSE 300 LV                             </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5883.46050</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399662  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证高贝                                    </Symbol>
+<EnglishName>SZSE 300 HB                             </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2012.66110</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399663  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中小低波                                    </Symbol>
+<EnglishName>SME 300 LV                              </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1719.26690</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399664  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中小高贝                                    </Symbol>
+<EnglishName>SME 300 HB                              </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1260.71130</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399665  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中创低波                                    </Symbol>
+<EnglishName>SME-CHINEXT 500 LV                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1879.72850</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399666  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中创高贝                                    </Symbol>
+<EnglishName>SME-CHINEXT 500 HB                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1558.38610</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399667  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>创业板G                                    </Symbol>
+<EnglishName>CHINEXT 300 GROWTH                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2521.95620</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399668  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>创业板V                                    </Symbol>
+<EnglishName>CHINEXT 300 VALUE                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2799.99310</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399669  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证农业                                    </Symbol>
+<EnglishName>SZSE AGRICULTURE                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7412.16980</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399670  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深周期50                                   </Symbol>
+<EnglishName>SZSE CYCLICAL 50                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3416.07210</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399671  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深防御50                                   </Symbol>
+<EnglishName>SZSE DEFENSIVE 50                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7035.63230</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399672  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深红利50                                   </Symbol>
+<EnglishName>SZSE DIV. YIELD 50                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3582.09710</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399673  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>创业板50                                   </Symbol>
+<EnglishName>SZSE CHINEXT 50                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1561.37050</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399674  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深A医药                                    </Symbol>
+<EnglishName>SZSE A HEALTH CARE                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2072.87440</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399675  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深互联网                                    </Symbol>
+<EnglishName>SZSE A SFW&amp;INTERNET                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2986.52710</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399676  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深医药EW                                   </Symbol>
+<EnglishName>SZSE A HEALTHCARE EW                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2744.52590</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399677  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深互联EW                                   </Symbol>
+<EnglishName>SZSE A SFW&amp;INTNET EW                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3592.71940</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399678  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深次新股                                    </Symbol>
+<EnglishName>SZSE SECONDARY NEW                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1147.71550</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399679  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证200R                                  </Symbol>
+<EnglishName>SZSE 200 TRN                            </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5036.11830</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399680  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深成能源                                    </Symbol>
+<EnglishName>SZSE 500 ENERGY                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>763.52620</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399681  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深成材料                                    </Symbol>
+<EnglishName>SZSE 500 MATERIALS                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1162.12830</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399682  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深成工业                                    </Symbol>
+<EnglishName>SZSE 500 INDUSTRIALS                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1272.48680</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399683  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深成可选                                    </Symbol>
+<EnglishName>SZSE 500 CONS DISC                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1917.49650</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399684  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深成消费                                    </Symbol>
+<EnglishName>SZSE 500 CONS STAPLE                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1654.55850</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399685  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深成医药                                    </Symbol>
+<EnglishName>SZSE 500 HEALTH CARE                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1953.95730</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399686  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深成金融                                    </Symbol>
+<EnglishName>SZSE 500 FINANCIALS                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1848.66600</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399687  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深成信息                                    </Symbol>
+<EnglishName>SZSE 500 IT                             </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2611.13850</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399688  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深成电信                                    </Symbol>
+<EnglishName>SZSE 500 TELECOM                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2100.83360</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399689  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深成公用                                    </Symbol>
+<EnglishName>SZSE 500 UTILITIES                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1223.48830</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399690  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中小专利                                    </Symbol>
+<EnglishName>SZSE SME PATENT                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2263.30530</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399691  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>创业专利                                    </Symbol>
+<EnglishName>SZSE CHINEXT PATENT                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3023.87760</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399692  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>创业低波                                    </Symbol>
+<EnglishName>CHINEXT 300 LV                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2852.54070</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399693  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>安防产业                                    </Symbol>
+<EnglishName>SZSE SECURITY INDUS                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3502.50690</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399694  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>创业高贝                                    </Symbol>
+<EnglishName>CHINEXT 300 HB                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2550.47010</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399695  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证节能                                    </Symbol>
+<EnglishName>SZSE EC INDEX                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3065.86740</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399696  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证创投                                    </Symbol>
+<EnglishName>SZSE VC INDEX                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2458.81160</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399697  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中关村60                                   </Symbol>
+<EnglishName>SZSE Z NON-SOE 60                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4757.52450</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399698  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>优势成长                                    </Symbol>
+<EnglishName>SZSE GB GROWTH INDEX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>17254.54110</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399699  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>金融科技                                    </Symbol>
+<EnglishName>SZSE FinTech Index                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2981.10670</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399701  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证F60                                   </Symbol>
+<EnglishName>SZFI 60                                 </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7450.43530</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399702  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证F120                                  </Symbol>
+<EnglishName>SZFI 120                                </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7049.11860</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399703  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证F200                                  </Symbol>
+<EnglishName>SZFI 200                                </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6860.45600</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399704  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证上游                                    </Symbol>
+<EnglishName>SZSE UPSTREAM                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4857.38870</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399705  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证中游                                    </Symbol>
+<EnglishName>SZSE MIDSTREAM                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2907.89270</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399706  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>深证下游                                    </Symbol>
+<EnglishName>SZSE DOWNSTREAM                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5667.14800</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399707  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>CSSW证券                                  </Symbol>
+<EnglishName>CSSW SECURITIES                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6577.72800</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399802  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>500深市                                   </Symbol>
+<EnglishName>500 SZSE                                </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5824.06960</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399803  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>工业4.0                                   </Symbol>
+<EnglishName>CSI INDUSTRY 4.0                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2607.08320</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399804  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证体育                                    </Symbol>
+<EnglishName>CSI SPORT                               </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1771.57370</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399805  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>互联金融                                    </Symbol>
+<EnglishName>CSI INTERNET FINANCE                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2951.16250</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399806  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>环境治理                                    </Symbol>
+<EnglishName>ENVIRON-GOVERNANCE                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2552.25040</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399807  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>高铁产业                                    </Symbol>
+<EnglishName>HIGH-SPEED RAILWAY                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2050.07920</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399808  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证新能                                    </Symbol>
+<EnglishName>CSI NEW ENERGY                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1879.64610</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399809  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>保险主题                                    </Symbol>
+<EnglishName>INSURANCE THEME                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2616.91670</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399810  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>CSSW传媒                                  </Symbol>
+<EnglishName>CSSW MEDIA                              </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3453.38130</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399811  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>CSSW电子                                  </Symbol>
+<EnglishName>CSSW ELECTRONICS                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3216.23020</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399812  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>养老产业                                    </Symbol>
+<EnglishName>CSI OLD-AGE INDUSTRY                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>8444.19480</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399813  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证国安                                    </Symbol>
+<EnglishName>CSI DEFENSE SECURITY                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5143.50100</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399814  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>大农业                                     </Symbol>
+<EnglishName>CSI GRAND AGRIC                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1123.59800</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399817  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>生态100                                   </Symbol>
+<EnglishName>ECOLOGY 100                             </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2097.45100</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399901  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>小康指数                                    </Symbol>
+<EnglishName>WELL-OFF INDEX                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5959.79840</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399903  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证100                                   </Symbol>
+<EnglishName>CSI 100 INDEX                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4166.01850</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399904  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证 200                                  </Symbol>
+<EnglishName>CSI 200 INDEX                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4421.65350</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399905  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证 500                                  </Symbol>
+<EnglishName>CSI 500 INDEX                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6274.51160</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399908  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>300 能源                                  </Symbol>
+<EnglishName>CSI 300 ENERGY                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1926.72040</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399909  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>300 材料                                  </Symbol>
+<EnglishName>CSI 300 MATERIALS                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2594.77450</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399910  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>300 工业                                  </Symbol>
+<EnglishName>CSI 300 INDUSTRIALS                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2633.49900</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399911  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>300 可选                                  </Symbol>
+<EnglishName>CSI 300 CONS DISC                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5958.69040</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399912  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>300 消费                                  </Symbol>
+<EnglishName>CSI 300 CONS STAPLES                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>13895.81700</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399913  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>300 医药                                  </Symbol>
+<EnglishName>CSI 300 HEALTH CARE                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>9837.61600</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399914  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>300 金融                                  </Symbol>
+<EnglishName>CSI 300 FINANCIALS                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6758.21100</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399917  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>300 公用                                  </Symbol>
+<EnglishName>CSI 300 UTILITIES                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2061.87880</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399918  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>300 成长                                  </Symbol>
+<EnglishName>CSI 300 GROWTH                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4554.03830</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399919  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>300 价值                                  </Symbol>
+<EnglishName>CSI 300 VALUE                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5172.02090</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399922  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证红利                                    </Symbol>
+<EnglishName>CSI DIVIDEND INDEX                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4798.55070</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399925  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>基本面50                                   </Symbol>
+<EnglishName>CSI RAFI 50 INDEX                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4568.55420</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399928  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证能源                                    </Symbol>
+<EnglishName>CSI ENERGY INDEX                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2137.65930</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399931  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证可选                                    </Symbol>
+<EnglishName>CSI CONS DISC                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5717.69010</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399932  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证消费                                    </Symbol>
+<EnglishName>CSI CONS STAPLES                        </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>11980.97710</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399933  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证医药                                    </Symbol>
+<EnglishName>CSI HEALTH CARE                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>10200.13790</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399934  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证金融                                    </Symbol>
+<EnglishName>CSI FINANCIALS INDEX                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6569.88190</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399935  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证信息                                    </Symbol>
+<EnglishName>CSI IT                                  </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4624.26160</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399939  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>民企200                                   </Symbol>
+<EnglishName>CSI POES 200                            </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1838.71020</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399944  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>内地资源                                    </Symbol>
+<EnglishName>CN RESOURCE                             </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2920.62440</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399950  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>300基建                                   </Symbol>
+<EnglishName>300 INFRASTRUCTURE                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2266.93890</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399951  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>300银行                                   </Symbol>
+<EnglishName>300 BANKS                               </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6346.59350</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399952  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>300地产                                   </Symbol>
+<EnglishName>300 REAL ESTATE                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>8937.31980</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399957  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>300运输                                   </Symbol>
+<EnglishName>300 TRANSPORTATION                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1609.39220</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399958  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>创业成长                                    </Symbol>
+<EnglishName>INNOVATIVE&amp;GROWING                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1467.72960</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399959  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>军工指数                                    </Symbol>
+<EnglishName>DEFENCE INDEX                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1203.94160</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399961  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证上游                                    </Symbol>
+<EnglishName>CSI UPSTREAM                            </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2785.74860</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399963  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证下游                                    </Symbol>
+<EnglishName>CSI DOWNSTREAM                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5650.21430</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399964  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证新兴                                    </Symbol>
+<EnglishName>CSI EMERGING                            </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>8771.88200</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399965  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>800地产                                   </Symbol>
+<EnglishName>800 REAL ESTATE                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7246.00390</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399966  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>800非银                                   </Symbol>
+<EnglishName>800 FIN(EX BANKS)                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6708.53460</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399967  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证军工                                    </Symbol>
+<EnglishName>CSI NATIONAL DEFENSE                    </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>9005.22570</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399969  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>300非周                                   </Symbol>
+<EnglishName>CSI300 NON-CYCLICAL                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4476.61840</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399970  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>移动互联                                    </Symbol>
+<EnglishName>MOBILE INTERNET                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2640.26160</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399971  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证传媒                                    </Symbol>
+<EnglishName>CSI MEDIA                               </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1727.97590</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399972  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>300深市                                   </Symbol>
+<EnglishName>300 SZSE                                </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5006.19090</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399973  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证国防                                    </Symbol>
+<EnglishName>CSI DEFENSE                             </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1312.88280</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399974  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>国企改革                                    </Symbol>
+<EnglishName>CSI SOES REFORM                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1630.89450</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399975  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>证券公司                                    </Symbol>
+<EnglishName>ALL SHARE BROKERAGE                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>807.93730</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399976  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>CS新能车                                   </Symbol>
+<EnglishName>NEW ENERGY VEHICLES                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2331.86460</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399977  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>内地低碳                                    </Symbol>
+<EnglishName>MAINLAND L-C INDEX                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1478.98000</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399978  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>医药100                                   </Symbol>
+<EnglishName>HEALTH CARE 100                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>13531.07510</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399979  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>大宗商品                                    </Symbol>
+<EnglishName>CSI COMMODITY                           </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>4557.89640</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399982  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>500等权                                   </Symbol>
+<EnglishName>CSI 500 EW                              </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7478.05740</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399983  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>地产等权                                    </Symbol>
+<EnglishName>300 REAL ESTATE EW                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>7414.44910</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399986  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证银行                                    </Symbol>
+<EnglishName>CSI BANKS INDEX                         </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6757.50320</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399987  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证酒                                     </Symbol>
+<EnglishName>CSI ALCOHOLIC DRINK                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>3226.34640</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399989  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证医疗                                    </Symbol>
+<EnglishName>CSI MEDICAL SERVICE                     </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>6843.52650</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399990  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>煤炭等权                                    </Symbol>
+<EnglishName>CSI COAL EW                             </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2257.04200</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399991  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>一带一路                                    </Symbol>
+<EnglishName>CSI OBOR                                </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1771.53950</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399992  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>CSWD并购                                  </Symbol>
+<EnglishName>CSWD M&amp;A                                </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1975.82130</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399993  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>CSWD生科                                  </Symbol>
+<EnglishName>CSWD BIOTECHNOLOGY                      </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2642.95020</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399994  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>信息安全                                    </Symbol>
+<EnglishName>CSI INFO-SECURITY                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1706.72320</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399995  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>基建工程                                    </Symbol>
+<EnglishName>CONST-ENGINEERING                       </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5990.27320</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399996  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>智能家居                                    </Symbol>
+<EnglishName>CSI SMART HOME                          </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>2922.99050</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399997  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证白酒                                    </Symbol>
+<EnglishName>CSI LIQUOR                              </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>5579.12770</PrevCloseIdx>
+</Security>
+<Security>
+<SecurityID>399998  </SecurityID>
+<SecurityIDSource>102</SecurityIDSource>
+<Symbol>中证煤炭                                    </Symbol>
+<EnglishName>CSI COAL                                </EnglishName>
+<Currency>CNY </Currency>
+<PrevCloseIdx>1719.69250</PrevCloseIdx>
+</Security>
+</Securities>

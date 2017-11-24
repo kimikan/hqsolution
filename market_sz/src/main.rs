@@ -28,11 +28,13 @@ extern crate chrono;
 extern crate tokio_core;
 extern crate futures;
 extern crate tiberius;
+extern crate xml;
 
 mod utils;
 mod dbf;
 mod t2sdk;
 mod db;
+mod xmlhelper;
 
 use log::*;
 
@@ -769,6 +771,16 @@ fn main2() {
     
     let mut ctx = Context::new();
     if let Err(e) = ctx.init() {
+        error!("{:?}", e);
+        return;
+    }
+
+    use xmlhelper;
+    if let Err(e) = xmlhelper::parse_static_file("securities_20171124.xml", &mut ctx._stocks) {
+        error!("{:?}", e);
+        return;
+    }
+    if let Err(e) = xmlhelper::parse_static_file("indexinfo_20171124.xml", &mut ctx._stocks) {
         error!("{:?}", e);
         return;
     }

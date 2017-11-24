@@ -140,6 +140,7 @@ pub fn utf8_to_string(buf : &[u8])->String {
 #[derive(Deserialize, Debug)]
 pub struct Configuration {
     pub _addr : String,
+    pub _static_files : String,
 }
 
 impl Configuration {
@@ -176,6 +177,7 @@ impl log::Log for SimpleLog {
     }
 
     fn log(&self, r: &LogRecord) {
+        return;
         if self.enabled(r.metadata()) {
             
             let path = self.get_file();
@@ -187,9 +189,9 @@ impl log::Log for SimpleLog {
                 use std::io::Write;
                 
 				//println!("{:?}", r.args());
-                /*if let Err(e) = writeln!(f, "{:?}", r.args()) {
+                if let Err(e) = writeln!(f, "{:?}", r.args()) {
                     println!("{:?}", e);
-                } */
+                }
             }
         }
     }

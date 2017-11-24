@@ -114,7 +114,7 @@ impl Sqlserver {
                     if let Some(des) = dynamic_eps {
                         value._dynamic_pe = (des * 1000f64) as u32;
                     }
-                    println!("{:?}", value);
+                    //println!("{:?}", value);
                     return Ok(());
                 }
 
