@@ -7,6 +7,7 @@ use xml::reader::{EventReader, XmlEvent};
 use std::io;
 use std::collections::HashMap;
 
+#[allow(dead_code)]
 fn indent(size: usize) -> String {
     const INDENT: &'static str = "    ";
     (0..size).map(|_| INDENT)
@@ -96,6 +97,40 @@ pub fn parse_static_file(file_name : &str, stocks : &mut HashMap<String, StockRe
             _ => {}
         }
     } //end fn?
+
+    Ok(())
+}
+
+use chrono;
+use chrono::Datelike;
+pub fn get_today_date()->u32 {
+    let now = chrono::Local::now();
+
+    (now.year() as u32) * 10000 + now.month() * 100 + now.day()
+}
+
+use std::fs;
+use std::path::Path;
+pub fn parse_static_files(dir : &str, stocks : &mut HashMap<String, StockRecord>, date : u32) ->io::Result<()> {
+
+    let dir2 = format!("{}/{}", dir, date);
+    let p = Path::new(&dir2);
+
+    let is_exists = p.exists();
+    println!("{}, {:?}, {}", is_exists, p, dir2);
+    let mut securities_file = format!("{}/{}/securities_{}.xml",  dir, date, date);
+    if !is_exists {
+        securities_file = format!("{}/securities_{}.xml",  dir, date);
+    }
+
+    let mut indexs_file =  format!("{}/{}/indexinfo_{}.xml",  dir, date, date);
+    if !is_exists {
+        indexs_file = format!("{}/indexinfo_{}.xml",  dir, date)
+    };
+
+    println!("{:?}, {}", securities_file, indexs_file);
+    parse_static_file(&securities_file, stocks)?;
+    parse_static_file(&indexs_file, stocks)?;
 
     Ok(())
 }

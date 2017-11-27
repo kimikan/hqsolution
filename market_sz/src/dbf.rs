@@ -83,6 +83,7 @@ impl Record {
         }
     }
 
+    #[allow(dead_code)]
     fn sync_to_file(file : &String) {
 
     }
@@ -202,7 +203,7 @@ impl Dbf {
         let f_o = DbfHead::from(&mut self._file);
         if let Some(f) = f_o {
             
-            for i in 0.. f.get_field_number() {
+            for _ in 0.. f.get_field_number() {
                 let col_o = DbfColumn::from(&mut self._file);
 
                 if let Some(col) = col_o {
@@ -263,7 +264,7 @@ impl Dbf {
 }
 
 
-
+#[allow(dead_code)]
 pub fn test_hq_parser() {
     let mut d = Dbf::new("sjshq.dbf").unwrap();
     let res = d.parse();

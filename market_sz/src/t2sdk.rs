@@ -47,7 +47,7 @@ pub struct StockRecord {
 impl StockRecord {
 
     fn push(&self)->io::Result<()> {
-        println!("{:?}", self);
+        info!("{:?}", self);
         Ok(())
     }
 }
@@ -95,6 +95,7 @@ impl Default for StockRecord {
     }
 }
 
+use log::*;
 pub fn push_stock_status(code : &str, trade_status : u32, time : u32)->io::Result<()> {
 
     Ok(())
@@ -118,7 +119,7 @@ pub fn push_market_status(date : u32, time : u32, trade_status:u32)->io::Result<
 }
 
 pub fn push_stock(stock : &StockRecord)->io::Result<()> {
-    println!("{:?}", stock);
+    //println!("{:?}", stock);
     stock.push()
 }
 

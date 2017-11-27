@@ -116,7 +116,7 @@ pub fn is_fund(code : &String)->bool {
     return false;
 }
 
-pub fn any_to_u8_slice<T: Sized>(p: &mut T) -> &mut [u8] {
+pub fn any_to_u8_slice_mut<T: Sized>(p: &mut T) -> &mut [u8] {
     unsafe { slice::from_raw_parts_mut((p as *mut T) as *mut u8, mem::size_of::<T>()) }
 }
 
@@ -137,7 +137,7 @@ pub fn utf8_to_string(buf : &[u8])->String {
     s.into_owned()
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct Configuration {
     pub _addr : String,
     pub _static_files : String,
@@ -177,7 +177,7 @@ impl log::Log for SimpleLog {
     }
 
     fn log(&self, r: &LogRecord) {
-        return;
+        //return;
         if self.enabled(r.metadata()) {
             
             let path = self.get_file();
@@ -188,7 +188,7 @@ impl log::Log for SimpleLog {
             if let Ok(mut f) = file_op {
                 use std::io::Write;
                 
-				//println!("{:?}", r.args());
+		//println!("{:?}", r.args());
                 if let Err(e) = writeln!(f, "{:?}", r.args()) {
                     println!("{:?}", e);
                 }

@@ -177,6 +177,7 @@ fn generate_checksum(bs : &[u8])->u32 {
 struct Context {
 
     _stocks : HashMap<String, t2sdk::StockRecord>,
+    _config : utils::Configuration,
 }
 
 use std::marker::Sized;
@@ -199,11 +200,6 @@ fn heartbeat(stream:&mut TcpStream)->io::Result<()>{
     Ok(())
 }
 
-fn struct_to_bytes<T:Sized>(p : &mut T)->&mut[u8] {
-    unsafe {
-        slice::from_raw_parts_mut((p as *mut T) as *mut u8, mem::size_of::<T>())
-    }
-}
 
 use std::io::Write;
 use std::io::Error;
@@ -212,6 +208,7 @@ impl Context {
     fn new()->Context {
         Context {
             _stocks : Default::default(),
+            _config : utils::Configuration::load().unwrap(),
         }
     }
 
@@ -241,6 +238,7 @@ impl Context {
         return Err(Error::from(ErrorKind::InvalidData));
     }
 
+    #[allow(dead_code)]
     fn login2(&self, stream : &mut TcpStream)->io::Result<()> {
         /*
         #[repr(C, packed)]
@@ -339,7 +337,7 @@ impl Context {
         let time : i64;
         let user_num : u16;
         { //local variables
-            let buf = struct_to_bytes(&mut msg);
+            let buf = utils::any_to_u8_slice_mut(&mut msg);
             time = byteorder::BigEndian::read_i64(&buf[..]);
             user_num = byteorder::BigEndian::read_u16(&buf[24..]);
         }
@@ -715,9 +713,8 @@ impl Context {
 
     //main run function
     fn run(&mut self) -> io::Result<()> {
-        let config = utils::Configuration::load()?;
 
-        let mut stream = TcpStream::connect(&config._addr)?;
+        let mut stream = TcpStream::connect(&self._config._addr)?;
         
         self.login(&mut stream)?;
         error!("login success {:?}", stream);
@@ -755,7 +752,7 @@ impl Context {
 
     fn init(&mut self)->io::Result<()>{
 
-        let mut server_o = db::Sqlserver::new();
+        let server_o = db::Sqlserver::new();
         if let Some(mut s) = server_o {
             s.update(&mut self._stocks)?;
             s.update2(&mut self._stocks)?;
@@ -770,25 +767,25 @@ impl Context {
 fn main2() {
     
     let mut ctx = Context::new();
-    if let Err(e) = ctx.init() {
+
+    use xmlhelper;
+    let date = xmlhelper::get_today_date();
+    if let Err(e) = xmlhelper::parse_static_files(ctx._config._static_files.as_str(), &mut ctx._stocks, date) {
         error!("{:?}", e);
+        println!("{:?}", e);
         return;
     }
 
-    use xmlhelper;
-    if let Err(e) = xmlhelper::parse_static_file("securities_20171124.xml", &mut ctx._stocks) {
+    if let Err(e) = ctx.init() {
         error!("{:?}", e);
-        return;
-    }
-    if let Err(e) = xmlhelper::parse_static_file("indexinfo_20171124.xml", &mut ctx._stocks) {
-        error!("{:?}", e);
+        println!("{:?}", e);
         return;
     }
 
     println!("{:?}", ctx._stocks);
-    
     if let Err(e) = ctx.run() {
         error!("{:?}", e);
+        println!("{:?}", e);
     }
 }
 

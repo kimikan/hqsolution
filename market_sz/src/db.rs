@@ -37,7 +37,7 @@ impl Sqlserver {
 
     pub fn update(&mut self, stocks:&mut HashMap<String, StockRecord>)->io::Result<()>{
 
-        let mut conn_new = SqlConnection::connect(self._core.handle(), CONNSTRING);
+        let conn_new = SqlConnection::connect(self._core.handle(), CONNSTRING);
 
         let future = conn_new.and_then(|conn| {
             conn.simple_query(QUERYSTRING)
@@ -79,7 +79,7 @@ impl Sqlserver {
 
     pub fn update2(&mut self, stocks:&mut HashMap<String, StockRecord>)->io::Result<()>{
 
-        let mut conn_new = SqlConnection::connect(self._core.handle(), CONNSTRING);
+        let conn_new = SqlConnection::connect(self._core.handle(), CONNSTRING);
 
         let future = conn_new.and_then(|conn| {
             conn.simple_query(HQSTRING)
