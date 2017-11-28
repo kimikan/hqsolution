@@ -95,6 +95,8 @@ impl Default for StockRecord {
     }
 }
 
+use interoper;
+
 use log::*;
 pub fn push_stock_status(code : &str, trade_status : u32, time : u32)->io::Result<()> {
 
@@ -108,8 +110,26 @@ pub fn push_market_datetime(dt : i64)->io::Result<()> {
     push_market_time(date, time)
 }
 
-pub fn push_market_time(date : u32, time : u32)->io::Result<()> {
+fn get_market_status(time : u32)->u32 {
+    
+    let status : u32 = match time {
+        85800...91459=>1,//before open
+        91500...92500=>2,//auction
+        92500...92959=>3,
+        93000...112959=>4,//trading
+        113000...125959=>5,//noon closing
+        130000...145700=>4,
+        145700...150000=>8,
+        _=>6,//Stop
+    };
 
+    status
+}
+
+pub fn push_market_time(date : u32, time : u32)->io::Result<()> {
+    let status = get_market_status(time);
+
+    push_market_status(date, time, status)?;
     Ok(())
 }
 
@@ -133,7 +153,6 @@ pub fn push_fund(stock : &StockRecord)->io::Result<()> {
 
     stock.push()
 }
-
 
 pub fn push_index(stock : &StockRecord)->io::Result<()> {
 
