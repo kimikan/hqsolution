@@ -13,7 +13,7 @@ use std::io;
 use tokio_core::reactor::Core;
 //use
 pub const CONNSTRING: &str = "server=tcp:139.196.143.124,1433;
-    Database=JYDB;Uid=sa;Pwd=Hznb@123;TrustServerCertificate=true;";
+    Database=JYDB;Uid=sa;Pwd=xxxx;TrustServerCertificate=true;";
 
 pub const QUERYSTRING: &str = "SELECT b.SecuCode,a.IssuePrice,a.listdate
     FROM LC_AShareIPO a,SecuMain b
