@@ -2,9 +2,14 @@
 use std::ffi::CStr;
 use std::os::raw::*;
 
+pub const REQUEST : i32 = 0;
+pub const RESPONSE : i32 = 1;
+
 
 #[link(name = "ct2sdk")]
 extern "C" {
+    pub fn test(_:*const c_char);
+
     pub fn create_t2context() -> *mut c_void;
 
     pub fn release_t2context(_: *mut c_void);
@@ -59,16 +64,30 @@ extern "C" {
     pub fn msgparser_destroy(_: *mut c_void) -> *mut c_void;
 }
 
+pub extern fn callback(msg:*mut c_void) {
+        if msg as u32 != 0 {
+            println!("Msg recved! ");
+            //no need.
+             unsafe {msgparser_release(msg) };
+        }
+}
 
 use std::os::raw::*;
 
+#[derive(Debug, Clone)]
 pub struct T2Context {
-    _context: *mut c_void,
+    pub _context: *mut c_void,
 }
 
 impl T2Context {
+
     pub fn new() -> T2Context {
-        T2Context { _context: unsafe { create_t2context() } }
+        let mut ctx  =unsafe { create_t2context() };
+        unsafe {
+            set_callback(ctx, callback);
+        }
+
+        T2Context { _context: ctx }
     }
 
     pub fn set_callback(&mut self, cb: extern fn(*mut c_void)) {
@@ -85,7 +104,7 @@ impl Drop for T2Context {
 }
 
 pub struct T2Message {
-    _message: *mut c_void,
+    pub _message: *mut c_void,
 }
 
 impl T2Message {
@@ -117,14 +136,9 @@ impl Drop for T2Message {
 }
 
 use std::ffi::CString;
-fn to_char_array(s:&str)->*const c_char {
-    let cs = CString::new(s).unwrap();
+pub fn to_char_array(s:&String)->*const c_char {
+    let cs = CString::new(s.clone().as_str()).unwrap();
     let pt = cs.as_ptr();
     pt
 }
 
-pub extern fn callback(msg:*mut c_void) {
-        if msg as u32 != 0 {
-             unsafe {msgparser_release(msg) };
-        }
-}

@@ -116,6 +116,22 @@ pub fn is_fund(code : &String)->bool {
     return false;
 }
 
+ //check time...
+pub fn check_time()->io::Result<()> {
+    use chrono::Timelike;
+    let now = chrono::Local::now();
+    let hour = now.hour();
+
+    //0 based, monday from
+    let weekday = now.weekday().num_days_from_monday();
+    if (hour >= 16 && hour <= 8) || weekday >= 5 {
+
+        return Err(io::Error::from(io::ErrorKind::WouldBlock));
+    }
+
+    Ok(())
+}
+
 pub fn any_to_u8_slice_mut<T: Sized>(p: &mut T) -> &mut [u8] {
     unsafe { slice::from_raw_parts_mut((p as *mut T) as *mut u8, mem::size_of::<T>()) }
 }
@@ -130,6 +146,26 @@ pub fn gb2312_to_string(buf : &[u8])->Option<String> {
     }
 
     None
+}
+
+use encoding::{Encoding, ByteWriter, EncoderTrap, DecoderTrap};
+use encoding::types::RawEncoder;
+use encoding::all::GBK;
+
+fn hex_ncr_escape(_encoder: &mut RawEncoder, input: &str, output: &mut ByteWriter) -> bool {
+    let escapes: Vec<String> =
+        input.chars().map(|ch| format!("&#x{:x};", ch as isize)).collect();
+    let escapes = escapes.concat();
+    output.write_bytes(escapes.as_bytes());
+    true
+}
+
+static HEX_NCR_ESCAPE: EncoderTrap = EncoderTrap::Call(hex_ncr_escape);
+pub fn string_to_gb2312(s : &String)->Vec<u8> {
+    let x = GBK.encode(s, HEX_NCR_ESCAPE);
+    
+    let v:Vec<u8> = vec![];
+    x.unwrap_or(v)
 }
 
 pub fn utf8_to_string(buf : &[u8])->String {
@@ -207,6 +243,7 @@ impl SimpleLog {
     }
 
     fn get_file(&self)->String {
+        //return "test".to_owned();
         let now = chrono::Local::now();
         format!("{}{}{}{}", now.year(), now.month(), now.day(), now.hour())
     }

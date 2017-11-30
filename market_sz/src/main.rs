@@ -174,11 +174,13 @@ fn generate_checksum(bs : &[u8])->u32 {
     sum
 }
 
+
 #[derive(Debug, Clone)]
 struct Context {
 
     _stocks : HashMap<String, t2sdk::StockRecord>,
     _config : utils::Configuration,
+    _t2ctx : interoper::T2Context,
 }
 
 use std::marker::Sized;
@@ -207,9 +209,12 @@ use std::io::Error;
 
 impl Context {
     fn new()->Context {
+        let cfg = utils::Configuration::load();
+        println!("{:?}", cfg);
         Context {
             _stocks : Default::default(),
-            _config : utils::Configuration::load().unwrap(),
+            _config : cfg.unwrap(),
+            _t2ctx : interoper::T2Context::new(),
         }
     }
 
@@ -321,7 +326,7 @@ impl Context {
         Ok(())
     }
 
-    fn handle_user_report_message(&self, _:&mut TcpStream, _ : &Vec<u8>)->io::Result<()>{
+    fn handle_user_report_message(&mut self, _:&mut TcpStream, _ : &Vec<u8>)->io::Result<()>{
         
         #[derive(Debug)]
         struct ReportMsg {
@@ -344,7 +349,7 @@ impl Context {
         }
         msg._time = time;
         msg._user_num = user_num;
-        t2sdk::push_market_datetime(time)?;
+        t2sdk::push_market_datetime(&mut self._t2ctx, time)?;
         info!("UserReport: {:?}", msg);
         Ok(())
     }
@@ -359,7 +364,7 @@ impl Context {
         Ok(())
     }
 
-    fn handle_realtime_status(&self, _:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+    fn handle_realtime_status(&mut self, _:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
         
         #[derive(Debug)]
         struct Switcher {
@@ -406,12 +411,12 @@ impl Context {
             msg._switchers.push(s);
         }
 
-        t2sdk::push_market_datetime(msg._time)?;
+        t2sdk::push_market_datetime(&mut self._t2ctx, msg._time)?;
         info!("Realtime: {:?}", msg);
         Ok(())
     }
 
-    fn handle_stock_report(&self, _:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
+    fn handle_stock_report(&mut self, _:&mut TcpStream, buf : &Vec<u8>)->io::Result<()>{
         #[derive(Debug)]
         struct StockReport {
             _time : i64,
@@ -455,7 +460,7 @@ impl Context {
             (&mut msg._raw_data[..]).copy_from_slice(&buf[158..]);
         }
 
-        t2sdk::push_market_datetime(msg._time)?;
+        t2sdk::push_market_datetime(&mut self._t2ctx, msg._time)?;
         info!("Stockreport: {:?}", msg);
         Ok(())
     }
@@ -533,7 +538,7 @@ impl Context {
         //msg._snap_shot._orig_time = byteorder::BigEndian::readi64()
         msg._snap_shot._orig_time = byteorder::BigEndian::read_i64(&buf[..]);
         
-        t2sdk::push_market_datetime(msg._snap_shot._orig_time)?;
+        t2sdk::push_market_datetime(&mut self._t2ctx, msg._snap_shot._orig_time)?;
 
         msg._snap_shot._channel_no = byteorder::BigEndian::read_u16(&buf[8..]);
         (&mut msg._snap_shot._md_stream_id[..]).copy_from_slice(&buf[10..13]);
@@ -591,11 +596,14 @@ impl Context {
         }
 
         if utils::is_dept(&security_id) {
-            t2sdk::push_debt(stock)?;
+            stock._stock_type = 3;
+            t2sdk::push_debt(&mut self._t2ctx, stock)?;
         } else if utils::is_fund(&security_id) {
-            t2sdk::push_fund(stock)?;
+            stock._stock_type = 4;
+            t2sdk::push_fund(&mut self._t2ctx, stock)?;
         } else {
-            t2sdk::push_stock(stock)?;
+            stock._stock_type = 1;
+            t2sdk::push_stock(&mut self._t2ctx, stock)?;
         }
 
         info!("Stocksnapshot: {:?}", msg);
@@ -608,7 +616,7 @@ impl Context {
         //msg._snap_shot._orig_time = byteorder::BigEndian::readi64()
         msg._snap_shot._orig_time = byteorder::BigEndian::read_i64(&buf[..]);
         msg._snap_shot._channel_no = byteorder::BigEndian::read_u16(&buf[8..]);
-         t2sdk::push_market_datetime(msg._snap_shot._orig_time)?;
+         t2sdk::push_market_datetime(&mut self._t2ctx, msg._snap_shot._orig_time)?;
 
         (&mut msg._snap_shot._md_stream_id[..]).copy_from_slice(&buf[10..13]);
         (&mut msg._snap_shot._security_id[..]).copy_from_slice(&buf[13..21]);
@@ -650,7 +658,8 @@ impl Context {
             msg._entries.push(entry);
         }
 
-        t2sdk::push_index(stock)?;
+        stock._stock_type = 2;
+        t2sdk::push_index(&mut self._t2ctx, stock)?;
         info!("Indexsnapshot: {:?}", msg);
         Ok(())
     }
@@ -726,16 +735,18 @@ impl Context {
             loop {
                 use std::time;
                 thread::sleep(time::Duration::from_secs(15));
-                println!("Heart beat");
                 if let Err(e) = heartbeat(&mut stream2) {
                     error!("heartbeat failed {:?}", e);
                     break;
                 }
             }
+            println!("heartbeat failed!");
             
         }).unwrap();
 
         loop {
+            utils::check_time()?;
+            
             let (res, op) = self.get_message(&mut stream);
             let msg_type  = match res {
                 Ok(expr)=>expr,
@@ -766,35 +777,58 @@ impl Context {
 }
 
 fn main2() {
-    
+    //println!("ee");
     let mut ctx = Context::new();
-
+    //println!("fff");
     use xmlhelper;
     let date = xmlhelper::get_today_date();
+    //println!("xxc");
     if let Err(e) = xmlhelper::parse_static_files(ctx._config._static_files.as_str(), &mut ctx._stocks, date) {
         error!("{:?}", e);
         println!("{:?}", e);
         return;
-    }
-
+    } 
     if let Err(e) = ctx.init() {
         error!("{:?}", e);
         println!("{:?}", e);
         return;
     }
-
-    println!("{:?}", ctx._stocks);
+    
+    //println!("{:?}", ctx._stocks);
     if let Err(e) = ctx.run() {
-        error!("{:?}", e);
-        println!("{:?}", e);
+        error!("run failed: {:?}", e);
+        println!("run failed: {:?}", e);
     }
 }
 
+fn test_send() {
+    let mut ctx = interoper::T2Context::new();
+    //ctx.set_callback(interoper::callback);
+    println!("xxxxxx");
+    t2sdk::push_market_time(&mut ctx, 0, 1).unwrap();
+
+    std::thread::sleep_ms(1000 * 5);
+}
+
 fn main() {
+    /*
+    let s = "002362".to_owned();
+    //let x = interoper::to_char_array(&s);
+
+    use std::ffi::CString;
+    //unsafe { interoper::test(CString::new(s.as_str()).unwrap().as_ptr()); }
+    unsafe { interoper::test(CString::new(s.as_str()).unwrap().as_ptr()); }
+    println!("{:?}", s);
+    return; */
     utils::SimpleLog::init();
     loop {
 
         main2();
-        std::thread::sleep_ms(1000 * 300);
+
+        if let Err(_) = utils::check_time() {
+            std::thread::sleep_ms(1000 * 300);
+        } else {
+            std::thread::sleep_ms(1000 *1);
+        }
     }
 }

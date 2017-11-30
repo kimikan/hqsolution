@@ -45,7 +45,7 @@ pub fn parse_static_file(file_name : &str, stocks : &mut HashMap<String, StockRe
                     if name.local_name.eq("Security") {
                         if stock_status > 0 {
                             //print all of the stop stocks for debuging usage
-                            println!("{:?}, {}, {}, {}", code, symbol, pre_close_px, stock_status);
+                            //println!("{:?}, {}, {}, {}", code, symbol, pre_close_px, stock_status);
                         }
 
                          let value = stocks.entry(code.clone()).or_insert(StockRecord::default());
@@ -105,7 +105,7 @@ use chrono;
 use chrono::Datelike;
 pub fn get_today_date()->u32 {
     let now = chrono::Local::now();
-
+    //println!("now: {:?}", now);
     (now.year() as u32) * 10000 + now.month() * 100 + now.day()
 }
 
@@ -121,11 +121,13 @@ pub fn parse_static_files(dir : &str, stocks : &mut HashMap<String, StockRecord>
     let mut securities_file = format!("{}/{}/securities_{}.xml",  dir, date, date);
     if !is_exists {
         securities_file = format!("{}/securities_{}.xml",  dir, date);
+        //println!("{:?}", securities_file);
     }
 
     let mut indexs_file =  format!("{}/{}/indexinfo_{}.xml",  dir, date, date);
     if !is_exists {
-        indexs_file = format!("{}/indexinfo_{}.xml",  dir, date)
+        indexs_file = format!("{}/indexinfo_{}.xml",  dir, date);
+       // println!("{:?}", indexs_file);
     };
 
     println!("{:?}, {}", securities_file, indexs_file);
