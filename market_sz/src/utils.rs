@@ -5,7 +5,7 @@ use log;
 use log::{LogRecord, LogLevel, LogMetadata, LogLevelFilter};
 
 use serde_json;
-use serde::{ Deserialize};
+use serde::Deserialize;
 use std::io;
 use std::fs::OpenOptions;
 use chrono;
@@ -13,13 +13,13 @@ use chrono::{Timelike, Datelike};
 use std::mem;
 use std::slice;
 
-pub fn get_line_number(time : u32)->u32 {
+pub fn get_line_number(time: u32) -> u32 {
     let h = time / 10000;
     let m = time / 100;
     let s = m % 100;
 
-    let mut pos : u32 = 0;
-    if  m >= 1300  && m <= 1500 {
+    let mut pos: u32 = 0;
+    if m >= 1300 && m <= 1500 {
         pos = 121 + (h - 13) * 60 + s;
     } else if m <= 1130 && m >= 930 {
         pos = (h - 9) * 60 + s - 30;
@@ -29,29 +29,29 @@ pub fn get_line_number(time : u32)->u32 {
         pos = 241;
     } else if m > 1130 && m < 1300 {
         pos = 120;
-    } else if  m <= 859 {
+    } else if m <= 859 {
         pos = 241;
     }
 
     return pos;
 }
 
-pub fn trading_phase_to_u32(code : &[u8])->u32 {
+pub fn trading_phase_to_u32(code: &[u8]) -> u32 {
     if code.len() <= 0 {
         return 0;
     }
 
-    let mut status : u32 = {
+    let mut status: u32 = {
         match code[0] {
             b'S' => 1,
-            b'O'=>2,
-            b'T'=>4,
-            b'B'=>5,
-            b'C'=>8,
-            b'E'=>6,
-            b'H'=>7,
-            b'A'=>13,
-            b'V'=>14,
+            b'O' => 2,
+            b'T' => 4,
+            b'B' => 5,
+            b'C' => 8,
+            b'E' => 6,
+            b'H' => 7,
+            b'A' => 13,
+            b'V' => 14,
             _ => 0,
         }
     };
@@ -65,7 +65,7 @@ pub fn trading_phase_to_u32(code : &[u8])->u32 {
     status
 }
 
-pub fn div_accurate(value : i64, factor: i32)->u32 {
+pub fn div_accurate(value: i64, factor: i32) -> u32 {
     if factor <= 0 {
         return 0;
     }
@@ -75,22 +75,22 @@ pub fn div_accurate(value : i64, factor: i32)->u32 {
     let mut result = v1;
 
     match factor {
-        10=>{
+        10 => {
             if value % 10 >= 5 {
                 result += 1;
             }
         }
-        100=>{
+        100 => {
             if value % 100 >= 50 {
                 result += 1;
             }
         }
-        1000=>{
-            if value % 1000 >= 500 { 
+        1000 => {
+            if value % 1000 >= 500 {
                 result += 1;
             }
         }
-        _=>{
+        _ => {
             println!("error div_accurate..... ");
         }
     }
@@ -98,26 +98,26 @@ pub fn div_accurate(value : i64, factor: i32)->u32 {
     return result as u32;
 }
 
-pub fn is_dept(code : &String)->bool {
-    if code.starts_with("10") || code.starts_with("11")
-    || code.starts_with("12") || code.starts_with("13") {
+pub fn is_dept(code: &String) -> bool {
+    if code.starts_with("10") || code.starts_with("11") || code.starts_with("12") ||
+       code.starts_with("13") {
         return true;
     }
 
     return false;
 }
 
-pub fn is_fund(code : &String)->bool {
-    if code.starts_with("15") || code.starts_with("16")
-    || code.starts_with("17") || code.starts_with("18") {
+pub fn is_fund(code: &String) -> bool {
+    if code.starts_with("15") || code.starts_with("16") || code.starts_with("17") ||
+       code.starts_with("18") {
         return true;
     }
 
     return false;
 }
 
- //check time...
-pub fn check_time()->io::Result<()> {
+//check time...
+pub fn check_time() -> io::Result<()> {
     use chrono::Timelike;
     let now = chrono::Local::now();
     let hour = now.hour();
@@ -137,10 +137,10 @@ pub fn any_to_u8_slice_mut<T: Sized>(p: &mut T) -> &mut [u8] {
 }
 
 use encoding;
-pub fn gb2312_to_string(buf : &[u8])->Option<String> {
+pub fn gb2312_to_string(buf: &[u8]) -> Option<String> {
     let refs = encoding::all::encodings();
     let (x, _) = encoding::decode(buf, encoding::DecoderTrap::Strict, refs[37]);
-    
+
     if let Ok(s) = x {
         return Some(s);
     }
@@ -153,38 +153,38 @@ use encoding::types::RawEncoder;
 use encoding::all::GBK;
 
 fn hex_ncr_escape(_encoder: &mut RawEncoder, input: &str, output: &mut ByteWriter) -> bool {
-    let escapes: Vec<String> =
-        input.chars().map(|ch| format!("&#x{:x};", ch as isize)).collect();
+    let escapes: Vec<String> = input
+        .chars()
+        .map(|ch| format!("&#x{:x};", ch as isize))
+        .collect();
     let escapes = escapes.concat();
     output.write_bytes(escapes.as_bytes());
     true
 }
 
 static HEX_NCR_ESCAPE: EncoderTrap = EncoderTrap::Call(hex_ncr_escape);
-pub fn string_to_gb2312(s : &String)->Vec<u8> {
+pub fn string_to_gb2312(s: &String) -> Vec<u8> {
     let x = GBK.encode(s, HEX_NCR_ESCAPE);
-    
-    let v:Vec<u8> = vec![];
+
+    let v: Vec<u8> = vec![];
     x.unwrap_or(v)
 }
 
-pub fn utf8_to_string(buf : &[u8])->String {
+pub fn utf8_to_string(buf: &[u8]) -> String {
     let s = String::from_utf8_lossy(buf);
     s.into_owned()
 }
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct Configuration {
-    pub _addr : String,
-    pub _static_files : String,
+    pub _addr: String,
+    pub _static_files: String,
 }
 
 impl Configuration {
+    pub fn load() -> io::Result<Configuration> {
+        let file = OpenOptions::new().read(true).open("default.cfg")?;
 
-    pub fn load()->io::Result<Configuration> {
-        let file = OpenOptions::new()
-                    .read(true).open("default.cfg")?;
-        
         use std::io::BufReader;
         let mut buf_reader = BufReader::new(file);
         let mut contents = String::new();
@@ -192,8 +192,8 @@ impl Configuration {
         use std::io::Read;
         buf_reader.read_to_string(&mut contents)?;
 
-        let r : serde_json::Result<Configuration> = serde_json::from_str(&contents);
-   
+        let r: serde_json::Result<Configuration> = serde_json::from_str(&contents);
+
         if let Ok(c) = r {
             return Ok(c);
         } else {
@@ -205,26 +205,28 @@ impl Configuration {
 }
 
 
-pub struct SimpleLog ;
+pub struct SimpleLog;
 
 impl log::Log for SimpleLog {
-    fn enabled(&self, m : &LogMetadata)->bool {
+    fn enabled(&self, m: &LogMetadata) -> bool {
         m.level() <= LogLevel::Info
     }
 
     fn log(&self, r: &LogRecord) {
         //return;
         if self.enabled(r.metadata()) {
-            
+
             let path = self.get_file();
             let file_op = OpenOptions::new()
-                .create(true).write(true).append(true)
+                .create(true)
+                .write(true)
+                .append(true)
                 .open(&path);
-            
+
             if let Ok(mut f) = file_op {
                 use std::io::Write;
-                
-		//println!("{:?}", r.args());
+
+                //println!("{:?}", r.args());
                 if let Err(e) = writeln!(f, "{:?}", r.args()) {
                     println!("{:?}", e);
                 }
@@ -236,16 +238,16 @@ impl log::Log for SimpleLog {
 impl SimpleLog {
     pub fn init() {
         log::set_logger(|max_log_level| {
-            max_log_level.set(LogLevelFilter::Info);
+                            max_log_level.set(LogLevelFilter::Info);
 
-            Box::new(SimpleLog)
-        }).unwrap();
+                            Box::new(SimpleLog)
+                        })
+                .unwrap();
     }
 
-    fn get_file(&self)->String {
+    fn get_file(&self) -> String {
         //return "test".to_owned();
         let now = chrono::Local::now();
         format!("{}{}{}{}", now.year(), now.month(), now.day(), now.hour())
     }
 }
-

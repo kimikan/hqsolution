@@ -2,20 +2,20 @@
 use std::ffi::CStr;
 use std::os::raw::*;
 
-pub const REQUEST : i32 = 0;
-pub const RESPONSE : i32 = 1;
+pub const REQUEST: i32 = 0;
+pub const RESPONSE: i32 = 1;
 
 
 #[link(name = "ct2sdk")]
 extern "C" {
-    pub fn test(_:*const c_char);
+    pub fn test(_: *const c_char, _: *const c_char);
 
     pub fn create_t2context() -> *mut c_void;
 
     pub fn release_t2context(_: *mut c_void);
 
     pub fn send_message(_: *mut c_void, msg: *mut c_void) -> i32;
-    pub fn set_callback(_: *mut c_void, cb: extern fn(*mut c_void));
+    pub fn set_callback(_: *mut c_void, cb: extern "C" fn(*mut c_void));
 
     pub fn t2message_create() -> *mut c_void;
 
@@ -64,12 +64,12 @@ extern "C" {
     pub fn msgparser_destroy(_: *mut c_void) -> *mut c_void;
 }
 
-pub extern fn callback(msg:*mut c_void) {
-        if msg as u32 != 0 {
-            println!("Msg recved! ");
-            //no need.
-             unsafe {msgparser_release(msg) };
-        }
+pub extern "C" fn callback(msg: *mut c_void) {
+    if msg as u32 != 0 {
+        println!("Msg recved! ");
+        //no need.
+        unsafe { msgparser_release(msg) };
+    }
 }
 
 use std::os::raw::*;
@@ -80,9 +80,8 @@ pub struct T2Context {
 }
 
 impl T2Context {
-
     pub fn new() -> T2Context {
-        let mut ctx  =unsafe { create_t2context() };
+        let mut ctx = unsafe { create_t2context() };
         unsafe {
             set_callback(ctx, callback);
         }
@@ -90,7 +89,7 @@ impl T2Context {
         T2Context { _context: ctx }
     }
 
-    pub fn set_callback(&mut self, cb: extern fn(*mut c_void)) {
+    pub fn set_callback(&mut self, cb: extern "C" fn(*mut c_void)) {
         unsafe {
             set_callback(self._context, cb);
         }
@@ -109,9 +108,7 @@ pub struct T2Message {
 
 impl T2Message {
     pub fn new() -> T2Message {
-        T2Message {
-            _message : unsafe { t2message_create() },
-        }
+        T2Message { _message: unsafe { t2message_create() } }
     }
 
     pub fn set_packet_type(&mut self, t: i32) {
@@ -136,9 +133,8 @@ impl Drop for T2Message {
 }
 
 use std::ffi::CString;
-pub fn to_char_array(s:&String)->*const c_char {
+pub fn to_char_array(s: &String) -> *const c_char {
     let cs = CString::new(s.clone().as_str()).unwrap();
     let pt = cs.as_ptr();
     pt
 }
-

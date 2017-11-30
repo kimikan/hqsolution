@@ -10,12 +10,15 @@ use std::collections::HashMap;
 #[allow(dead_code)]
 fn indent(size: usize) -> String {
     const INDENT: &'static str = "    ";
-    (0..size).map(|_| INDENT)
-             .fold(String::with_capacity(size*INDENT.len()), |r, s| r + s)
+    (0..size)
+        .map(|_| INDENT)
+        .fold(String::with_capacity(size * INDENT.len()), |r, s| r + s)
 }
 
 use t2sdk::StockRecord;
-pub fn parse_static_file(file_name : &str, stocks : &mut HashMap<String, StockRecord>) ->io::Result<()> {
+pub fn parse_static_file(file_name: &str,
+                         stocks: &mut HashMap<String, StockRecord>)
+                         -> io::Result<()> {
     let file = File::open(file_name)?;
     let file = BufReader::new(file);
 
@@ -45,10 +48,12 @@ pub fn parse_static_file(file_name : &str, stocks : &mut HashMap<String, StockRe
                     if name.local_name.eq("Security") {
                         if stock_status > 0 {
                             //print all of the stop stocks for debuging usage
-                            //println!("{:?}, {}, {}, {}", code, symbol, pre_close_px, stock_status);
+                            //println!("{:?}, {}, {},{}", code, symbol, pre_close_px, stock_status);
                         }
 
-                         let value = stocks.entry(code.clone()).or_insert(StockRecord::default());
+                        let value = stocks
+                            .entry(code.clone())
+                            .or_insert(StockRecord::default());
                         value._stock_code = code.clone();
                         value._stock_name = symbol.clone();
                         value._pre_close_px = (pre_close_px * 1000f32) as u32;
@@ -63,30 +68,31 @@ pub fn parse_static_file(file_name : &str, stocks : &mut HashMap<String, StockRe
                     }
                 }
             }
-            Ok(XmlEvent::Characters(text))=>{
+            Ok(XmlEvent::Characters(text)) => {
                 if depth == 3 {
                     match parent_name.as_str() {
-                        "SecurityID"=>{
+                        "SecurityID" => {
                             code = text.trim().to_owned();
                         }
-                        "Symbol"=>{
+                        "Symbol" => {
                             symbol = text.trim().to_owned();
                         }
-                        "PrevClosePx"=>{
+                        "PrevClosePx" => {
                             pre_close_px = text.parse().unwrap_or(0f32);
                         }
-                        "SecurityStatus"=>{
+                        "SecurityStatus" => {
                             stock_status = text.parse().unwrap_or(0);
                         }
-                        _=>{}
+                        _ => {}
                     };
-                } //end if depth = 3
+                }
+                //end if depth = 3
                 else if depth == 4 {
                     match parent_name.as_str() {
-                        "Status"=>{
+                        "Status" => {
                             stock_status = text.parse().unwrap_or(0);
                         }
-                        _=>{}
+                        _ => {}
                     };
                 }
             }
@@ -103,7 +109,7 @@ pub fn parse_static_file(file_name : &str, stocks : &mut HashMap<String, StockRe
 
 use chrono;
 use chrono::Datelike;
-pub fn get_today_date()->u32 {
+pub fn get_today_date() -> u32 {
     let now = chrono::Local::now();
     //println!("now: {:?}", now);
     (now.year() as u32) * 10000 + now.month() * 100 + now.day()
@@ -111,23 +117,26 @@ pub fn get_today_date()->u32 {
 
 use std::fs;
 use std::path::Path;
-pub fn parse_static_files(dir : &str, stocks : &mut HashMap<String, StockRecord>, date : u32) ->io::Result<()> {
+pub fn parse_static_files(dir: &str,
+                          stocks: &mut HashMap<String, StockRecord>,
+                          date: u32)
+                          -> io::Result<()> {
 
     let dir2 = format!("{}/{}", dir, date);
     let p = Path::new(&dir2);
 
     let is_exists = p.exists();
     println!("{}, {:?}, {}", is_exists, p, dir2);
-    let mut securities_file = format!("{}/{}/securities_{}.xml",  dir, date, date);
+    let mut securities_file = format!("{}/{}/securities_{}.xml", dir, date, date);
     if !is_exists {
-        securities_file = format!("{}/securities_{}.xml",  dir, date);
+        securities_file = format!("{}/securities_{}.xml", dir, date);
         //println!("{:?}", securities_file);
     }
 
-    let mut indexs_file =  format!("{}/{}/indexinfo_{}.xml",  dir, date, date);
+    let mut indexs_file = format!("{}/{}/indexinfo_{}.xml", dir, date, date);
     if !is_exists {
-        indexs_file = format!("{}/indexinfo_{}.xml",  dir, date);
-       // println!("{:?}", indexs_file);
+        indexs_file = format!("{}/indexinfo_{}.xml", dir, date);
+        // println!("{:?}", indexs_file);
     };
 
     println!("{:?}, {}", securities_file, indexs_file);
