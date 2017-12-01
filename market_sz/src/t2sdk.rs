@@ -278,7 +278,7 @@ pub fn push_market_time(ctx: &mut T2Context, date: u32, time: u32) -> io::Result
         __DATE = date;
         __TIME = time;
     }
-
+    println!("push time: {},{}", date, time);
     let mut msg = T2Message::new();
     msg.set_packet_type(interoper::REQUEST);
     msg.set_function_no(2206);
@@ -320,6 +320,7 @@ pub fn push_market_time(ctx: &mut T2Context, date: u32, time: u32) -> io::Result
 
 static mut __MARKET_STATUS: u32 = 0;
 static mut __DATE_INIT: u32 = 0;
+static mut __OLD_TIME:u32 = 0;
 pub fn push_market_status(ctx: &mut T2Context,
                           date: u32,
                           time: u32,
@@ -334,6 +335,7 @@ pub fn push_market_status(ctx: &mut T2Context,
 
             __MARKET_STATUS = trade_status;
             __DATE_INIT = date;
+            __OLD_TIME = 0;
         }
     }
 
@@ -356,11 +358,12 @@ pub fn push_market_status(ctx: &mut T2Context,
         t2message_addchar(msg._message, b'2');
         t2message_addint(msg._message, date as i64);
         t2message_addint(msg._message, time as i64);
-
+        println!("push market status: {},{},{}", __OLD_TIME, time ,trade_status);
         use utils;
         t2message_addint(msg._message, utils::get_line_number(time) as i64);
-        t2message_addint(msg._message, get_market_status(time) as i64);
-        t2message_addint(msg._message, time as i64);
+        t2message_addint(msg._message, trade_status as i64);
+        t2message_addint(msg._message, __OLD_TIME as i64);
+        __OLD_TIME = time;
 
         t2message_endpack(msg._message);
 

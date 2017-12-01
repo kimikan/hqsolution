@@ -227,9 +227,9 @@ impl log::Log for SimpleLog {
                 use std::io::Write;
 
                 //println!("{:?}", r.args());
-                if let Err(e) = writeln!(f, "{:?}", r.args()) {
+                /*if let Err(e) = writeln!(f, "{:?}", r.args()) {
                     println!("{:?}", e);
-                }
+                } */
             }
         }
     }
