@@ -5,3 +5,4 @@ two functions included
 4. t2sdk support & wrapper
 5. whole push sotb
 6. 你好初始化
+7. Hello the file writing is slowing the socket
