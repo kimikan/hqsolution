@@ -23,13 +23,10 @@ pub struct Sqlserver {
 }
 
 impl Sqlserver {
-
-    pub fn new()->Option<Sqlserver> {
+    pub fn new() -> Option<Sqlserver> {
         let core = Core::new();
         if let Ok(c) = core {
-            return Some(Sqlserver {
-                _core : c,
-            });
+            return Some(Sqlserver { _core: c });
         }
 
         None
@@ -49,13 +46,15 @@ impl Sqlserver {
                 //println!("{:?}, {:?}, {:?}", code, issue_px, first_date);
                 
                 if let Some(c) = code {
-                    let px = issue_px.unwrap_or_default();
+                        let px = issue_px.unwrap_or_default();
 
-                    if let Some(d) = first_date {
-                        
-                        let value = stocks.entry(c.to_owned()).or_insert(StockRecord::default());
-                        value._stock_code = c.to_owned();
-                        value._first_px = (px * 1000f64) as u32;
+                        if let Some(d) = first_date {
+
+                            let value = stocks
+                                .entry(c.to_owned())
+                                .or_insert(StockRecord::default());
+                            value._stock_code = c.to_owned();
+                            value._first_px = (px * 1000f64) as u32;
                         
                         use chrono::Datelike;
                         let year = d.year();
@@ -95,28 +94,30 @@ impl Sqlserver {
                     let n = name.unwrap_or_default();
                     let ts = total_shares.unwrap_or_default();
                     //let ns = nonstrict_shares.unwrap_or_default();
-                    //let es = eps.unwrap_or(0f64);
-                    //let des = dynamic_eps.unwrap_or(0f64);
-                    
-                    let value = stocks.entry(c.to_owned()).or_insert(StockRecord::default());
-                    value._stock_code = c.to_owned();
-                    value._stock_name = n.to_owned();
-                    value._total_shares = ts.parse().unwrap_or_default();
-                   
-                    if let Some(ns) = nonstrict_shares {
-                        value._nonstrict_shares = ns.parse().unwrap_or_default();
-                    }
+                        //let es = eps.unwrap_or(0f64);
+                        //let des = dynamic_eps.unwrap_or(0f64);
 
-                    if let Some(es) = eps {
-                        value._pe_rate = (es * 1000f64) as u32;
-                    }
+                        let value = stocks
+                            .entry(c.to_owned())
+                            .or_insert(StockRecord::default());
+                        value._stock_code = c.to_owned();
+                        value._stock_name = n.to_owned();
+                        value._total_shares = ts.parse().unwrap_or_default();
+                        //println!("code :{:?}, totalshared: {}", value._stock_code, value._total_shares);
+                        if let Some(ns) = nonstrict_shares {
+                            value._nonstrict_shares = ns.parse().unwrap_or_default();
+                        }
 
-                    if let Some(des) = dynamic_eps {
-                        value._dynamic_pe = (des * 1000f64) as u32;
+                        if let Some(es) = eps {
+                            value._static_pe_rate = (es * 1000f64) as u32;
+                        }
+
+                        if let Some(des) = dynamic_eps {
+                            value._static_dynamic_pe = (des * 1000f64) as u32;
+                        }
+                        //println!("{:?}", value);
+                        return Ok(());
                     }
-                    //println!("{:?}", value);
-                    return Ok(());
-                }
 
                 //Err(tiberius::TdsError::Canceled)
                 Ok(())
