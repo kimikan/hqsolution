@@ -81,7 +81,7 @@ pub struct T2Context {
 
 impl T2Context {
     pub fn new() -> T2Context {
-        let mut ctx = unsafe { create_t2context() };
+        let ctx = unsafe { create_t2context() };
         unsafe {
             set_callback(ctx, callback);
         }

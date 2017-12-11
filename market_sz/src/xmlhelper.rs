@@ -109,10 +109,14 @@ pub fn parse_static_file(file_name: &str,
 
 use chrono;
 use chrono::Datelike;
-pub fn get_today_date() -> u32 {
+use chrono::Timelike;
+pub fn get_today_date_time() -> (u32, u32) {
     let now = chrono::Local::now();
     //println!("now: {:?}", now);
-    (now.year() as u32) * 10000 + now.month() * 100 + now.day()
+    let date = (now.year() as u32) * 10000 + now.month() * 100 + now.day();
+    let time = now.hour() * 10000 + now.minute() * 100 + now.second();
+
+    (date, time)
 }
 
 use std::fs;

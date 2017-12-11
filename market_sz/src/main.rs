@@ -145,11 +145,26 @@ struct Index {
     _entries: Vec<IndexEntry>,
 }
 
+#[derive(Debug, Clone)]
+struct VolumeStatic {
+    _snap_shot: Snapshot,
+    _stock_num: u32,
+}
+
 impl Default for Index {
     fn default() -> Index {
         Index {
             _snap_shot: Default::default(),
             _entries: vec![],
+        }
+    }
+}
+
+impl Default for VolumeStatic {
+    fn default() -> VolumeStatic {
+        VolumeStatic {
+            _snap_shot: Default::default(),
+            _stock_num: 0,
         }
     }
 }
@@ -171,12 +186,31 @@ fn generate_checksum(bs: &[u8]) -> u32 {
 }
 
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 struct Context {
     _stocks: HashMap<String, t2sdk::StockRecord>,
     _config: utils::Configuration,
     _t2ctx: interoper::T2Context,
+    _index_statics: HashMap<String, t2sdk::StockRecord>,
+    _today: u32,
+    _now:u32,
+
+    _stream : Option<TcpStream>,
 }
+
+impl Drop for Context {
+    fn drop(&mut self) {
+        let now = xmlhelper::get_today_date_time();
+
+        println!("Context disposed: {:?}", now);
+        if let Some(ref s) = self._stream {
+            if s.shutdown(std::net::Shutdown::Both).is_err() {
+                println!("Shutdown error");
+            }
+        }
+    }
+}
+
 
 use std::marker::Sized;
 use std::slice;
@@ -198,18 +232,27 @@ fn heartbeat(stream: &mut TcpStream) -> io::Result<()> {
     Ok(())
 }
 
-
 use std::io::Write;
 use std::io::Error;
 
+
 impl Context {
+
     fn new() -> Context {
         let cfg = utils::Configuration::load();
         println!("{:?}", cfg);
+
+        let stocks_o = utils::load_stocks(utils::STOCKS);
+        let statics_o = utils::load_stocks(utils::STATISTICS);
+
         Context {
-            _stocks: Default::default(),
+            _stocks: stocks_o.unwrap_or(Default::default()),
+            _index_statics : statics_o.unwrap_or(Default::default()),
             _config: cfg.unwrap(),
             _t2ctx: interoper::T2Context::new(),
+            _today:0,
+            _now:0,
+            _stream : None,
         }
     }
 
@@ -394,6 +437,11 @@ impl Context {
 
         let count = byteorder::BigEndian::read_u32(&buf[30..34]);
 
+        let security_id = utils::utf8_to_string(&msg._security_id[0..6]);
+        let stock = self._stocks
+            .entry(security_id.clone())
+            .or_insert(t2sdk::StockRecord::default());
+
         for i in 0..count {
             let mut s = Switcher {
                 _switch_type: 0u16,
@@ -402,6 +450,16 @@ impl Context {
 
             s._switch_type = byteorder::BigEndian::read_u16(&buf[(34 + i * 4) as usize..]);
             s._switch_status = byteorder::BigEndian::read_u16(&buf[(34 + i * 4 + 2) as usize..]);
+
+            if s._switch_type == 1 {
+                if s._switch_status == 1 {
+                    stock._margin_status |= 0x1;
+                }
+            } else if s._switch_type == 2 {
+                if s._switch_status == 1 {
+                    stock._margin_status |= 0x2;
+                }
+            }
 
             msg._switchers.push(s);
         }
@@ -481,6 +539,18 @@ impl Context {
             }
             b'2' | b'3' => {
                 stock._last_px = utils::div_accurate(entry._entry_px, 1000);
+
+                if stock._total_shares > 0 && stock._last_px > 0 {
+                    stock._market_value = (stock._total_shares * (stock._last_px as i64) / 1000) as u64;
+                }
+
+                if stock._static_pe_rate > 0 && stock._last_px > 0 {
+                    stock._pe_rate = (stock._last_px * 100) / stock._static_pe_rate;
+                }
+
+                if stock._static_dynamic_pe > 0 && stock._last_px > 0 {
+                    stock._dynamic_pe = (stock._last_px * 100) / stock._static_dynamic_pe;
+                }
             }
             b'4' => {
                 stock._open_px = utils::div_accurate(entry._entry_px, 1000);
@@ -494,17 +564,19 @@ impl Context {
             b'x' => {
                 match entry._entry_type[1] {
                     /*b'5'=>{
-                        stock._pe_rate = entry._entry_px as u32;
+                        stock._pe_rate = entry._entry_px / 10000 as u32;
                     }
                     b'6'=>{
-                        stock._dynamic_pe = entry._entry_px as u32;
+                        stock._dynamic_pe = entry._entry_px / 10000 as u32;
                     } */
                     b'7' => {
+                        //fund value
                         if entry._entry_px > 0 {
                             stock._market_value = entry._entry_px as u64;
                         }
                     }
                     b'a' => {
+                         //index
                         stock._pre_close_px = utils::div_accurate(entry._entry_px, 1000);
                     }
                     b'b' => {
@@ -563,6 +635,12 @@ impl Context {
 
         msg._snap_shot._total_vol_trade = byteorder::BigEndian::read_i64(&buf[49..57]);
         stock._trade_amount = (msg._snap_shot._total_vol_trade / 100);
+        //println!("code:{}, shares: {:?}, amount: {}",stock._stock_code,  stock._nonstrict_shares, stock._trade_amount);
+        if stock._nonstrict_shares > 0 {
+            if stock._trade_amount > 0 {
+                stock._change_rate = ((stock._trade_amount * 100000/ stock._nonstrict_shares as i64 + 5 ) / 10) as u32;
+            }
+        }
 
         msg._snap_shot._total_value_trade = byteorder::BigEndian::read_i64(&buf[57..65]);
         stock._trade_balance = (msg._snap_shot._total_value_trade / 10);
@@ -597,13 +675,21 @@ impl Context {
 
         if utils::is_dept(&security_id) {
             stock._stock_type = 3;
-            t2sdk::push_debt(&mut self._t2ctx, stock)?;
+            if stock._time >= 91500 {
+                t2sdk::push_debt(&mut self._t2ctx, stock)?;
+            }
         } else if utils::is_fund(&security_id) {
             stock._stock_type = 4;
-            t2sdk::push_fund(&mut self._t2ctx, stock)?;
+
+            if stock._time >= 91500 {
+                t2sdk::push_fund(&mut self._t2ctx, stock)?;
+            }
         } else {
             stock._stock_type = 1;
-            t2sdk::push_stock(&mut self._t2ctx, stock)?;
+
+            if stock._time >= 91500 {
+                t2sdk::push_stock(&mut self._t2ctx, stock)?;
+            }
         }
 
         info!("Stocksnapshot: {:?}", msg);
@@ -631,7 +717,7 @@ impl Context {
 
         stock._date = (msg._snap_shot._orig_time / 1000000000) as u32;
         stock._time = ((msg._snap_shot._orig_time / 1000) % 1000000) as u32;
-        stock._stock_code = security_id;
+        stock._stock_code = security_id.clone();
 
         msg._snap_shot._prev_close_px = byteorder::BigEndian::read_i64(&buf[33..41]);
         msg._snap_shot._num_trades = byteorder::BigEndian::read_i64(&buf[41..49]);
@@ -641,9 +727,20 @@ impl Context {
         stock._trade_status = utils::trading_phase_to_u32(&msg._snap_shot._trading_phase_code[..]);
         stock._line_no = utils::get_line_number(stock._time);
         stock._pre_close_px = (msg._snap_shot._prev_close_px / 10) as u32;
+
+        let key = utils::translate(&security_id);
+
         stock._trade_amount = msg._snap_shot._total_vol_trade / 100;
         stock._trade_balance = (msg._snap_shot._total_value_trade / 10);
 
+        if let Some(k) = key {
+            let value = self._index_statics.get(&k);
+            if let Some(v) = value {
+                stock._trade_amount = v._trade_amount;
+                stock._trade_balance = v._trade_balance;
+            }
+        }
+        
         let entry_count = byteorder::BigEndian::read_u32(&buf[65..69]);
         let mut start: usize = 69;
         for _ in 0..entry_count {
@@ -661,12 +758,50 @@ impl Context {
         }
 
         stock._stock_type = 2;
-        t2sdk::push_index(&mut self._t2ctx, stock)?;
+
+        if stock._time >= 91500 {
+            t2sdk::push_index(&mut self._t2ctx, stock)?;
+        }
         info!("Indexsnapshot: {:?}", msg);
         Ok(())
     }
 
-    fn handle_volume_statistic(&self, _: &mut TcpStream, _: &Vec<u8>) -> io::Result<()> {
+    fn handle_volume_statistic(&mut self, _: &mut TcpStream, buf: &Vec<u8>) -> io::Result<()> {
+
+        let mut msg: VolumeStatic = Default::default();
+        //msg._snap_shot._orig_time = byteorder::BigEndian::readi64()
+        msg._snap_shot._orig_time = byteorder::BigEndian::read_i64(&buf[..]);
+        msg._snap_shot._channel_no = byteorder::BigEndian::read_u16(&buf[8..]);
+        t2sdk::push_market_datetime(&mut self._t2ctx, msg._snap_shot._orig_time)?;
+
+        (&mut msg._snap_shot._md_stream_id[..]).copy_from_slice(&buf[10..13]);
+        (&mut msg._snap_shot._security_id[..]).copy_from_slice(&buf[13..21]);
+        (&mut msg._snap_shot._security_id_source[..]).copy_from_slice(&buf[21..25]);
+        (&mut msg._snap_shot._trading_phase_code[..]).copy_from_slice(&buf[25..33]);
+
+        let security_id = utils::utf8_to_string(&msg._snap_shot._security_id[0..6]);
+
+        let stock = self._index_statics
+            .entry(security_id.clone())
+            .or_insert(t2sdk::StockRecord::default());
+
+        stock._date = (msg._snap_shot._orig_time / 1000000000) as u32;
+        stock._time = ((msg._snap_shot._orig_time / 1000) % 1000000) as u32;
+        stock._stock_code = security_id;
+
+        msg._snap_shot._prev_close_px = byteorder::BigEndian::read_i64(&buf[33..41]);
+        msg._snap_shot._num_trades = byteorder::BigEndian::read_i64(&buf[41..49]);
+        msg._snap_shot._total_vol_trade = byteorder::BigEndian::read_i64(&buf[49..57]);
+        msg._snap_shot._total_value_trade = byteorder::BigEndian::read_i64(&buf[57..65]);
+
+        stock._trade_status = utils::trading_phase_to_u32(&msg._snap_shot._trading_phase_code[..]);
+        stock._line_no = utils::get_line_number(stock._time);
+        stock._pre_close_px = (msg._snap_shot._prev_close_px / 10) as u32;
+        stock._trade_amount = msg._snap_shot._total_vol_trade / 10000;
+        stock._trade_balance = (msg._snap_shot._total_value_trade / 10);
+
+        let stock_num = byteorder::BigEndian::read_u32(&buf[65..69]);
+        //stock._stock_num = stock_num;
 
         Ok(())
     }
@@ -730,7 +865,8 @@ impl Context {
     //main run function
     fn run(&mut self) -> io::Result<()> {
 
-        let mut stream = TcpStream::connect(&self._config._addr)?;
+        let mut stream : TcpStream = TcpStream::connect(&self._config._addr)?;
+        self._stream = Some(stream.try_clone().unwrap());
 
         self.login(&mut stream)?;
         error!("login success {:?}", stream);
@@ -754,7 +890,23 @@ impl Context {
             .unwrap();
 
         loop {
-            utils::check_time()?;
+            match utils::check_time() {
+                Ok(time)=>{
+                    if time >= 840 && time <= 905 {
+                        //parse static files
+                        if let Err(e) = self.prepare_market_init() {
+                            println!("Market init failed: {:?}", e);
+                        }
+                    }
+                }
+                Err(e)=>{
+                    return Err(e);
+                }
+            };
+
+            if let Err(e) = utils::save_to_disk(&self._stocks, &self._index_statics) {
+                println!("Save to snapshot: {:?}", e);
+            }
 
             let (res, op) = self.get_message(&mut stream);
             let msg_type = match res {
@@ -771,13 +923,57 @@ impl Context {
         //Ok(())
     }
 
+    fn prepare_market_init(&mut self)->io::Result<()>{
+        //println!("fff");
+        use xmlhelper;
+        let (date, time) = xmlhelper::get_today_date_time();
+
+        if self._today == date {
+
+            if self._now <= 85000 && time > 85000 {
+                xmlhelper::parse_static_files(self._config._static_files.as_str(),
+                                                            &mut self._stocks,
+                                                            date)?;
+                println!("Parse static files success!");
+
+                self.init()?;
+                println!("Db sync success!");
+            }
+
+            if self._now < 90000 && time >= 90000 {
+                for (_, value) in &self._stocks {
+
+                    //2:index, 3:Fund, 4:Debt, 1:Stock
+                    if value._stock_type == 1 {
+                        t2sdk::push_stock(&mut self._t2ctx, &value)?;
+                    } else if value._stock_type == 2 {
+                        t2sdk::push_index(&mut self._t2ctx, &value)?;
+                    } else if value._stock_type == 3 {
+                        t2sdk::push_fund(&mut self._t2ctx, &value)?;
+                    } else if value._stock_type == 4 {
+                        t2sdk::push_debt(&mut self._t2ctx, &value)?;
+                    }
+                } //end for
+                //initialize
+                t2sdk::push_market_status(&mut self._t2ctx, date, time, 2)?;
+                println!("Sent market initialize event success!");
+            }
+        }
+
+        self._today = date;
+        self._now = time;
+
+        Ok(())
+        
+    }
+    
     fn init(&mut self) -> io::Result<()> {
 
         let server_o = db::Sqlserver::new();
         if let Some(mut s) = server_o {
             s.update(&mut self._stocks)?;
             s.update2(&mut self._stocks)?;
-
+            println!("Sqlserver sync success!");
             return Ok(());
         }
 
@@ -788,17 +984,8 @@ impl Context {
 fn main2() {
     //println!("ee");
     let mut ctx = Context::new();
-    //println!("fff");
-    use xmlhelper;
-    let date = xmlhelper::get_today_date();
-    //println!("xxc");
-    if let Err(e) = xmlhelper::parse_static_files(ctx._config._static_files.as_str(),
-                                                  &mut ctx._stocks,
-                                                  date) {
-        error!("{:?}", e);
-        println!("{:?}", e);
-        return;
-    }
+
+    //no need?  better have, whatever
     if let Err(e) = ctx.init() {
         error!("{:?}", e);
         println!("{:?}", e);
@@ -821,7 +1008,39 @@ fn test_send() {
     std::thread::sleep_ms(1000 * 5);
 }
 
+fn test_save() ->io::Result<()>{
+    let mut ctx = Context::new();
+    use xmlhelper;
+    let (date, _) = xmlhelper::get_today_date_time();
+    //println!("xxc");
+    xmlhelper::parse_static_files(ctx._config._static_files.as_str(),
+                                                  &mut ctx._stocks,
+                                                  date)?;
+    ctx.init()?;
+
+    use serde_json;
+    use std::io::BufWriter;
+    use std::fs::OpenOptions;
+    let file = OpenOptions::new().write(true).create(true)
+                .open("data")?;
+    let mut buf_wr = BufWriter::new(file);
+    //let mut contents = String::new();
+
+    use std::io::Write;
+    let j = serde_json::to_string(&ctx._stocks)?;
+
+    buf_wr.write_all(j.as_bytes())?;
+
+    Ok(())
+}
+
 fn main() {
+    /*
+    if let Err(e) = test_save() {
+        println!("{:?}", e);
+    }
+
+    return; */
     /*
     for _ in 0..20 {
         let s = "002255".to_owned();
@@ -830,7 +1049,7 @@ fn main() {
 
         use std::ffi::CString;
         //unsafe { interoper::test(CString::new(s.as_str()).unwrap().as_ptr()); }
-        unsafe { interoper::test(CString::new(s.as_str()).unwrap().as_ptr()}
+        unsafe { interoper::test(CString::new(s.as_str()).unwrap().as_ptr(), CString::new(s2.as_str()).unwrap().as_ptr()); }
         println!("{:?}", s);
     }
     return; */

@@ -117,19 +117,44 @@ pub fn is_fund(code: &String) -> bool {
 }
 
 //check time...
-pub fn check_time() -> io::Result<()> {
+pub fn check_time() -> io::Result<u32> {
     use chrono::Timelike;
     let now = chrono::Local::now();
     let hour = now.hour();
+    let time = hour * 100 + now.minute();
 
     //0 based, monday from
     let weekday = now.weekday().num_days_from_monday();
-    if (hour >= 16 && hour <= 8) || weekday >= 5 {
+    if (time >= 1530 || time <= 830) || weekday >= 5 {
 
         return Err(io::Error::from(io::ErrorKind::WouldBlock));
     }
 
-    Ok(())
+    Ok(time)
+}
+
+pub fn translate(code : &String)->Option<String> {
+    if code.eq("399001") {
+        return Some("395099".to_owned());
+    }
+
+    if code.eq("399002") {
+        return Some("395001".to_owned());
+    }
+
+    if code.eq("399003") {
+        return Some("395002".to_owned());
+    }
+
+    if code.eq("399005") {
+        return Some("395003".to_owned());
+    }
+
+    if code.eq("399006") {
+        return Some("395004".to_owned());
+    }
+    
+    None
 }
 
 pub fn any_to_u8_slice_mut<T: Sized>(p: &mut T) -> &mut [u8] {
@@ -213,7 +238,8 @@ impl log::Log for SimpleLog {
     }
 
     fn log(&self, r: &LogRecord) {
-        //return;
+
+        return;
         if self.enabled(r.metadata()) {
 
             let path = self.get_file();
@@ -227,9 +253,9 @@ impl log::Log for SimpleLog {
                 use std::io::Write;
 
                 //println!("{:?}", r.args());
-                /*if let Err(e) = writeln!(f, "{:?}", r.args()) {
+                if let Err(e) = writeln!(f, "{:?}", r.args()) {
                     println!("{:?}", e);
-                } */
+                } 
             }
         }
     }
@@ -250,4 +276,87 @@ impl SimpleLog {
         let now = chrono::Local::now();
         format!("{}{}{}{}", now.year(), now.month(), now.day(), now.hour())
     }
+}
+
+use std::collections::HashMap;
+pub fn save_stocks(stocks : &HashMap<String, t2sdk::StockRecord>, file_name:&str)->io::Result<()>{
+
+    use serde_json;
+    use std::io::BufWriter;
+    use std::fs::OpenOptions;
+    let file = OpenOptions::new().write(true).truncate(true)
+                .create(true)
+                .open(file_name)?;
+    let mut buf_wr = BufWriter::new(file);
+
+    use std::io::Write;
+    let j = serde_json::to_string(stocks)?;
+
+    buf_wr.write_all(j.as_bytes())?;
+    Ok(())
+}
+
+
+pub const STOCKS:&str = "stocks.json";
+pub const STATISTICS:&str = "statistics.json";
+
+use t2sdk;
+pub fn load_stocks(file_name:&str)->Option<HashMap<String, t2sdk::StockRecord>> {
+
+    use serde_json;
+    use std::io::BufReader;
+    use std::fs::OpenOptions;
+    let file_r = OpenOptions::new().read(true)
+                .open(file_name);
+    
+    if let Ok(file) = file_r {
+        let mut buf_r = BufReader::new(file);
+        use std::io::Read;
+        use serde_json::error;
+        let j_r : error::Result<HashMap<String, t2sdk::StockRecord>> = serde_json::from_reader(buf_r);
+
+        if let Ok(j) = j_r {
+            println!("Load success: {:?}", file_name);
+            return Some(j);
+        } else {
+            println!("Unmarshal json failed: {:?}", file_name);
+        }
+    } else {
+        println!("Open file failed: {:?}", file_name);
+    }
+    
+    None
+}
+
+static mut __SAVE_TIME:u32  = 0;
+pub fn save_to_disk(stocks:&HashMap<String, t2sdk::StockRecord>
+    , statics:&HashMap<String, t2sdk::StockRecord>)->io::Result<()>{
+
+    let mut need_to_save : bool = false;
+
+    use chrono::Timelike;
+    let now = chrono::Local::now();
+    let hour = now.hour();
+    let time = hour * 100 + now.minute();
+    let time2 = hour * 60 + now.minute();
+    if time >= 900 && time <= 1600 {
+        unsafe {
+            if time2 > __SAVE_TIME {
+                if time2 >= __SAVE_TIME + 15 {
+                    need_to_save = true;
+                    __SAVE_TIME = time2;
+                }
+            } else {
+                __SAVE_TIME = time2;
+            }
+        }
+    }
+
+    if need_to_save {
+        println!("Save to disk {}", time);
+        save_stocks(&stocks, STOCKS)?;
+        save_stocks(&statics, STATISTICS)?;
+    }
+
+    Ok(())
 }

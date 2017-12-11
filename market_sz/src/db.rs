@@ -12,16 +12,11 @@ use t2sdk::StockRecord;
 use std::io;
 use tokio_core::reactor::Core;
 //use
-pub const CONNSTRING: &str = "server=tcp:139.196.143.124,1433;
-    Database=JYDB;Uid=sa;Pwd=xxxx;TrustServerCertificate=true;";
+pub const CONNSTRING: &str = "server=tcp:139.196.143.124,1433;Database=JYDB;Uid=sa;Pwd=xxxxx;TrustServerCertificate=true;";
 
-pub const QUERYSTRING: &str = "SELECT b.SecuCode,a.IssuePrice,a.listdate
-    FROM LC_AShareIPO a,SecuMain b
-    where a.InnerCode = b.InnerCode and a.listdate>0 and b.SecuMarket=90
-    order by b.SecuCode desc;";
+pub const QUERYSTRING: &str = "SELECT b.SecuCode,a.IssuePrice,a.listdate FROM LC_AShareIPO a,SecuMain b where a.InnerCode = b.InnerCode and a.listdate>0 and b.SecuMarket=90  order by b.SecuCode desc;";
 
-pub const HQSTRING: &str = "select * from NiubangHqTable
-    where SecuMarket=90 and NonRestrictedShares is not null;";
+pub const HQSTRING: &str = "select * from NiubangHqTable where SecuMarket=90 and NonRestrictedShares is not null;";
 
 pub struct Sqlserver {
     _core: Core,
@@ -108,17 +103,17 @@ impl Sqlserver {
                         value._stock_code = c.to_owned();
                         value._stock_name = n.to_owned();
                         value._total_shares = ts.parse().unwrap_or_default();
-
+                        //println!("code :{:?}, totalshared: {}", value._stock_code, value._total_shares);
                         if let Some(ns) = nonstrict_shares {
                             value._nonstrict_shares = ns.parse().unwrap_or_default();
                         }
 
                         if let Some(es) = eps {
-                            value._pe_rate = (es * 1000f64) as u32;
+                            value._static_pe_rate = (es * 1000f64) as u32;
                         }
 
                         if let Some(des) = dynamic_eps {
-                            value._dynamic_pe = (des * 1000f64) as u32;
+                            value._static_dynamic_pe = (des * 1000f64) as u32;
                         }
                         //println!("{:?}", value);
                         return Ok(());
