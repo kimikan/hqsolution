@@ -937,7 +937,7 @@ impl Context {
                 println!("Parse static files success!");
 
                 self.init()?;
-                println!("Db sync success!");
+                println!("Sqlserver sync success!");
             }
 
             if self._now < 90000 && time >= 90000 {
@@ -973,7 +973,7 @@ impl Context {
         if let Some(mut s) = server_o {
             s.update(&mut self._stocks)?;
             s.update2(&mut self._stocks)?;
-            println!("Sqlserver sync success!");
+            
             return Ok(());
         }
 

@@ -103,10 +103,10 @@ impl StockRecord {
             t2message_addfield(msg._message, CString::new("buy_amount4").unwrap().as_ptr());
             t2message_addfield(msg._message, CString::new("buy_price5").unwrap().as_ptr());
             t2message_addfield(msg._message, CString::new("buy_amount5").unwrap().as_ptr());
-
-            t2message_addfield(msg._message, CString::new("market_value").unwrap().as_ptr());
             t2message_addfield(msg._message,
                                CString::new("turnover_ratio").unwrap().as_ptr());
+
+            t2message_addfield(msg._message, CString::new("market_value").unwrap().as_ptr());
             t2message_addfield(msg._message, CString::new("pe_rate").unwrap().as_ptr());
             t2message_addfield(msg._message,
                                CString::new("dynamic_pe_rate").unwrap().as_ptr());
@@ -162,7 +162,7 @@ impl StockRecord {
             t2message_addint(msg._message, self._date as i64);
 
             if self._time <= 91500 {
-                for _ in 0..20 {
+                for _ in 0..21 {
                     t2message_addint(msg._message, 0i64);
                 }
             } else {
@@ -185,8 +185,9 @@ impl StockRecord {
             t2message_addint(msg._message, self._buy_amounts[2] as i64);
             t2message_addint(msg._message, self._buy_pxs[3] as i64);
             t2message_addint(msg._message, self._buy_amounts[3] as i64);
-            t2message_addint(msg._message, self._buy_pxs[4] as i64);
+                t2message_addint(msg._message, self._buy_pxs[4] as i64);
                 t2message_addint(msg._message, self._buy_amounts[4] as i64);
+                t2message_addint(msg._message, self._change_rate as i64); 
             }
             
 
@@ -195,7 +196,7 @@ impl StockRecord {
                              CString::new(self._market_value.to_string().as_str())
                                  .unwrap()
                                  .as_ptr());
-            t2message_addint(msg._message, self._change_rate as i64); 
+            
             t2message_addint(msg._message, self._pe_rate as i64);
             t2message_addint(msg._message, self._dynamic_pe as i64);
             t2message_addint(msg._message, self._first_date as i64);
@@ -342,7 +343,7 @@ pub fn push_market_time(ctx: &mut T2Context, date: u32, time: u32) -> io::Result
         }
     }
 
-    push_market_status(ctx, date, time, 6)?;
+    push_market_status(ctx, date, (time / 100) * 100, 6)?;
     Ok(())
 }
 
@@ -354,6 +355,13 @@ pub fn push_market_status(ctx: &mut T2Context,
                           time: u32,
                           trade_status: u32)
                           -> io::Result<()> {
+
+    unsafe {
+        if __MARKET_STATUS == trade_status && __DATE_INIT == date
+            && __OLD_TIME == time && trade_status == 6 {
+                return Ok(());
+            }
+    }
 
     if trade_status == 2 {
         unsafe {
