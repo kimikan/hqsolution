@@ -284,7 +284,8 @@ pub fn save_stocks(stocks : &HashMap<String, t2sdk::StockRecord>, file_name:&str
     use serde_json;
     use std::io::BufWriter;
     use std::fs::OpenOptions;
-    let file = OpenOptions::new().write(true).create(true)
+    let file = OpenOptions::new().write(true).truncate(true)
+                .create(true)
                 .open(file_name)?;
     let mut buf_wr = BufWriter::new(file);
 
@@ -317,7 +318,11 @@ pub fn load_stocks(file_name:&str)->Option<HashMap<String, t2sdk::StockRecord>> 
         if let Ok(j) = j_r {
             println!("Load success: {:?}", file_name);
             return Some(j);
+        } else {
+            println!("Unmarshal json failed: {:?}", file_name);
         }
+    } else {
+        println!("Open file failed: {:?}", file_name);
     }
     
     None
