@@ -182,18 +182,35 @@ fn generate_checksum(bs: &[u8]) -> u32 {
         sum += bs[i] as u32;
     }
 
-    sum
+    sum % 256
 }
 
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 struct Context {
     _stocks: HashMap<String, t2sdk::StockRecord>,
     _config: utils::Configuration,
     _t2ctx: interoper::T2Context,
     _index_statics: HashMap<String, t2sdk::StockRecord>,
     _today: u32,
+    _now:u32,
+
+    _stream : Option<TcpStream>,
 }
+
+impl Drop for Context {
+    fn drop(&mut self) {
+        let now = xmlhelper::get_today_date_time();
+
+        println!("Context disposed: {:?}", now);
+        if let Some(ref s) = self._stream {
+            if s.shutdown(std::net::Shutdown::Both).is_err() {
+                println!("Shutdown error");
+            }
+        }
+    }
+}
+
 
 use std::marker::Sized;
 use std::slice;
@@ -234,10 +251,12 @@ impl Context {
             _config: cfg.unwrap(),
             _t2ctx: interoper::T2Context::new(),
             _today:0,
+            _now:0,
+            _stream : None,
         }
     }
 
-    fn login(&self, stream: &mut TcpStream) -> io::Result<()> {
+    fn login2(&self, stream: &mut TcpStream) -> io::Result<()> {
         let msg: [u8; 104] = [0x00, 0x00 /* ........ */, 0x00, 0x01, 0x00, 0x00, 0x00, 0x5c,
                               0x46, 0x30 /* .....\F0 */, 0x30, 0x30, 0x36, 0x34, 0x38, 0x51,
                               0x30, 0x30 /* 00648Q00 */, 0x31, 0x31, 0x00, 0x00, 0x00, 0x00,
@@ -263,7 +282,7 @@ impl Context {
     }
 
     #[allow(dead_code)]
-    fn login2(&self, stream: &mut TcpStream) -> io::Result<()> {
+    fn login(&self, stream: &mut TcpStream) -> io::Result<()> {
         /*
         #[repr(C, packed)]
         struct Msg {
@@ -656,13 +675,21 @@ impl Context {
 
         if utils::is_dept(&security_id) {
             stock._stock_type = 3;
-            t2sdk::push_debt(&mut self._t2ctx, stock)?;
+            if stock._time >= 91500 {
+                t2sdk::push_debt(&mut self._t2ctx, stock)?;
+            }
         } else if utils::is_fund(&security_id) {
             stock._stock_type = 4;
-            t2sdk::push_fund(&mut self._t2ctx, stock)?;
+
+            if stock._time >= 91500 {
+                t2sdk::push_fund(&mut self._t2ctx, stock)?;
+            }
         } else {
             stock._stock_type = 1;
-            t2sdk::push_stock(&mut self._t2ctx, stock)?;
+
+            if stock._time >= 91500 {
+                t2sdk::push_stock(&mut self._t2ctx, stock)?;
+            }
         }
 
         info!("Stocksnapshot: {:?}", msg);
@@ -732,7 +759,10 @@ impl Context {
         }
 
         stock._stock_type = 2;
-        t2sdk::push_index(&mut self._t2ctx, stock)?;
+
+        if stock._time >= 91500 {
+            t2sdk::push_index(&mut self._t2ctx, stock)?;
+        }
         info!("Indexsnapshot: {:?}", msg);
         Ok(())
     }
@@ -836,9 +866,11 @@ impl Context {
     //main run function
     fn run(&mut self) -> io::Result<()> {
 
-        let mut stream = TcpStream::connect(&self._config._addr)?;
+        let mut stream : TcpStream = TcpStream::connect(&self._config._addr)?;
+        self._stream = Some(stream.try_clone().unwrap());
 
         self.login(&mut stream)?;
+        println!("login success!");
         error!("login success {:?}", stream);
 
         let mut stream2 = stream.try_clone().unwrap();
@@ -858,11 +890,12 @@ impl Context {
 
             })
             .unwrap();
-
+        self.push_all_stocks()?;
+        
         loop {
             match utils::check_time() {
                 Ok(time)=>{
-                    if time >= 900 && time <= 915 {
+                    if time >= 840 && time <= 915 {
                         //parse static files
                         if let Err(e) = self.prepare_market_init() {
                             println!("Market init failed: {:?}", e);
@@ -893,36 +926,57 @@ impl Context {
         //Ok(())
     }
 
+    fn push_all_stocks(&mut self)->io::Result<()>{
+        println!("start the whole market stocks push!");
+        for (_, value) in &self._stocks {
+
+            //2:index, 3:Fund, 4:Debt, 1:Stock
+            if value._stock_type == 1 {
+                t2sdk::push_stock(&mut self._t2ctx, &value)?;
+            } else if value._stock_type == 2 {
+                t2sdk::push_index(&mut self._t2ctx, &value)?;
+            } else if value._stock_type == 3 {
+                t2sdk::push_fund(&mut self._t2ctx, &value)?;
+            } else if value._stock_type == 4 {
+                t2sdk::push_debt(&mut self._t2ctx, &value)?;
+            }
+        } //end for
+        println!("end the whole market stocks push!");
+        Ok(())
+    }
+
     fn prepare_market_init(&mut self)->io::Result<()>{
         //println!("fff");
         use xmlhelper;
         let (date, time) = xmlhelper::get_today_date_time();
 
-        if self._today != date {
-            self._today = date;
-                //println!("xxc");
-            xmlhelper::parse_static_files(self._config._static_files.as_str(),
-                                                        &mut self._stocks,
-                                                        date)?;
-            println!("Parse static files success!");
-            
-            for (_, value) in &self._stocks {
+        if self._today == date {
 
-                //2:index, 3:Fund, 4:Debt, 1:Stock
-                if value._stock_type == 1 {
-                    t2sdk::push_stock(&mut self._t2ctx, &value)?;
-                } else if value._stock_type == 2 {
-                    t2sdk::push_index(&mut self._t2ctx, &value)?;
-                } else if value._stock_type == 3 {
-                    t2sdk::push_fund(&mut self._t2ctx, &value)?;
-                } else if value._stock_type == 4 {
-                    t2sdk::push_debt(&mut self._t2ctx, &value)?;
-                }
-            } //end for
-            //initialize
-            t2sdk::push_market_status(&mut self._t2ctx, date, time, 2)?;
-            println!("Sent market initialize event success!");
+            if self._now <= 85000 && time > 85000 {
+                xmlhelper::parse_static_files(self._config._static_files.as_str(),
+                                                            &mut self._stocks,
+                                                            date)?;
+                println!("Parse static files success!");
+
+                self.init()?;
+                println!("Sqlserver sync success!");
+            }
+
+            if self._now < 90000 && time >= 90000 {
+               self.push_all_stocks()?;
+              //initialize
+                t2sdk::push_market_open(&mut self._t2ctx, date, time)?;
+                println!("Sent market initialize event success!");
+            }
+
+            if self._now < 91500 && time >= 91500 {
+                self.push_all_stocks()?;
+                println!("push all stocks one time success @915");
+            }
         }
+
+        self._today = date;
+        self._now = time;
 
         Ok(())
         
@@ -934,7 +988,7 @@ impl Context {
         if let Some(mut s) = server_o {
             s.update(&mut self._stocks)?;
             s.update2(&mut self._stocks)?;
-            println!("Sqlserver sync success!");
+            
             return Ok(());
         }
 
@@ -946,6 +1000,7 @@ fn main2() {
     //println!("ee");
     let mut ctx = Context::new();
 
+    //no need?  better have, whatever
     if let Err(e) = ctx.init() {
         error!("{:?}", e);
         println!("{:?}", e);
