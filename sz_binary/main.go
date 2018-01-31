@@ -81,8 +81,8 @@ func struct2Bytes(msg interface{}) ([]byte, error) {
 
 func generateCheckSum(buf []byte) uint32 {
 	var sum uint64
-	for b := range buf {
-		sum += uint64(int8(b))
+	for _, b := range buf {
+		sum += uint64(b)
 	}
 
 	return uint32(sum % 256)
@@ -168,8 +168,8 @@ func getMessage(conn net.Conn) (uint32, uint32, []byte, error) {
 	if bodyLen > 0 {
 		buf = make([]byte, bodyLen)
 
+		got := 0
 		for {
-			got := 0
 			n, err2 := conn.Read(buf[got:])
 			if err2 != nil || n < 0 {
 				return 0, 0, nil, err2
@@ -539,7 +539,7 @@ func main() {
 			fmt.Println(err2)
 			break
 		}
-
+		fmt.Println(messageBody)
 		handleMessage(conn, msgType, messageBody)
 	}
 }
